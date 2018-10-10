@@ -195,7 +195,7 @@
                     android:layout_height="wrap_content" />
             </LinearLayout>
         </LinearLayout>
-        <com.tencent.trtc.demo.view.MsgListView
+        <com.growalong.android.trtc.view.MsgListView
             android:id="@+id/lv_chat_msg"
             android:layout_width="240dp"
             android:layout_height="158dp"
