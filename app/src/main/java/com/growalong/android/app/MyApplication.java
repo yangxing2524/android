@@ -82,6 +82,10 @@ public class MyApplication extends DefaultApplicationLike {
         return instance;
     }
 
+    public static Context getContext() {
+        return getInstance().context;
+    }
+
     /**
      * install multiDex before install tinker
      * so we don't need to put the tinker lib classes in the main dex
