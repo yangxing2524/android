@@ -1,45 +1,212 @@
+import org.aspectj.bridge.MessageHandler
+import org.aspectj.tools.ajc.Main
+
 apply plugin: 'com.android.application'
+apply plugin: 'realm-android'
+apply plugin: 'bugly'
+// 依赖插件脚本
+apply plugin: 'com.tencent.bugly.tinker-support'
+
+bugly {
+    appId = '8e5e9d7bfa' // 注册时分配的App ID
+    appKey = '97a44671-6190-4590-846b-4c8ffc21de53' // 注册时分配的App Key
+}
+def javaVersion = JavaVersion.VERSION_1_7
+
+final def log = project.logger
+
+final def variants = project.android.applicationVariants
+
+//tinker
+def bakPath = file("${buildDir}/bakApk/")
+
+def isOpenTinker = true
+apply plugin: 'walle'
+walle {
+    // 指定渠道包的输出路径
+    apkOutputFolder = new File("${project.buildDir}/outputs/channels");
+    // 定制渠道包的APK的文件名称
+    apkFileNameFormat = 'qlchat-${channel}-v${versionName}-${buildTime}.apk';
+    // 配置渠道文件列表，也可以通过channelList来配置
+    channelFile = new File("${project.getProjectDir()}/channel")
+}
+
+/**
+ * 此处填写每次构建生成的基准包目录
+ */
+def baseApkDir = "release"
+
+/**
+ * 对于插件各参数的详细解析请参考
+ * http://tinkerpatch.com/Docs/SDK
+ */
+
+tinkerSupport {
+    /** 可以在debug的时候关闭 tinkerPatch **/
+    enable = isOpenTinker
+
+    autoBackupApkDir = "${bakPath}"
+
+    // 是否启用覆盖tinkerPatch配置功能，默认值false
+    // 开启后tinkerPatch配置不生效，即无需添加tinkerPatch
+    overrideTinkerPatchConfiguration = isOpenTinker
+
+    // 编译补丁包时，必需指定基线版本的apk，默认值为空
+    // 如果为空，则表示不是进行补丁包的编译
+    // @{link tinkerPatch.oldApk }
+    baseApk = "${bakPath}/${baseApkDir}/app-release.apk"
+
+    // 对应tinker插件applyMapping
+    baseApkProguardMapping = "${bakPath}/${baseApkDir}/app-release-mapping.txt"
+
+    // 对应tinker插件applyResourceMapping
+    baseApkResourceMapping = "${bakPath}/${baseApkDir}/app-release-R.txt"
+
+    // 构建基准包和补丁包都要指定不同的tinkerId，并且必须保证唯一性
+    tinkerId = "release-3.9.7"
+//    tinkerId = "patch-3.9.3.5"
+
+    // 是否启用加固模式，默认为false.(tinker-spport 1.0.7起支持）
+    // isProtectedApp = true
+
+    enableProxyApplication = false
+
+}
 
 android {
     compileSdkVersion 27
     buildToolsVersion '27.0.3'
-    packagingOptions {
-        exclude '*.apk'
+
+    lintOptions {
+        abortOnError false
+    }
+    dataBinding {
+        enabled = true
+    }
+    compileOptions {
+        sourceCompatibility javaVersion
+        targetCompatibility javaVersion
     }
     defaultConfig {
+
         applicationId 'com.growalong.android'
-        minSdkVersion 16
-        targetSdkVersion 27
         versionCode 1
         versionName "1.0"
+        minSdkVersion 16
+        targetSdkVersion 26
+        setVersion(versionName)
+        multiDexEnabled true
+        buildConfigField "String", "TINKER_ID", "\"${getTinkerIdValue()}\""
+        buildConfigField "String", "PLATFORM", "\"all\""
+        renderscriptTargetApi 18
+        renderscriptSupportModeEnabled true
         ndk {
             abiFilters 'armeabi', 'armeabi-v7a'
+        }
+        javaCompileOptions {
+            annotationProcessorOptions {
+                includeCompileClasspath true
+            }
+        }
+        manifestPlaceholders = [
+                XG_ACCESS_ID : "2100258851",
+                XG_ACCESS_KEY: "AW88JMS35L2L",
+                HW_APPID: "10612393",
+        ]
+    }
+    signingConfigs {
+        debug {
+//            storeFile file('../debug.keystore')
+//            keyAlias 'androiddebugkey'
+//            keyPassword 'android'
+//            storePassword 'android'
+            storeFile file('../nenglong_jxpt25')
+            keyAlias 'nenglong'
+            keyPassword 'nenglong'
+            storePassword 'nenglong'
+        }
+        release {
+            storeFile file('../nenglong_jxpt25')
+            keyAlias 'nenglong'
+            keyPassword 'nenglong'
+            storePassword 'nenglong'
         }
     }
     buildTypes {
         release {
-            minifyEnabled false
+            // 不显示Log
+            buildConfigField "boolean", "LOG_DEBUG", "false"
+            buildConfigField "boolean", "DEVELOPMENT_ENV", "false"
+            debuggable true
+            zipAlignEnabled true
+            minifyEnabled true
+            // 移除无用的resource文件
+            shrinkResources false
             proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
+            signingConfig signingConfigs.release
+        }
+
+        debug {
+            buildConfigField "boolean", "DEVELOPMENT_ENV", "true"
+            debuggable true
+            minifyEnabled false
+//            proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
+            signingConfig signingConfigs.debug
         }
     }
-    productFlavors {
+
+    sourceSets {
+        main {
+            jniLibs.srcDirs = ['libs']
+            aidl.srcDirs = ['src/main/java/com/thinkwu/live/aidl']
+        }
+    }
+    aaptOptions {
+        cruncherEnabled = false
+        useNewCruncher = false
+    }
+
+    dexOptions {
+        jumboMode = true
+        dexInProcess true
+        preDexLibraries true
+        javaMaxHeapSize "4g"//越大越好
+    }
+
+    dataBinding {
+        enabled = true
     }
 }
 
 dependencies {
     implementation fileTree(include: ['*.jar'], dir: 'libs')
+
     //    compile project(':PhotoPicker')
     compile 'com.android.support:multidex:1.0.1'
     compile 'com.android.support:appcompat-v7:25.2.0'
+
+    //rx
+    compile 'io.reactivex:rxjava:1.1.0'
+    compile 'io.reactivex:rxandroid:1.1.0'
+    compile 'com.jakewharton.rxbinding:rxbinding:0.4.0'
+
+    //network
+    compile 'com.google.code.gson:gson:2.7'
+    compile 'com.squareup.retrofit2:retrofit:2.1.0'
+    compile 'com.squareup.retrofit2:adapter-rxjava:2.1.0'
+    compile 'com.squareup.retrofit2:converter-gson:2.1.0'
+
     //ui
     compile 'com.android.support:design:25.2.0'
     compile 'com.android.support:recyclerview-v7:25.2.0'
     compile 'com.github.armcha:AutoLinkTextView:0.3.0'
     compile 'com.android.support:cardview-v7:25.2.0'
+
     //rx
     compile 'io.reactivex:rxjava:1.1.0'
     compile 'io.reactivex:rxandroid:1.1.0'
     compile 'com.jakewharton.rxbinding:rxbinding:0.4.0'
+
     //network
     compile 'com.google.code.gson:gson:2.7'
     compile 'com.squareup.retrofit2:retrofit:2.1.0'
@@ -48,36 +215,170 @@ dependencies {
     compile 'com.squareup.okhttp3:okhttp:3.4.1'
     compile 'com.squareup.okhttp3:logging-interceptor:3.4.1'
     compile 'com.squareup.okhttp3:okhttp-ws:3.4.1'
+
     //di
     compile 'com.jakewharton:butterknife:8.8.1'
     annotationProcessor 'com.jakewharton:butterknife-compiler:8.8.1'
-    provided 'org.glassfish:javax.annotation:10.0-b28'
+    compileOnly 'org.glassfish:javax.annotation:10.0-b28'
+
     //other
     compile 'com.umeng.analytics:analytics:latest.integration'
     compile 'com.orhanobut:logger:1.15'
     compile 'me.yokeyword:fragmentation:0.7.9'
+
     //    compile 'com.victor:lib:1.0.4'
+
     //canary
     debugCompile 'com.github.moduth:blockcanary-android:1.2.1'
     releaseCompile 'com.github.moduth:blockcanary-no-op:1.2.1'
+
     //    debugCompile 'com.squareup.leakcanary:leakcanary-android:1.4-beta2'
+
     //    releaseCompile 'com.squareup.leakcanary:leakcanary-android-no-op:1.4-beta2'
+
     //banner
     compile 'com.youth.banner:banner:1.4.8'
+
+    // AOP
+    compile 'org.aspectj:aspectjrt:1.8.9'
+    compile 'me.iwf.photopicker:PhotoPicker:0.9.5@aar'
+    compile 'com.nineoldandroids:library:2.4.0'
+
     //加载长图
     compile 'com.davemorrissey.labs:subsampling-scale-image-view:3.5.0'
-//    //bugly
-//    //    compile 'com.tencent.bugly:crashreport:latest.release'
-//    compile 'com.tencent.bugly:crashreport_upgrade:1.3.4'
-//    //其中latest.release指代最新Bugly SDK版本号，也可以指定明确的版本号，例如2.1.9
-//    compile 'com.tencent.bugly:nativecrashreport:3.3.1'
-//    //其中latest.release指代最新Bugly NDK版本号，也可以指定明确的版本号，例如3.0
+
+    //bugly
+
+    //    compile 'com.tencent.bugly:crashreport:latest.release'
+    compile 'com.tencent.bugly:crashreport_upgrade:1.3.4'
+
+    //其中latest.release指代最新Bugly SDK版本号，也可以指定明确的版本号，例如2.1.9
+    compile 'com.tencent.bugly:nativecrashreport:3.3.1'
+
+    //其中latest.release指代最新Bugly NDK版本号，也可以指定明确的版本号，例如3.0
+
     //微信sdk
     compile 'com.tencent.mm.opensdk:wechat-sdk-android-without-mta:1.3.4'
+
     //    apt "org.parceler:parceler:1.0.3"
+
     //    compile 'com.github.open-android:ViewPager:0.1.0'
+
     //facebook
     compile 'com.facebook.fresco:fresco:1.0.0'
-    compile 'com.tencent.ilivesdk:ilivesdk:1.9.4.0.1'
-    compile 'com.tencent.ilivefilter:liteav_normal:1.1.21'
+
+    //    compile 'com.google.firebase:firebase-core:9.0.0'
+
+    //    compile 'com.google.firebase:firebase-messaging:9.0.0'
+    compile 'com.github.bumptech.glide:glide:3.5.2'
+    compile 'com.meizu.flyme.internet:push-internal:3.6.3@aar'
+    compile project(':ui')
+    compile project(':presentation')
+//    compile project(':rxretrofitlibrary')
+
+    // 若使用annotation需要单独引用,对于tinker的其他库都无需再引用
+    compileOnly 'com.tencent.tinker:tinker-android-anno:1.7.11'
+    compile 'com.android.support:multidex:1.0.1'
+    compile 'com.google.zxing:core:3.2.1'
+
+    //加载长图
+    compile 'com.davemorrissey.labs:subsampling-scale-image-view:3.5.0'
+    compile 'com.aliyun.dpa:oss-android-sdk:2.4.2'
+    implementation 'com.android.support:support-v4:26.1.0'
+}
+
+def gitSha() {
+    try {
+        String gitRev = 'git rev-parse --short HEAD'.execute(null, project.rootDir).text.trim()
+        if (gitRev == null) {
+            throw new GradleException("can't get git rev, you should add git to system path or just input test value, such as 'testTinkerId'")
+        }
+        return gitRev
+    } catch (Exception e) {
+        throw new GradleException("can't get git rev, you should add git to system path or just input test value, such as 'testTinkerId'")
+    }
+}
+
+def getTinkerIdValue() {
+    return hasProperty("TINKER_ID") ? TINKER_ID : gitSha()
+}
+
+repositories {
+    mavenCentral()
+    google()
+}
+
+buildscript {
+    repositories {
+        mavenCentral()
+    }
+    dependencies {
+        classpath 'org.aspectj:aspectjtools:1.8.10'
+        classpath 'org.aspectj:aspectjweaver:1.8.9'
+    }
+}
+
+variants.all { variant ->
+
+    JavaCompile javaCompile = variant.javaCompile
+    javaCompile.doLast {
+        String[] args = ["-showWeaveInfo",
+                         "-1.5",
+                         "-inpath", javaCompile.destinationDir.toString(),
+                         "-aspectpath", javaCompile.classpath.asPath,
+                         "-d", javaCompile.destinationDir.toString(),
+                         "-classpath", javaCompile.classpath.asPath,
+                         "-bootclasspath", project.android.bootClasspath.join(File.pathSeparator)]
+        log.debug "ajc args: " + Arrays.toString(args)
+        MessageHandler handler = new MessageHandler(true);
+        new Main().run(args, handler);
+    }
+}
+
+/**
+ * 用于用户在代码中判断tinkerPatch是否被使能
+ */
+android {
+    defaultConfig {
+        buildConfigField "boolean", "TINKER_ENABLE", "${tinkerSupport.enable}"
+    }
+}
+
+/**
+ * 一般来说,我们无需对下面的参数做任何的修改
+ * 对于各参数的详细介绍请参考:
+ * https://github.com/Tencent/tinker/wiki/Tinker-%E6%8E%A5%E5%85%A5%E6%8C%87%E5%8D%97
+ */
+tinkerPatch {
+    //oldApk ="${bakPath}/${appName}/app-release.apk"
+    tinkerEnable = isOpenTinker
+    ignoreWarning = false
+    useSign = true
+    dex {
+        dexMode = "jar"
+        pattern = ["classes*.dex"]
+        loader = []
+    }
+    lib {
+        pattern = ["lib/*/*.so"]
+    }
+
+    res {
+        pattern = ["res/*", "r/*", "assets/*", "resources.arsc", "AndroidManifest.xml"]
+        ignoreChange = []
+        largeModSize = 100
+    }
+
+    packageConfig {
+    }
+    sevenZip {
+        zipArtifact = "com.tencent.mm:SevenZip:1.1.10"
+//        path = "/usr/local/bin/7za"
+    }
+    buildConfig {
+        keepDexApply = false
+        //tinkerId = "1.0.1-base"
+        //applyMapping = "${bakPath}/${appName}/app-release-mapping.txt" //  可选，设置mapping文件，建议保持旧apk的proguard混淆方式
+        //applyResourceMapping = "${bakPath}/${appName}/app-release-R.txt" // 可选，设置R.txt文件，通过旧apk文件保持ResId的分配
+    }
 }

@@ -33,13 +33,6 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-        <activity
-            android:name=".trtc.CreateActivity"
-            android:screenOrientation="portrait" />
-
-        <activity
-            android:name=".trtc.RoomActivity"
-            android:screenOrientation="portrait" />
     </application>
 
 </manifest>

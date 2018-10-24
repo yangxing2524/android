@@ -1,13 +1,11 @@
 package com.growalong.android;
 
-import android.content.Intent;
-import android.support.v4.app.Fragment;
 import android.os.Bundle;
+import android.support.v4.app.Fragment;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
-import com.growalong.android.trtc.CreateActivity;
 
 /**
  * A placeholder fragment containing a simple view.
@@ -15,6 +13,7 @@ import com.growalong.android.trtc.CreateActivity;
 public class MainActivityFragment extends Fragment {
 
     public MainActivityFragment() {
+
     }
 
     @Override
@@ -24,7 +23,7 @@ public class MainActivityFragment extends Fragment {
         inflate.findViewById(R.id.text).setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                startActivity(new Intent(getActivity(), CreateActivity.class));
+//                startActivity(new Intent(getActivity(), CreateActivity.class));
             }
         });
         return inflate;
