@@ -8,7 +8,7 @@ import android.widget.BaseAdapter;
 import android.widget.TextView;
 
 import com.growalong.android.R;
-import com.growalong.android.im.ui.ManageFriendGroupActivity;
+import com.growalong.android.ui.ManageFriendGroupActivity;
 
 import java.util.List;
 

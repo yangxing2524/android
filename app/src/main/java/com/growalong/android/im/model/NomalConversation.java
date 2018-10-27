@@ -4,7 +4,7 @@ import android.content.Context;
 
 import com.growalong.android.R;
 import com.growalong.android.app.MyApplication;
-import com.growalong.android.im.ui.ChatActivity;
+import com.growalong.android.ui.ChatActivity;
 import com.tencent.imsdk.TIMConversation;
 import com.tencent.imsdk.TIMConversationType;
 import com.tencent.imsdk.ext.message.TIMConversationExt;

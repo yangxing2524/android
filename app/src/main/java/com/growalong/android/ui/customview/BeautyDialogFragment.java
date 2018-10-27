@@ -1,4 +1,4 @@
-package com.growalong.android.im.ui.customview;
+package com.growalong.android.ui.customview;
 
 import android.app.Dialog;
 import android.app.DialogFragment;

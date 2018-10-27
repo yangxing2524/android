@@ -1,4 +1,4 @@
-package com.growalong.android.im.ui.customview;
+package com.growalong.android.ui.customview;
 
 import android.content.Context;
 import android.database.DataSetObserver;

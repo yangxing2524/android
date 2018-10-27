@@ -1,4 +1,4 @@
-package com.growalong.android.im.ui;
+package com.growalong.android.ui;
 
 import android.app.Activity;
 import android.content.Context;
@@ -15,7 +15,7 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.growalong.android.R;
-import com.growalong.android.im.ui.customview.BeautyDialogFragment;
+import com.growalong.android.ui.customview.BeautyDialogFragment;
 import com.growalong.android.im.utils.TCUtils;
 import com.tencent.rtmp.ugc.TXRecordCommon;
 import com.tencent.rtmp.ugc.TXUGCRecord;

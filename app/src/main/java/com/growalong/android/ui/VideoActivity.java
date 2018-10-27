@@ -1,4 +1,4 @@
-package com.growalong.android.im.ui;
+package com.growalong.android.ui;
 
 import android.app.Activity;
 import android.media.MediaPlayer;

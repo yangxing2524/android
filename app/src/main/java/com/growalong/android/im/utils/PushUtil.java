@@ -12,7 +12,7 @@ import com.growalong.android.app.MyApplication;
 import com.growalong.android.im.model.CustomMessage;
 import com.growalong.android.im.model.Message;
 import com.growalong.android.im.model.MessageFactory;
-import com.growalong.android.im.ui.HomeActivity;
+import com.growalong.android.ui.HomeActivity;
 import com.tencent.imsdk.TIMConversationType;
 import com.tencent.imsdk.TIMGroupReceiveMessageOpt;
 import com.tencent.imsdk.TIMMessage;

@@ -5,7 +5,7 @@ import android.content.Intent;
 
 import com.growalong.android.R;
 import com.growalong.android.app.MyApplication;
-import com.growalong.android.im.ui.FriendshipManageMessageActivity;
+import com.growalong.android.ui.FriendshipManageMessageActivity;
 import com.tencent.imsdk.ext.sns.TIMFriendFutureItem;
 
 /**

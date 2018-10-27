@@ -5,8 +5,8 @@ import android.content.Intent;
 
 import com.growalong.android.R;
 import com.growalong.android.app.MyApplication;
-import com.growalong.android.im.ui.AddFriendActivity;
-import com.growalong.android.im.ui.ProfileActivity;
+import com.growalong.android.ui.AddFriendActivity;
+import com.growalong.android.ui.ProfileActivity;
 import com.tencent.imsdk.TIMUserProfile;
 
 /**

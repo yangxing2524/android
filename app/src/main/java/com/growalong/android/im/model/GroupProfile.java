@@ -4,7 +4,7 @@ import android.content.Context;
 import android.content.Intent;
 
 import com.growalong.android.R;
-import com.growalong.android.im.ui.GroupProfileActivity;
+import com.growalong.android.ui.GroupProfileActivity;
 import com.tencent.imsdk.TIMGroupMemberRoleType;
 import com.tencent.imsdk.TIMGroupReceiveMessageOpt;
 import com.tencent.imsdk.ext.group.TIMGroupBasicSelfInfo;

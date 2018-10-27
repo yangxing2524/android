@@ -6,7 +6,7 @@ import android.util.Log;
 
 import com.growalong.android.R;
 import com.growalong.android.app.MyApplication;
-import com.growalong.android.im.ui.GroupManageMessageActivity;
+import com.growalong.android.ui.GroupManageMessageActivity;
 import com.tencent.imsdk.TIMCallBack;
 import com.tencent.imsdk.ext.group.TIMGroupPendencyItem;
 import com.tencent.qcloud.presentation.presenter.GroupManagerPresenter;

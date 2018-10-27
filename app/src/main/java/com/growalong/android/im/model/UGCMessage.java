@@ -11,7 +11,7 @@ import android.widget.ImageView;
 import com.growalong.android.R;
 import com.growalong.android.app.MyApplication;
 import com.growalong.android.im.adapters.ChatAdapter;
-import com.growalong.android.im.ui.VideoActivity;
+import com.growalong.android.ui.VideoActivity;
 import com.growalong.android.im.utils.FileUtil;
 import com.tencent.imsdk.TIMCallBack;
 import com.tencent.imsdk.TIMMessage;

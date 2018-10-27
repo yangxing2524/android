@@ -1,4 +1,4 @@
-package com.growalong.android.im.ui.customview;
+package com.growalong.android.ui.customview;
 
 import android.app.Activity;
 import android.app.ActivityManager;
@@ -13,7 +13,7 @@ import com.growalong.android.R;
 import com.growalong.android.im.model.FriendshipInfo;
 import com.growalong.android.im.model.GroupInfo;
 import com.growalong.android.im.model.UserInfo;
-import com.growalong.android.im.ui.SplashActivity;
+import com.growalong.android.ui.SplashActivity;
 import com.huawei.android.pushagent.PushManager;
 import com.tencent.imsdk.TIMCallBack;
 import com.tencent.qcloud.presentation.business.LoginBusiness;

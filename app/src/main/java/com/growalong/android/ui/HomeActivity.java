@@ -1,4 +1,4 @@
-package com.growalong.android.im.ui;
+package com.growalong.android.ui;
 
 import android.Manifest;
 import android.content.Intent;
