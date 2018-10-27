@@ -4,6 +4,7 @@
     <dimen name="activity_vertical_margin">16dp</dimen>
     <dimen name="fab_margin">16dp</dimen>
 
+    <dimen name="video_indicator_bottom_margin">20dp</dimen>
     <!--h1-->
     <dimen name="h1">9sp</dimen>
     <!--h2-->
