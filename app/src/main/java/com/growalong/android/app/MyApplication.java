@@ -12,6 +12,8 @@ import android.support.multidex.MultiDex;
 import android.util.DisplayMetrics;
 
 import com.growalong.android.BuildConfig;
+import com.growalong.android.agora.openvcall.model.AgoraCurrentUserSettings;
+import com.growalong.android.agora.openvcall.model.AgoraWorkerThread;
 import com.growalong.android.util.PackageUtil;
 import com.orhanobut.logger.Logger;
 import com.tencent.bugly.Bugly;
@@ -86,6 +88,32 @@ public class MyApplication extends DefaultApplicationLike {
         return getInstance().context;
     }
 
+    private AgoraWorkerThread mWorkerThread;
+
+    public synchronized void initWorkerThread() {
+        if (mWorkerThread == null) {
+            mWorkerThread = new AgoraWorkerThread(getApplicationContext());
+            mWorkerThread.start();
+
+            mWorkerThread.waitForReady();
+        }
+    }
+
+    public synchronized AgoraWorkerThread getWorkerThread() {
+        return mWorkerThread;
+    }
+
+    public synchronized void deInitWorkerThread() {
+        mWorkerThread.exit();
+        try {
+            mWorkerThread.join();
+        } catch (InterruptedException e) {
+            e.printStackTrace();
+        }
+        mWorkerThread = null;
+    }
+
+    public static final AgoraCurrentUserSettings mVideoSettings = new AgoraCurrentUserSettings();
     /**
      * install multiDex before install tinker
      * so we don't need to put the tinker lib classes in the main dex

@@ -1,6 +1,7 @@
 package com.growalong.android.ui;
 
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.view.ContextMenu;
@@ -40,6 +41,8 @@ import java.util.Iterator;
 import java.util.LinkedList;
 import java.util.List;
 
+import com.growalong.android.agora.openvcall.ui.AgoraMainActivity;
+
 /**
  * 会话列表界面
  */
@@ -72,6 +75,12 @@ public class ConversationFragment extends Fragment implements ConversationView,F
             listView = (ListView) view.findViewById(R.id.list);
             adapter = new ConversationAdapter(getActivity(), R.layout.item_conversation, conversationList);
             listView.setAdapter(adapter);
+            view.findViewById(R.id.title1).setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    startActivity(new Intent(getContext(), AgoraMainActivity.class));
+                }
+            });
             listView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
                 @Override
                 public void onItemClick(AdapterView<?> parent, View view, int position, long id) {

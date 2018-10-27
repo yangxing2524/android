@@ -3,10 +3,10 @@
              xmlns:tools="http://schemas.android.com/tools"
              android:layout_width="match_parent"
              android:layout_height="match_parent"
-             tools:context=".ui.ChatActivity"
+             tools:context=".agora.openvcall.ui.AgoraChatActivity"
              android:keepScreenOn="true">
 
-    <io.agora.openvcall.ui.GridVideoViewContainer
+    <com.growalong.android.agora.openvcall.ui.GridVideoViewContainer
         android:id="@+id/grid_video_view_container"
         android:layout_width="match_parent"
         android:layout_height="match_parent" />
@@ -34,7 +34,7 @@
             android:textSize="16sp"
             android:textColor="@android:color/white" />
 
-        <io.agora.propeller.ui.AGLinearLayout
+        <com.growalong.android.agora.propeller.ui.AGLinearLayout
             android:id="@+id/bottom_container"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
@@ -142,7 +142,7 @@
 
             </LinearLayout>
 
-        </io.agora.propeller.ui.AGLinearLayout>
+        </com.growalong.android.agora.propeller.ui.AGLinearLayout>
 
         <android.support.v7.widget.RecyclerView
             android:id="@+id/msg_list"

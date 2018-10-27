@@ -2,7 +2,7 @@
     <!-- config THESE PROPERTIES in code for more flexibility -->
     <property
         name="LOG_DIR"
-        value="/sdcard/io.agora.openvcall/log" />
+        value="/sdcard/com.growalong.android.agora.openvcall/log" />
     <property
         name="FILE_PREFIX"
         value="app" />

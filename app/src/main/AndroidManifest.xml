@@ -282,13 +282,13 @@
         <activity android:name=".ui.MessageNotifySettingActivity"></activity>
 
         <activity
-            android:name="agora.openvcall.ui.AgoraChatActivity"
+            android:name="com.growalong.android.agora.openvcall.ui.AgoraChatActivity"
             android:configChanges="orientation|keyboardHidden|screenSize" />
         <activity
-            android:name="agora.openvcall.ui.AgoraMainActivity"
+            android:name="com.growalong.android.agora.openvcall.ui.AgoraMainActivity"
             android:configChanges="orientation|keyboardHidden|screenSize" />
         <activity
-            android:name="agora.openvcall.ui.AgoraSettingsActivity"
+            android:name="com.growalong.android.agora.openvcall.ui.AgoraSettingsActivity"
             android:configChanges="orientation|keyboardHidden|screenSize" />
     </application>
 
