@@ -1,0 +1,43 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:id="@+id/loading_dialog"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:gravity="center"
+    android:orientation="vertical"
+    android:paddingBottom="16dp"
+    android:paddingTop="16dp">
+
+    <!--<com.thinkwu.live.widget.ProgressWheel-->
+    <!--android:id="@+id/progress1"-->
+    <!--android:layout_width="30dp"-->
+    <!--android:layout_height="30dp"-->
+    <!--wheel:matProg_barColor="@color/color_f73657"-->
+    <!--wheel:matProg_progressIndeterminate="true"-->
+    <!--app1:matProg_barWidth="3dp"-->
+    <!--android:layout_centerVertical="true"-->
+    <!--android:layout_marginTop="20dp"-->
+    <!--android:layout_marginBottom="20dp" />-->
+
+
+    <com.airbnb.lottie.LottieAnimationView
+        android:id="@+id/progress1"
+        android:layout_width="wrap_content"
+        android:layout_height="30dp"
+        android:layout_gravity="center_horizontal"
+        app:lottie_autoPlay="true"
+        app:lottie_fileName="data.json"
+        app:lottie_loop="true" />
+
+    <TextView
+        android:id="@+id/tip_view"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="16dp"
+        android:text="加载中..."
+        android:textColor="#212121"
+        android:textSize="12sp" />
+
+
+</LinearLayout>

@@ -1,17 +1,33 @@
 package com.growalong.android.ui;
 
 
+import android.annotation.SuppressLint;
+import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.database.Cursor;
+import android.net.Uri;
+import android.os.Build;
 import android.os.Bundle;
+import android.os.Environment;
+import android.provider.DocumentsContract;
+import android.provider.MediaStore;
 import android.support.v4.app.Fragment;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.bumptech.glide.Glide;
 import com.growalong.android.R;
+import com.growalong.android.model.UploadModel;
+import com.growalong.android.upload.IUploadCallBack;
+import com.growalong.android.upload.UploadOssHelper;
+import com.growalong.android.util.LogUtil;
+import com.growalong.android.util.ToastUtil;
 import com.tencent.imsdk.TIMCallBack;
 import com.tencent.imsdk.TIMFriendAllowType;
 import com.tencent.imsdk.TIMUserProfile;
@@ -38,16 +54,21 @@ public class SettingFragment extends Fragment implements FriendInfoView {
     private final int REQ_CHANGE_NICK = 1000;
     private Map<String, TIMFriendAllowType> allowTypeContent;
 
+    CommonPhotoSelectorDialog photoSelectorDialog;
+    private View headView;
 
+    UploadOssHelper mUploadOssHelper;
 
     public SettingFragment() {
         // Required empty public constructor
+        mUploadOssHelper = new UploadOssHelper();
     }
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         if (view == null){
+            photoSelectorDialog = new CommonPhotoSelectorDialog(getActivity());
             view = inflater.inflate(R.layout.fragment_setting, container, false);
             id = (TextView) view.findViewById(R.id.idtext);
             name = (TextView) view.findViewById(R.id.name);
@@ -133,6 +154,13 @@ public class SettingFragment extends Fragment implements FriendInfoView {
 //                    startActivity(intent);
                 }
             });
+            headView = view.findViewById(R.id.headview);
+            headView.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    showPhoneDialog();
+                }
+            });
             LineControllerView about = (LineControllerView) view.findViewById(R.id.about);
             about.setOnClickListener(new View.OnClickListener() {
                 @Override
@@ -147,7 +175,10 @@ public class SettingFragment extends Fragment implements FriendInfoView {
     }
 
 
-
+//    @NeedsPermission(value = {Manifest.permission.CAMERA, Manifest.permission.READ_EXTERNAL_STORAGE})
+    private void showPhoneDialog() {
+        photoSelectorDialog.show();
+    }
 
 
     @Override
@@ -156,10 +187,114 @@ public class SettingFragment extends Fragment implements FriendInfoView {
             if (resultCode == getActivity().RESULT_OK){
                 setNickName(data.getStringExtra(EditActivity.RETURN_EXTRA));
             }
+        }else{
+            dealResult(requestCode, data);
         }
 
     }
 
+    @SuppressLint("NewApi")
+    private void dealResult(int requestCode, Intent data) {
+        String mUploadPath = null;
+        if(data == null){
+            return;
+        }
+        if (requestCode == 99) {
+            mUploadPath = data.getStringExtra(CameraProtectActivity.IMAGE_PATH);
+            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.N) {
+                String fileDir = (Environment.getExternalStorageDirectory() + mUploadPath).replace("/external_storage_root", "");
+                mUploadPath = fileDir;
+            }
+//            mPresenter.showLocalImage(mUploadPath, dvHeader);
+            Glide.with(this).load(mUploadPath).into((ImageView) headView);
+            newUploadImage(mUploadPath);
+        } else if (requestCode == CommonPhotoSelectorDialog.PHOTOREQUESTCODE) {
+            try {
+                Uri originalUri = data.getData();
+                final boolean isKitKat = Build.VERSION.SDK_INT >= Build.VERSION_CODES.KITKAT;
+                if (isKitKat && DocumentsContract.isDocumentUri(getActivity(), originalUri)) {
+                    String wholeID = DocumentsContract.getDocumentId(originalUri);
+                    String id = wholeID.split(":")[1];
+                    String[] column = {MediaStore.Images.Media.DATA};
+                    String sel = MediaStore.Images.Media._ID + "=?";
+                    Cursor cursor = getActivity().getContentResolver().query(
+                            MediaStore.Images.Media.EXTERNAL_CONTENT_URI,
+                            column, sel, new String[]{id}, null);
+                    int columnIndex = cursor.getColumnIndex(column[0]);
+                    if (cursor.moveToFirst()) {
+                        mUploadPath = cursor.getString(columnIndex);
+                    }
+                    cursor.close();
+                } else if ("content".equalsIgnoreCase(originalUri.getScheme())) {
+                    mUploadPath = getDataColumn(getActivity(), originalUri, null, null);
+                } // File
+                else if ("file".equalsIgnoreCase(originalUri.getScheme())) {
+                    mUploadPath = originalUri.getPath();
+                }
+//                mPresenter.showLocalImage(mUploadPath, dvHeader);
+                Glide.with(this).load(mUploadPath).into((ImageView) headView);
+                newUploadImage(mUploadPath);
+            } catch (Exception e) {
+                Log.e("EditAccountInfoActivity", e.toString());
+            }
+        }
+    }
+
+
+    public String getDataColumn(Context context, Uri uri, String selection, String[] selectionArgs) {
+
+        Cursor cursor = null;
+        final String column = "_data";
+        final String[] projection = {column};
+
+        try {
+            cursor = context.getContentResolver().query(uri, projection, selection, selectionArgs,
+                    null);
+            if (cursor != null && cursor.moveToFirst()) {
+                final int column_index = cursor.getColumnIndexOrThrow(column);
+                return cursor.getString(column_index);
+            }
+        } finally {
+            if (cursor != null)
+                cursor.close();
+        }
+        return null;
+    }
+
+    private void newUploadImage(String path) {
+        ((QLActivity)getActivity()).showLoadingDialog("保存中");
+        UploadModel uploadModel = new UploadModel();
+        uploadModel.setLocalFilePath(path);
+        mUploadOssHelper.uploadObject(uploadModel, new IUploadCallBack() {
+            @Override
+            public void onStart(UploadModel uploadModel) {
+
+            }
+
+            @Override
+            public void onProgress(UploadModel uploadModel, long currentSize, long totalSize) {
+
+            }
+
+            @Override
+            public void onSuccess(UploadModel uploadModel) {
+//                mPresenter.updateInfo(mName, uploadModel.getOssFilePath());
+                LogUtil.e("file path :" + uploadModel.getOssFilePath());
+                ((QLActivity)getActivity()).hideLoadingDialog();
+            }
+
+            @Override
+            public void onFailure(UploadModel uploadModel, Exception e) {
+                ToastUtil.shortShow(e.getMessage());
+                ((QLActivity)getActivity()).hideLoadingDialog();
+            }
+
+            @Override
+            public void onStopAllUpload(List<UploadModel> uploadModelList) {
+
+            }
+        });
+    }
     private void setNickName(String name){
         if (name == null) return;
         this.name.setText(name);

@@ -1,6 +1,11 @@
 <resources>
     <string name="app_name">随心聊IM</string>
 
+    <string name="conversation">通话</string>
+    <string name="course">课程</string>
+    <string name="mine">我的</string>
+
+
     <!-- TODO: Remove or change this placeholder text -->
     <string name="hello_blank_fragment">Hello blank fragment</string>
     <string name="action_bar_back">返回</string>

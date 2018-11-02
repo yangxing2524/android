@@ -1,0 +1,3060 @@
+{
+  "v": "5.1.20",
+  "fr": 29.3350067138672,
+  "ip": 0,
+  "op": 29.0000066371961,
+  "w": 32,
+  "h": 32,
+  "nm": "加载",
+  "ddd": 0,
+  "assets": [
+    {
+      "id": "image_0",
+      "w": 32,
+      "h": 32,
+      "u": "",
+      "p": "data:image/jpeg;base64,/9j/4AAQSkZJRgABAQAAAQABAAD/2wBDAAYEBQYFBAYGBQYHBwYIChAKCgkJChQODwwQFxQYGBcUFhYaHSUfGhsjHBYWICwgIyYnKSopGR8tMC0oMCUoKSj/2wBDAQcHBwoIChMKChMoGhYaKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCj/wAARCAAgACADASIAAhEBAxEB/8QAHwAAAQUBAQEBAQEAAAAAAAAAAAECAwQFBgcICQoL/8QAtRAAAgEDAwIEAwUFBAQAAAF9AQIDAAQRBRIhMUEGE1FhByJxFDKBkaEII0KxwRVS0fAkM2JyggkKFhcYGRolJicoKSo0NTY3ODk6Q0RFRkdISUpTVFVWV1hZWmNkZWZnaGlqc3R1dnd4eXqDhIWGh4iJipKTlJWWl5iZmqKjpKWmp6ipqrKztLW2t7i5usLDxMXGx8jJytLT1NXW19jZ2uHi4+Tl5ufo6erx8vP09fb3+Pn6/8QAHwEAAwEBAQEBAQEBAQAAAAAAAAECAwQFBgcICQoL/8QAtREAAgECBAQDBAcFBAQAAQJ3AAECAxEEBSExBhJBUQdhcRMiMoEIFEKRobHBCSMzUvAVYnLRChYkNOEl8RcYGRomJygpKjU2Nzg5OkNERUZHSElKU1RVVldYWVpjZGVmZ2hpanN0dXZ3eHl6goOEhYaHiImKkpOUlZaXmJmaoqOkpaanqKmqsrO0tba3uLm6wsPExcbHyMnK0tPU1dbX2Nna4uPk5ebn6Onq8vP09fb3+Pn6/9oADAMBAAIRAxEAPwDOooorzT9rCiiigAooooAKKKKAP//Z",
+      "e": 1
+    },
+    {
+      "id": "image_1",
+      "w": 32,
+      "h": 32,
+      "u": "",
+      "p": "data:image/jpeg;base64,/9j/4AAQSkZJRgABAQAAAQABAAD/2wBDAAYEBQYFBAYGBQYHBwYIChAKCgkJChQODwwQFxQYGBcUFhYaHSUfGhsjHBYWICwgIyYnKSopGR8tMC0oMCUoKSj/2wBDAQcHBwoIChMKChMoGhYaKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCj/wAARCAAgACADASIAAhEBAxEB/8QAHwAAAQUBAQEBAQEAAAAAAAAAAAECAwQFBgcICQoL/8QAtRAAAgEDAwIEAwUFBAQAAAF9AQIDAAQRBRIhMUEGE1FhByJxFDKBkaEII0KxwRVS0fAkM2JyggkKFhcYGRolJicoKSo0NTY3ODk6Q0RFRkdISUpTVFVWV1hZWmNkZWZnaGlqc3R1dnd4eXqDhIWGh4iJipKTlJWWl5iZmqKjpKWmp6ipqrKztLW2t7i5usLDxMXGx8jJytLT1NXW19jZ2uHi4+Tl5ufo6erx8vP09fb3+Pn6/8QAHwEAAwEBAQEBAQEBAQAAAAAAAAECAwQFBgcICQoL/8QAtREAAgECBAQDBAcFBAQAAQJ3AAECAxEEBSExBhJBUQdhcRMiMoEIFEKRobHBCSMzUvAVYnLRChYkNOEl8RcYGRomJygpKjU2Nzg5OkNERUZHSElKU1RVVldYWVpjZGVmZ2hpanN0dXZ3eHl6goOEhYaHiImKkpOUlZaXmJmaoqOkpaanqKmqsrO0tba3uLm6wsPExcbHyMnK0tPU1dbX2Nna4uPk5ebn6Onq8vP09fb3+Pn6/9oADAMBAAIRAxEAPwDOooorzT9rCiiigAooooAKKKKAP//Z",
+      "e": 1
+    },
+    {
+      "id": "image_2",
+      "w": 32,
+      "h": 32,
+      "u": "",
+      "p": "data:image/jpeg;base64,/9j/4AAQSkZJRgABAQAAAQABAAD/2wBDAAYEBQYFBAYGBQYHBwYIChAKCgkJChQODwwQFxQYGBcUFhYaHSUfGhsjHBYWICwgIyYnKSopGR8tMC0oMCUoKSj/2wBDAQcHBwoIChMKChMoGhYaKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCj/wAARCAAgACADASIAAhEBAxEB/8QAHwAAAQUBAQEBAQEAAAAAAAAAAAECAwQFBgcICQoL/8QAtRAAAgEDAwIEAwUFBAQAAAF9AQIDAAQRBRIhMUEGE1FhByJxFDKBkaEII0KxwRVS0fAkM2JyggkKFhcYGRolJicoKSo0NTY3ODk6Q0RFRkdISUpTVFVWV1hZWmNkZWZnaGlqc3R1dnd4eXqDhIWGh4iJipKTlJWWl5iZmqKjpKWmp6ipqrKztLW2t7i5usLDxMXGx8jJytLT1NXW19jZ2uHi4+Tl5ufo6erx8vP09fb3+Pn6/8QAHwEAAwEBAQEBAQEBAQAAAAAAAAECAwQFBgcICQoL/8QAtREAAgECBAQDBAcFBAQAAQJ3AAECAxEEBSExBhJBUQdhcRMiMoEIFEKRobHBCSMzUvAVYnLRChYkNOEl8RcYGRomJygpKjU2Nzg5OkNERUZHSElKU1RVVldYWVpjZGVmZ2hpanN0dXZ3eHl6goOEhYaHiImKkpOUlZaXmJmaoqOkpaanqKmqsrO0tba3uLm6wsPExcbHyMnK0tPU1dbX2Nna4uPk5ebn6Onq8vP09fb3+Pn6/9oADAMBAAIRAxEAPwDOooorzT9rCiiigAooooAKKKKAP//Z",
+      "e": 1
+    },
+    {
+      "id": "image_3",
+      "w": 32,
+      "h": 32,
+      "u": "",
+      "p": "data:image/jpeg;base64,/9j/4AAQSkZJRgABAQAAAQABAAD/2wBDAAYEBQYFBAYGBQYHBwYIChAKCgkJChQODwwQFxQYGBcUFhYaHSUfGhsjHBYWICwgIyYnKSopGR8tMC0oMCUoKSj/2wBDAQcHBwoIChMKChMoGhYaKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCj/wAARCAAgACADASIAAhEBAxEB/8QAHwAAAQUBAQEBAQEAAAAAAAAAAAECAwQFBgcICQoL/8QAtRAAAgEDAwIEAwUFBAQAAAF9AQIDAAQRBRIhMUEGE1FhByJxFDKBkaEII0KxwRVS0fAkM2JyggkKFhcYGRolJicoKSo0NTY3ODk6Q0RFRkdISUpTVFVWV1hZWmNkZWZnaGlqc3R1dnd4eXqDhIWGh4iJipKTlJWWl5iZmqKjpKWmp6ipqrKztLW2t7i5usLDxMXGx8jJytLT1NXW19jZ2uHi4+Tl5ufo6erx8vP09fb3+Pn6/8QAHwEAAwEBAQEBAQEBAQAAAAAAAAECAwQFBgcICQoL/8QAtREAAgECBAQDBAcFBAQAAQJ3AAECAxEEBSExBhJBUQdhcRMiMoEIFEKRobHBCSMzUvAVYnLRChYkNOEl8RcYGRomJygpKjU2Nzg5OkNERUZHSElKU1RVVldYWVpjZGVmZ2hpanN0dXZ3eHl6goOEhYaHiImKkpOUlZaXmJmaoqOkpaanqKmqsrO0tba3uLm6wsPExcbHyMnK0tPU1dbX2Nna4uPk5ebn6Onq8vP09fb3+Pn6/9oADAMBAAIRAxEAPwDOooorzT9rCiiigAooooAKKKKAP//Z",
+      "e": 1
+    },
+    {
+      "id": "image_4",
+      "w": 32,
+      "h": 32,
+      "u": "",
+      "p": "data:image/jpeg;base64,/9j/4AAQSkZJRgABAQAAAQABAAD/2wBDAAYEBQYFBAYGBQYHBwYIChAKCgkJChQODwwQFxQYGBcUFhYaHSUfGhsjHBYWICwgIyYnKSopGR8tMC0oMCUoKSj/2wBDAQcHBwoIChMKChMoGhYaKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCj/wAARCAAgACADASIAAhEBAxEB/8QAHwAAAQUBAQEBAQEAAAAAAAAAAAECAwQFBgcICQoL/8QAtRAAAgEDAwIEAwUFBAQAAAF9AQIDAAQRBRIhMUEGE1FhByJxFDKBkaEII0KxwRVS0fAkM2JyggkKFhcYGRolJicoKSo0NTY3ODk6Q0RFRkdISUpTVFVWV1hZWmNkZWZnaGlqc3R1dnd4eXqDhIWGh4iJipKTlJWWl5iZmqKjpKWmp6ipqrKztLW2t7i5usLDxMXGx8jJytLT1NXW19jZ2uHi4+Tl5ufo6erx8vP09fb3+Pn6/8QAHwEAAwEBAQEBAQEBAQAAAAAAAAECAwQFBgcICQoL/8QAtREAAgECBAQDBAcFBAQAAQJ3AAECAxEEBSExBhJBUQdhcRMiMoEIFEKRobHBCSMzUvAVYnLRChYkNOEl8RcYGRomJygpKjU2Nzg5OkNERUZHSElKU1RVVldYWVpjZGVmZ2hpanN0dXZ3eHl6goOEhYaHiImKkpOUlZaXmJmaoqOkpaanqKmqsrO0tba3uLm6wsPExcbHyMnK0tPU1dbX2Nna4uPk5ebn6Onq8vP09fb3+Pn6/9oADAMBAAIRAxEAPwDOooorzT9rCiiigAooooAKKKKAP//Z",
+      "e": 1
+    },
+    {
+      "id": "comp_0",
+      "layers": [
+        {
+          "ddd": 0,
+          "ind": 1,
+          "ty": 0,
+          "nm": "组 1",
+          "refId": "comp_1",
+          "sr": 1,
+          "ks": {
+            "o": {
+              "a": 0,
+              "k": 100,
+              "ix": 11
+            },
+            "r": {
+              "a": 0,
+              "k": 0,
+              "ix": 10
+            },
+            "p": {
+              "a": 0,
+              "k": [
+                16,
+                16,
+                0
+              ],
+              "ix": 2
+            },
+            "a": {
+              "a": 0,
+              "k": [
+                16,
+                16,
+                0
+              ],
+              "ix": 1
+            },
+            "s": {
+              "a": 0,
+              "k": [
+                100,
+                100,
+                100
+              ],
+              "ix": 6
+            }
+          },
+          "ao": 0,
+          "w": 32,
+          "h": 32,
+          "ip": 0,
+          "op": 29.0000066371961,
+          "st": 0,
+          "bm": 0
+        }
+      ]
+    },
+    {
+      "id": "comp_1",
+      "layers": [
+        {
+          "ddd": 0,
+          "ind": 1,
+          "ty": 2,
+          "nm": "圆角矩形 1 拷贝 4",
+          "refId": "image_0",
+          "sr": 1,
+          "ks": {
+            "o": {
+              "a": 0,
+              "k": 100,
+              "ix": 11
+            },
+            "r": {
+              "a": 0,
+              "k": 0,
+              "ix": 10
+            },
+            "p": {
+              "a": 0,
+              "k": [
+                16,
+                16,
+                0
+              ],
+              "ix": 2
+            },
+            "a": {
+              "a": 0,
+              "k": [
+                16,
+                16,
+                0
+              ],
+              "ix": 1
+            },
+            "s": {
+              "a": 0,
+              "k": [
+                100,
+                100,
+                100
+              ],
+              "ix": 6
+            }
+          },
+          "ao": 0,
+          "hasMask": true,
+          "masksProperties": [
+            {
+              "inv": false,
+              "mode": "a",
+              "pt": {
+                "a": 1,
+                "k": [
+                  {
+                    "i": {
+                      "x": 0.667,
+                      "y": 1
+                    },
+                    "o": {
+                      "x": 0.333,
+                      "y": 0
+                    },
+                    "n": "0p667_1_0p333_0",
+                    "t": 0,
+                    "s": [
+                      {
+                        "i": [
+                          [
+                            -1.105,
+                            0
+                          ],
+                          [
+                            0,
+                            -1.105
+                          ],
+                          [
+                            0,
+                            0
+                          ],
+                          [
+                            1.105,
+                            0
+                          ],
+                          [
+                            0,
+                            1.105
+                          ],
+                          [
+                            0,
+                            0
+                          ]
+                        ],
+                        "o": [
+                          [
+                            1.105,
+                            0
+                          ],
+                          [
+                            0,
+                            0
+                          ],
+                          [
+                            0,
+                            1.105
+                          ],
+                          [
+                            -1.105,
+                            0
+                          ],
+                          [
+                            0,
+                            0
+                          ],
+                          [
+                            0,
+                            -1.105
+                          ]
+                        ],
+                        "v": [
+                          [
+                            30,
+                            9
+                          ],
+                          [
+                            32,
+                            11
+                          ],
+                          [
+                            32,
+                            21
+                          ],
+                          [
+                            30,
+                            23
+                          ],
+                          [
+                            28,
+                            21
+                          ],
+                          [
+                            28,
+                            11
+                          ]
+                        ],
+                        "c": true
+                      }
+                    ],
+                    "e": [
+                      {
+                        "i": [
+                          [
+                            -1.105,
+                            0
+                          ],
+                          [
+                            0,
+                            -1.105
+                          ],
+                          [
+                            0,
+                            0
+                          ],
+                          [
+                            1.105,
+                            0
+                          ],
+                          [
+                            0,
+                            1.105
+                          ],
+                          [
+                            0,
+                            0
+                          ]
+                        ],
+                        "o": [
+                          [
+                            1.105,
+                            0
+                          ],
+                          [
+                            0,
+                            0
+                          ],
+                          [
+                            0,
+                            1.105
+                          ],
+                          [
+                            -1.105,
+                            0
+                          ],
+                          [
+                            0,
+                            0
+                          ],
+                          [
+                            0,
+                            -1.105
+                          ]
+                        ],
+                        "v": [
+                          [
+                            30,
+                            0.125
+                          ],
+                          [
+                            32,
+                            2.125
+                          ],
+                          [
+                            32,
+                            29.625
+                          ],
+                          [
+                            30,
+                            31.625
+                          ],
+                          [
+                            28,
+                            29.625
+                          ],
+                          [
+                            28,
+                            2.125
+                          ]
+                        ],
+                        "c": true
+                      }
+                    ]
+                  },
+                  {
+                    "i": {
+                      "x": 0.667,
+                      "y": 1
+                    },
+                    "o": {
+                      "x": 0.333,
+                      "y": 0
+                    },
+                    "n": "0p667_1_0p333_0",
+                    "t": 14,
+                    "s": [
+                      {
+                        "i": [
+                          [
+                            -1.105,
+                            0
+                          ],
+                          [
+                            0,
+                            -1.105
+                          ],
+                          [
+                            0,
+                            0
+                          ],
+                          [
+                            1.105,
+                            0
+                          ],
+                          [
+                            0,
+                            1.105
+                          ],
+                          [
+                            0,
+                            0
+                          ]
+                        ],
+                        "o": [
+                          [
+                            1.105,
+                            0
+                          ],
+                          [
+                            0,
+                            0
+                          ],
+                          [
+                            0,
+                            1.105
+                          ],
+                          [
+                            -1.105,
+                            0
+                          ],
+                          [
+                            0,
+                            0
+                          ],
+                          [
+                            0,
+                            -1.105
+                          ]
+                        ],
+                        "v": [
+                          [
+                            30,
+                            0.125
+                          ],
+                          [
+                            32,
+                            2.125
+                          ],
+                          [
+                            32,
+                            29.625
+                          ],
+                          [
+                            30,
+                            31.625
+                          ],
+                          [
+                            28,
+                            29.625
+                          ],
+                          [
+                            28,
+                            2.125
+                          ]
+                        ],
+                        "c": true
+                      }
+                    ],
+                    "e": [
+                      {
+                        "i": [
+                          [
+                            -1.105,
+                            0
+                          ],
+                          [
+                            0,
+                            -1.105
+                          ],
+                          [
+                            0,
+                            0
+                          ],
+                          [
+                            1.105,
+                            0
+                          ],
+                          [
+                            0,
+                            1.105
+                          ],
+                          [
+                            0,
+                            0
+                          ]
+                        ],
+                        "o": [
+                          [
+                            1.105,
+                            0
+                          ],
+                          [
+                            0,
+                            0
+                          ],
+                          [
+                            0,
+                            1.105
+                          ],
+                          [
+                            -1.105,
+                            0
+                          ],
+                          [
+                            0,
+                            0
+                          ],
+                          [
+                            0,
+                            -1.105
+                          ]
+                        ],
+                        "v": [
+                          [
+                            30,
+                            9
+                          ],
+                          [
+                            32,
+                            11
+                          ],
+                          [
+                            32,
+                            21
+                          ],
+                          [
+                            30,
+                            23
+                          ],
+                          [
+                            28,
+                            21
+                          ],
+                          [
+                            28,
+                            11
+                          ]
+                        ],
+                        "c": true
+                      }
+                    ]
+                  },
+                  {
+                    "t": 28.0000064083273
+                  }
+                ],
+                "ix": 1
+              },
+              "o": {
+                "a": 0,
+                "k": 100,
+                "ix": 3
+              },
+              "x": {
+                "a": 0,
+                "k": 0,
+                "ix": 4
+              },
+              "nm": "蒙版 1"
+            }
+          ],
+          "ip": 0,
+          "op": 29.0000066371961,
+          "st": 0,
+          "bm": 0
+        },
+        {
+          "ddd": 0,
+          "ind": 2,
+          "ty": 2,
+          "nm": "圆角矩形 1 拷贝 3",
+          "refId": "image_1",
+          "sr": 1,
+          "ks": {
+            "o": {
+              "a": 0,
+              "k": 100,
+              "ix": 11
+            },
+            "r": {
+              "a": 0,
+              "k": 0,
+              "ix": 10
+            },
+            "p": {
+              "a": 0,
+              "k": [
+                16,
+                16,
+                0
+              ],
+              "ix": 2
+            },
+            "a": {
+              "a": 0,
+              "k": [
+                16,
+                16,
+                0
+              ],
+              "ix": 1
+            },
+            "s": {
+              "a": 0,
+              "k": [
+                100,
+                100,
+                100
+              ],
+              "ix": 6
+            }
+          },
+          "ao": 0,
+          "hasMask": true,
+          "masksProperties": [
+            {
+              "inv": false,
+              "mode": "a",
+              "pt": {
+                "a": 1,
+                "k": [
+                  {
+                    "i": {
+                      "x": 0.667,
+                      "y": 1
+                    },
+                    "o": {
+                      "x": 0.333,
+                      "y": 0
+                    },
+                    "n": "0p667_1_0p333_0",
+                    "t": 0,
+                    "s": [
+                      {
+                        "i": [
+                          [
+                            -1.105,
+                            0
+                          ],
+                          [
+                            0,
+                            -1.105
+                          ],
+                          [
+                            0,
+                            0
+                          ],
+                          [
+                            1.105,
+                            0
+                          ],
+                          [
+                            0,
+                            1.105
+                          ],
+                          [
+                            0,
+                            0
+                          ]
+                        ],
+                        "o": [
+                          [
+                            1.105,
+                            0
+                          ],
+                          [
+                            0,
+                            0
+                          ],
+                          [
+                            0,
+                            1.105
+                          ],
+                          [
+                            -1.105,
+                            0
+                          ],
+                          [
+                            0,
+                            0
+                          ],
+                          [
+                            0,
+                            -1.105
+                          ]
+                        ],
+                        "v": [
+                          [
+                            2,
+                            9
+                          ],
+                          [
+                            4,
+                            11
+                          ],
+                          [
+                            4,
+                            21
+                          ],
+                          [
+                            2,
+                            23
+                          ],
+                          [
+                            0,
+                            21
+                          ],
+                          [
+                            0,
+                            11
+                          ]
+                        ],
+                        "c": true
+                      }
+                    ],
+                    "e": [
+                      {
+                        "i": [
+                          [
+                            -1.105,
+                            0
+                          ],
+                          [
+                            0,
+                            -1.105
+                          ],
+                          [
+                            0,
+                            0
+                          ],
+                          [
+                            1.105,
+                            0
+                          ],
+                          [
+                            0,
+                            1.105
+                          ],
+                          [
+                            0,
+                            0
+                          ]
+                        ],
+                        "o": [
+                          [
+                            1.105,
+                            0
+                          ],
+                          [
+                            0,
+                            0
+                          ],
+                          [
+                            0,
+                            1.105
+                          ],
+                          [
+                            -1.105,
+                            0
+                          ],
+                          [
+                            0,
+                            0
+                          ],
+                          [
+                            0,
+                            -1.105
+                          ]
+                        ],
+                        "v": [
+                          [
+                            2,
+                            0.125
+                          ],
+                          [
+                            4,
+                            2.125
+                          ],
+                          [
+                            4,
+                            29.625
+                          ],
+                          [
+                            2,
+                            31.625
+                          ],
+                          [
+                            0,
+                            29.625
+                          ],
+                          [
+                            0,
+                            2.125
+                          ]
+                        ],
+                        "c": true
+                      }
+                    ]
+                  },
+                  {
+                    "i": {
+                      "x": 0.667,
+                      "y": 1
+                    },
+                    "o": {
+                      "x": 0.333,
+                      "y": 0
+                    },
+                    "n": "0p667_1_0p333_0",
+                    "t": 14,
+                    "s": [
+                      {
+                        "i": [
+                          [
+                            -1.105,
+                            0
+                          ],
+                          [
+                            0,
+                            -1.105
+                          ],
+                          [
+                            0,
+                            0
+                          ],
+                          [
+                            1.105,
+                            0
+                          ],
+                          [
+                            0,
+                            1.105
+                          ],
+                          [
+                            0,
+                            0
+                          ]
+                        ],
+                        "o": [
+                          [
+                            1.105,
+                            0
+                          ],
+                          [
+                            0,
+                            0
+                          ],
+                          [
+                            0,
+                            1.105
+                          ],
+                          [
+                            -1.105,
+                            0
+                          ],
+                          [
+                            0,
+                            0
+                          ],
+                          [
+                            0,
+                            -1.105
+                          ]
+                        ],
+                        "v": [
+                          [
+                            2,
+                            0.125
+                          ],
+                          [
+                            4,
+                            2.125
+                          ],
+                          [
+                            4,
+                            29.625
+                          ],
+                          [
+                            2,
+                            31.625
+                          ],
+                          [
+                            0,
+                            29.625
+                          ],
+                          [
+                            0,
+                            2.125
+                          ]
+                        ],
+                        "c": true
+                      }
+                    ],
+                    "e": [
+                      {
+                        "i": [
+                          [
+                            -1.105,
+                            0
+                          ],
+                          [
+                            0,
+                            -1.105
+                          ],
+                          [
+                            0,
+                            0
+                          ],
+                          [
+                            1.105,
+                            0
+                          ],
+                          [
+                            0,
+                            1.105
+                          ],
+                          [
+                            0,
+                            0
+                          ]
+                        ],
+                        "o": [
+                          [
+                            1.105,
+                            0
+                          ],
+                          [
+                            0,
+                            0
+                          ],
+                          [
+                            0,
+                            1.105
+                          ],
+                          [
+                            -1.105,
+                            0
+                          ],
+                          [
+                            0,
+                            0
+                          ],
+                          [
+                            0,
+                            -1.105
+                          ]
+                        ],
+                        "v": [
+                          [
+                            2,
+                            9
+                          ],
+                          [
+                            4,
+                            11
+                          ],
+                          [
+                            4,
+                            21
+                          ],
+                          [
+                            2,
+                            23
+                          ],
+                          [
+                            0,
+                            21
+                          ],
+                          [
+                            0,
+                            11
+                          ]
+                        ],
+                        "c": true
+                      }
+                    ]
+                  },
+                  {
+                    "t": 28.0000064083273
+                  }
+                ],
+                "ix": 1
+              },
+              "o": {
+                "a": 0,
+                "k": 100,
+                "ix": 3
+              },
+              "x": {
+                "a": 0,
+                "k": 0,
+                "ix": 4
+              },
+              "nm": "蒙版 1"
+            }
+          ],
+          "ip": 0,
+          "op": 29.0000066371961,
+          "st": 0,
+          "bm": 0
+        },
+        {
+          "ddd": 0,
+          "ind": 3,
+          "ty": 2,
+          "nm": "圆角矩形 1 拷贝 2",
+          "refId": "image_2",
+          "sr": 1,
+          "ks": {
+            "o": {
+              "a": 0,
+              "k": 100,
+              "ix": 11
+            },
+            "r": {
+              "a": 0,
+              "k": 0,
+              "ix": 10
+            },
+            "p": {
+              "a": 0,
+              "k": [
+                16,
+                16,
+                0
+              ],
+              "ix": 2
+            },
+            "a": {
+              "a": 0,
+              "k": [
+                16,
+                16,
+                0
+              ],
+              "ix": 1
+            },
+            "s": {
+              "a": 0,
+              "k": [
+                100,
+                100,
+                100
+              ],
+              "ix": 6
+            }
+          },
+          "ao": 0,
+          "hasMask": true,
+          "masksProperties": [
+            {
+              "inv": false,
+              "mode": "a",
+              "pt": {
+                "a": 1,
+                "k": [
+                  {
+                    "i": {
+                      "x": 0.667,
+                      "y": 1
+                    },
+                    "o": {
+                      "x": 0.333,
+                      "y": 0
+                    },
+                    "n": "0p667_1_0p333_0",
+                    "t": 0,
+                    "s": [
+                      {
+                        "i": [
+                          [
+                            -1.105,
+                            0
+                          ],
+                          [
+                            0,
+                            -1.105
+                          ],
+                          [
+                            0,
+                            0
+                          ],
+                          [
+                            1.105,
+                            0
+                          ],
+                          [
+                            0,
+                            1.105
+                          ],
+                          [
+                            0,
+                            0
+                          ]
+                        ],
+                        "o": [
+                          [
+                            1.105,
+                            0
+                          ],
+                          [
+                            0,
+                            0
+                          ],
+                          [
+                            0,
+                            1.105
+                          ],
+                          [
+                            -1.105,
+                            0
+                          ],
+                          [
+                            0,
+                            0
+                          ],
+                          [
+                            0,
+                            -1.105
+                          ]
+                        ],
+                        "v": [
+                          [
+                            9,
+                            5
+                          ],
+                          [
+                            11,
+                            7
+                          ],
+                          [
+                            11,
+                            25
+                          ],
+                          [
+                            9,
+                            27
+                          ],
+                          [
+                            7,
+                            25
+                          ],
+                          [
+                            7,
+                            7
+                          ]
+                        ],
+                        "c": true
+                      }
+                    ],
+                    "e": [
+                      {
+                        "i": [
+                          [
+                            -1.105,
+                            0
+                          ],
+                          [
+                            0,
+                            -1.105
+                          ],
+                          [
+                            0,
+                            0
+                          ],
+                          [
+                            1.105,
+                            0
+                          ],
+                          [
+                            0,
+                            1.105
+                          ],
+                          [
+                            0,
+                            0
+                          ]
+                        ],
+                        "o": [
+                          [
+                            1.105,
+                            0
+                          ],
+                          [
+                            0,
+                            0
+                          ],
+                          [
+                            0,
+                            1.105
+                          ],
+                          [
+                            -1.105,
+                            0
+                          ],
+                          [
+                            0,
+                            0
+                          ],
+                          [
+                            0,
+                            -1.105
+                          ]
+                        ],
+                        "v": [
+                          [
+                            9,
+                            2.75
+                          ],
+                          [
+                            11,
+                            4.75
+                          ],
+                          [
+                            11,
+                            27.5
+                          ],
+                          [
+                            9,
+                            29.5
+                          ],
+                          [
+                            7,
+                            27.5
+                          ],
+                          [
+                            7,
+                            4.75
+                          ]
+                        ],
+                        "c": true
+                      }
+                    ]
+                  },
+                  {
+                    "i": {
+                      "x": 0.667,
+                      "y": 1
+                    },
+                    "o": {
+                      "x": 0.333,
+                      "y": 0
+                    },
+                    "n": "0p667_1_0p333_0",
+                    "t": 7,
+                    "s": [
+                      {
+                        "i": [
+                          [
+                            -1.105,
+                            0
+                          ],
+                          [
+                            0,
+                            -1.105
+                          ],
+                          [
+                            0,
+                            0
+                          ],
+                          [
+                            1.105,
+                            0
+                          ],
+                          [
+                            0,
+                            1.105
+                          ],
+                          [
+                            0,
+                            0
+                          ]
+                        ],
+                        "o": [
+                          [
+                            1.105,
+                            0
+                          ],
+                          [
+                            0,
+                            0
+                          ],
+                          [
+                            0,
+                            1.105
+                          ],
+                          [
+                            -1.105,
+                            0
+                          ],
+                          [
+                            0,
+                            0
+                          ],
+                          [
+                            0,
+                            -1.105
+                          ]
+                        ],
+                        "v": [
+                          [
+                            9,
+                            2.75
+                          ],
+                          [
+                            11,
+                            4.75
+                          ],
+                          [
+                            11,
+                            27.5
+                          ],
+                          [
+                            9,
+                            29.5
+                          ],
+                          [
+                            7,
+                            27.5
+                          ],
+                          [
+                            7,
+                            4.75
+                          ]
+                        ],
+                        "c": true
+                      }
+                    ],
+                    "e": [
+                      {
+                        "i": [
+                          [
+                            -1.105,
+                            0
+                          ],
+                          [
+                            0,
+                            -1.105
+                          ],
+                          [
+                            0,
+                            0
+                          ],
+                          [
+                            1.105,
+                            0
+                          ],
+                          [
+                            0,
+                            1.105
+                          ],
+                          [
+                            0,
+                            0
+                          ]
+                        ],
+                        "o": [
+                          [
+                            1.105,
+                            0
+                          ],
+                          [
+                            0,
+                            0
+                          ],
+                          [
+                            0,
+                            1.105
+                          ],
+                          [
+                            -1.105,
+                            0
+                          ],
+                          [
+                            0,
+                            0
+                          ],
+                          [
+                            0,
+                            -1.105
+                          ]
+                        ],
+                        "v": [
+                          [
+                            9,
+                            5
+                          ],
+                          [
+                            11,
+                            7
+                          ],
+                          [
+                            11,
+                            25
+                          ],
+                          [
+                            9,
+                            27
+                          ],
+                          [
+                            7,
+                            25
+                          ],
+                          [
+                            7,
+                            7
+                          ]
+                        ],
+                        "c": true
+                      }
+                    ]
+                  },
+                  {
+                    "i": {
+                      "x": 0.667,
+                      "y": 1
+                    },
+                    "o": {
+                      "x": 0.333,
+                      "y": 0
+                    },
+                    "n": "0p667_1_0p333_0",
+                    "t": 14,
+                    "s": [
+                      {
+                        "i": [
+                          [
+                            -1.105,
+                            0
+                          ],
+                          [
+                            0,
+                            -1.105
+                          ],
+                          [
+                            0,
+                            0
+                          ],
+                          [
+                            1.105,
+                            0
+                          ],
+                          [
+                            0,
+                            1.105
+                          ],
+                          [
+                            0,
+                            0
+                          ]
+                        ],
+                        "o": [
+                          [
+                            1.105,
+                            0
+                          ],
+                          [
+                            0,
+                            0
+                          ],
+                          [
+                            0,
+                            1.105
+                          ],
+                          [
+                            -1.105,
+                            0
+                          ],
+                          [
+                            0,
+                            0
+                          ],
+                          [
+                            0,
+                            -1.105
+                          ]
+                        ],
+                        "v": [
+                          [
+                            9,
+                            5
+                          ],
+                          [
+                            11,
+                            7
+                          ],
+                          [
+                            11,
+                            25
+                          ],
+                          [
+                            9,
+                            27
+                          ],
+                          [
+                            7,
+                            25
+                          ],
+                          [
+                            7,
+                            7
+                          ]
+                        ],
+                        "c": true
+                      }
+                    ],
+                    "e": [
+                      {
+                        "i": [
+                          [
+                            -1.105,
+                            0
+                          ],
+                          [
+                            0,
+                            -1.105
+                          ],
+                          [
+                            0,
+                            0
+                          ],
+                          [
+                            1.105,
+                            0
+                          ],
+                          [
+                            0,
+                            1.105
+                          ],
+                          [
+                            0,
+                            0
+                          ]
+                        ],
+                        "o": [
+                          [
+                            1.105,
+                            0
+                          ],
+                          [
+                            0,
+                            0
+                          ],
+                          [
+                            0,
+                            1.105
+                          ],
+                          [
+                            -1.105,
+                            0
+                          ],
+                          [
+                            0,
+                            0
+                          ],
+                          [
+                            0,
+                            -1.105
+                          ]
+                        ],
+                        "v": [
+                          [
+                            9,
+                            3.125
+                          ],
+                          [
+                            11,
+                            5.125
+                          ],
+                          [
+                            11,
+                            27.5
+                          ],
+                          [
+                            9,
+                            29.5
+                          ],
+                          [
+                            7,
+                            27.5
+                          ],
+                          [
+                            7,
+                            5.125
+                          ]
+                        ],
+                        "c": true
+                      }
+                    ]
+                  },
+                  {
+                    "i": {
+                      "x": 0.667,
+                      "y": 1
+                    },
+                    "o": {
+                      "x": 0.333,
+                      "y": 0
+                    },
+                    "n": "0p667_1_0p333_0",
+                    "t": 22,
+                    "s": [
+                      {
+                        "i": [
+                          [
+                            -1.105,
+                            0
+                          ],
+                          [
+                            0,
+                            -1.105
+                          ],
+                          [
+                            0,
+                            0
+                          ],
+                          [
+                            1.105,
+                            0
+                          ],
+                          [
+                            0,
+                            1.105
+                          ],
+                          [
+                            0,
+                            0
+                          ]
+                        ],
+                        "o": [
+                          [
+                            1.105,
+                            0
+                          ],
+                          [
+                            0,
+                            0
+                          ],
+                          [
+                            0,
+                            1.105
+                          ],
+                          [
+                            -1.105,
+                            0
+                          ],
+                          [
+                            0,
+                            0
+                          ],
+                          [
+                            0,
+                            -1.105
+                          ]
+                        ],
+                        "v": [
+                          [
+                            9,
+                            3.125
+                          ],
+                          [
+                            11,
+                            5.125
+                          ],
+                          [
+                            11,
+                            27.5
+                          ],
+                          [
+                            9,
+                            29.5
+                          ],
+                          [
+                            7,
+                            27.5
+                          ],
+                          [
+                            7,
+                            5.125
+                          ]
+                        ],
+                        "c": true
+                      }
+                    ],
+                    "e": [
+                      {
+                        "i": [
+                          [
+                            -1.105,
+                            0
+                          ],
+                          [
+                            0,
+                            -1.105
+                          ],
+                          [
+                            0,
+                            0
+                          ],
+                          [
+                            1.105,
+                            0
+                          ],
+                          [
+                            0,
+                            1.105
+                          ],
+                          [
+                            0,
+                            0
+                          ]
+                        ],
+                        "o": [
+                          [
+                            1.105,
+                            0
+                          ],
+                          [
+                            0,
+                            0
+                          ],
+                          [
+                            0,
+                            1.105
+                          ],
+                          [
+                            -1.105,
+                            0
+                          ],
+                          [
+                            0,
+                            0
+                          ],
+                          [
+                            0,
+                            -1.105
+                          ]
+                        ],
+                        "v": [
+                          [
+                            9,
+                            5
+                          ],
+                          [
+                            11,
+                            7
+                          ],
+                          [
+                            11,
+                            25
+                          ],
+                          [
+                            9,
+                            27
+                          ],
+                          [
+                            7,
+                            25
+                          ],
+                          [
+                            7,
+                            7
+                          ]
+                        ],
+                        "c": true
+                      }
+                    ]
+                  },
+                  {
+                    "t": 28.0000064083273
+                  }
+                ],
+                "ix": 1
+              },
+              "o": {
+                "a": 0,
+                "k": 100,
+                "ix": 3
+              },
+              "x": {
+                "a": 0,
+                "k": 0,
+                "ix": 4
+              },
+              "nm": "蒙版 1"
+            }
+          ],
+          "ip": 0,
+          "op": 29.0000066371961,
+          "st": 0,
+          "bm": 0
+        },
+        {
+          "ddd": 0,
+          "ind": 4,
+          "ty": 2,
+          "nm": "圆角矩形 1 拷贝",
+          "refId": "image_3",
+          "sr": 1,
+          "ks": {
+            "o": {
+              "a": 0,
+              "k": 100,
+              "ix": 11
+            },
+            "r": {
+              "a": 0,
+              "k": 0,
+              "ix": 10
+            },
+            "p": {
+              "a": 0,
+              "k": [
+                16,
+                16,
+                0
+              ],
+              "ix": 2
+            },
+            "a": {
+              "a": 0,
+              "k": [
+                16,
+                16,
+                0
+              ],
+              "ix": 1
+            },
+            "s": {
+              "a": 0,
+              "k": [
+                100,
+                100,
+                100
+              ],
+              "ix": 6
+            }
+          },
+          "ao": 0,
+          "hasMask": true,
+          "masksProperties": [
+            {
+              "inv": false,
+              "mode": "a",
+              "pt": {
+                "a": 1,
+                "k": [
+                  {
+                    "i": {
+                      "x": 0.667,
+                      "y": 1
+                    },
+                    "o": {
+                      "x": 0.333,
+                      "y": 0
+                    },
+                    "n": "0p667_1_0p333_0",
+                    "t": 0,
+                    "s": [
+                      {
+                        "i": [
+                          [
+                            -1.105,
+                            0
+                          ],
+                          [
+                            0,
+                            -1.105
+                          ],
+                          [
+                            0,
+                            0
+                          ],
+                          [
+                            1.105,
+                            0
+                          ],
+                          [
+                            0,
+                            1.105
+                          ],
+                          [
+                            0,
+                            0
+                          ]
+                        ],
+                        "o": [
+                          [
+                            1.105,
+                            0
+                          ],
+                          [
+                            0,
+                            0
+                          ],
+                          [
+                            0,
+                            1.105
+                          ],
+                          [
+                            -1.105,
+                            0
+                          ],
+                          [
+                            0,
+                            0
+                          ],
+                          [
+                            0,
+                            -1.105
+                          ]
+                        ],
+                        "v": [
+                          [
+                            23,
+                            5
+                          ],
+                          [
+                            25,
+                            7
+                          ],
+                          [
+                            25,
+                            25
+                          ],
+                          [
+                            23,
+                            27
+                          ],
+                          [
+                            21,
+                            25
+                          ],
+                          [
+                            21,
+                            7
+                          ]
+                        ],
+                        "c": true
+                      }
+                    ],
+                    "e": [
+                      {
+                        "i": [
+                          [
+                            -1.105,
+                            0
+                          ],
+                          [
+                            0,
+                            -1.105
+                          ],
+                          [
+                            0,
+                            0
+                          ],
+                          [
+                            1.105,
+                            0
+                          ],
+                          [
+                            0,
+                            1.105
+                          ],
+                          [
+                            0,
+                            0
+                          ]
+                        ],
+                        "o": [
+                          [
+                            1.105,
+                            0
+                          ],
+                          [
+                            0,
+                            0
+                          ],
+                          [
+                            0,
+                            1.105
+                          ],
+                          [
+                            -1.105,
+                            0
+                          ],
+                          [
+                            0,
+                            0
+                          ],
+                          [
+                            0,
+                            -1.105
+                          ]
+                        ],
+                        "v": [
+                          [
+                            23,
+                            2.75
+                          ],
+                          [
+                            25,
+                            4.75
+                          ],
+                          [
+                            25,
+                            27.5
+                          ],
+                          [
+                            23,
+                            29.5
+                          ],
+                          [
+                            21,
+                            27.5
+                          ],
+                          [
+                            21,
+                            4.75
+                          ]
+                        ],
+                        "c": true
+                      }
+                    ]
+                  },
+                  {
+                    "i": {
+                      "x": 0.667,
+                      "y": 1
+                    },
+                    "o": {
+                      "x": 0.333,
+                      "y": 0
+                    },
+                    "n": "0p667_1_0p333_0",
+                    "t": 7,
+                    "s": [
+                      {
+                        "i": [
+                          [
+                            -1.105,
+                            0
+                          ],
+                          [
+                            0,
+                            -1.105
+                          ],
+                          [
+                            0,
+                            0
+                          ],
+                          [
+                            1.105,
+                            0
+                          ],
+                          [
+                            0,
+                            1.105
+                          ],
+                          [
+                            0,
+                            0
+                          ]
+                        ],
+                        "o": [
+                          [
+                            1.105,
+                            0
+                          ],
+                          [
+                            0,
+                            0
+                          ],
+                          [
+                            0,
+                            1.105
+                          ],
+                          [
+                            -1.105,
+                            0
+                          ],
+                          [
+                            0,
+                            0
+                          ],
+                          [
+                            0,
+                            -1.105
+                          ]
+                        ],
+                        "v": [
+                          [
+                            23,
+                            2.75
+                          ],
+                          [
+                            25,
+                            4.75
+                          ],
+                          [
+                            25,
+                            27.5
+                          ],
+                          [
+                            23,
+                            29.5
+                          ],
+                          [
+                            21,
+                            27.5
+                          ],
+                          [
+                            21,
+                            4.75
+                          ]
+                        ],
+                        "c": true
+                      }
+                    ],
+                    "e": [
+                      {
+                        "i": [
+                          [
+                            -1.105,
+                            0
+                          ],
+                          [
+                            0,
+                            -1.105
+                          ],
+                          [
+                            0,
+                            0
+                          ],
+                          [
+                            1.105,
+                            0
+                          ],
+                          [
+                            0,
+                            1.105
+                          ],
+                          [
+                            0,
+                            0
+                          ]
+                        ],
+                        "o": [
+                          [
+                            1.105,
+                            0
+                          ],
+                          [
+                            0,
+                            0
+                          ],
+                          [
+                            0,
+                            1.105
+                          ],
+                          [
+                            -1.105,
+                            0
+                          ],
+                          [
+                            0,
+                            0
+                          ],
+                          [
+                            0,
+                            -1.105
+                          ]
+                        ],
+                        "v": [
+                          [
+                            23,
+                            5
+                          ],
+                          [
+                            25,
+                            7
+                          ],
+                          [
+                            25,
+                            25
+                          ],
+                          [
+                            23,
+                            27
+                          ],
+                          [
+                            21,
+                            25
+                          ],
+                          [
+                            21,
+                            7
+                          ]
+                        ],
+                        "c": true
+                      }
+                    ]
+                  },
+                  {
+                    "i": {
+                      "x": 0.667,
+                      "y": 1
+                    },
+                    "o": {
+                      "x": 0.333,
+                      "y": 0
+                    },
+                    "n": "0p667_1_0p333_0",
+                    "t": 14,
+                    "s": [
+                      {
+                        "i": [
+                          [
+                            -1.105,
+                            0
+                          ],
+                          [
+                            0,
+                            -1.105
+                          ],
+                          [
+                            0,
+                            0
+                          ],
+                          [
+                            1.105,
+                            0
+                          ],
+                          [
+                            0,
+                            1.105
+                          ],
+                          [
+                            0,
+                            0
+                          ]
+                        ],
+                        "o": [
+                          [
+                            1.105,
+                            0
+                          ],
+                          [
+                            0,
+                            0
+                          ],
+                          [
+                            0,
+                            1.105
+                          ],
+                          [
+                            -1.105,
+                            0
+                          ],
+                          [
+                            0,
+                            0
+                          ],
+                          [
+                            0,
+                            -1.105
+                          ]
+                        ],
+                        "v": [
+                          [
+                            23,
+                            5
+                          ],
+                          [
+                            25,
+                            7
+                          ],
+                          [
+                            25,
+                            25
+                          ],
+                          [
+                            23,
+                            27
+                          ],
+                          [
+                            21,
+                            25
+                          ],
+                          [
+                            21,
+                            7
+                          ]
+                        ],
+                        "c": true
+                      }
+                    ],
+                    "e": [
+                      {
+                        "i": [
+                          [
+                            -1.105,
+                            0
+                          ],
+                          [
+                            0,
+                            -1.105
+                          ],
+                          [
+                            0,
+                            0
+                          ],
+                          [
+                            1.105,
+                            0
+                          ],
+                          [
+                            0,
+                            1.105
+                          ],
+                          [
+                            0,
+                            0
+                          ]
+                        ],
+                        "o": [
+                          [
+                            1.105,
+                            0
+                          ],
+                          [
+                            0,
+                            0
+                          ],
+                          [
+                            0,
+                            1.105
+                          ],
+                          [
+                            -1.105,
+                            0
+                          ],
+                          [
+                            0,
+                            0
+                          ],
+                          [
+                            0,
+                            -1.105
+                          ]
+                        ],
+                        "v": [
+                          [
+                            23,
+                            3.125
+                          ],
+                          [
+                            25,
+                            5.125
+                          ],
+                          [
+                            25,
+                            27.5
+                          ],
+                          [
+                            23,
+                            29.5
+                          ],
+                          [
+                            21,
+                            27.5
+                          ],
+                          [
+                            21,
+                            5.125
+                          ]
+                        ],
+                        "c": true
+                      }
+                    ]
+                  },
+                  {
+                    "i": {
+                      "x": 0.667,
+                      "y": 1
+                    },
+                    "o": {
+                      "x": 0.333,
+                      "y": 0
+                    },
+                    "n": "0p667_1_0p333_0",
+                    "t": 22,
+                    "s": [
+                      {
+                        "i": [
+                          [
+                            -1.105,
+                            0
+                          ],
+                          [
+                            0,
+                            -1.105
+                          ],
+                          [
+                            0,
+                            0
+                          ],
+                          [
+                            1.105,
+                            0
+                          ],
+                          [
+                            0,
+                            1.105
+                          ],
+                          [
+                            0,
+                            0
+                          ]
+                        ],
+                        "o": [
+                          [
+                            1.105,
+                            0
+                          ],
+                          [
+                            0,
+                            0
+                          ],
+                          [
+                            0,
+                            1.105
+                          ],
+                          [
+                            -1.105,
+                            0
+                          ],
+                          [
+                            0,
+                            0
+                          ],
+                          [
+                            0,
+                            -1.105
+                          ]
+                        ],
+                        "v": [
+                          [
+                            23,
+                            3.125
+                          ],
+                          [
+                            25,
+                            5.125
+                          ],
+                          [
+                            25,
+                            27.5
+                          ],
+                          [
+                            23,
+                            29.5
+                          ],
+                          [
+                            21,
+                            27.5
+                          ],
+                          [
+                            21,
+                            5.125
+                          ]
+                        ],
+                        "c": true
+                      }
+                    ],
+                    "e": [
+                      {
+                        "i": [
+                          [
+                            -1.105,
+                            0
+                          ],
+                          [
+                            0,
+                            -1.105
+                          ],
+                          [
+                            0,
+                            0
+                          ],
+                          [
+                            1.105,
+                            0
+                          ],
+                          [
+                            0,
+                            1.105
+                          ],
+                          [
+                            0,
+                            0
+                          ]
+                        ],
+                        "o": [
+                          [
+                            1.105,
+                            0
+                          ],
+                          [
+                            0,
+                            0
+                          ],
+                          [
+                            0,
+                            1.105
+                          ],
+                          [
+                            -1.105,
+                            0
+                          ],
+                          [
+                            0,
+                            0
+                          ],
+                          [
+                            0,
+                            -1.105
+                          ]
+                        ],
+                        "v": [
+                          [
+                            23,
+                            5
+                          ],
+                          [
+                            25,
+                            7
+                          ],
+                          [
+                            25,
+                            25
+                          ],
+                          [
+                            23,
+                            27
+                          ],
+                          [
+                            21,
+                            25
+                          ],
+                          [
+                            21,
+                            7
+                          ]
+                        ],
+                        "c": true
+                      }
+                    ]
+                  },
+                  {
+                    "t": 28.0000064083273
+                  }
+                ],
+                "ix": 1
+              },
+              "o": {
+                "a": 0,
+                "k": 100,
+                "ix": 3
+              },
+              "x": {
+                "a": 0,
+                "k": 0,
+                "ix": 4
+              },
+              "nm": "蒙版 1"
+            }
+          ],
+          "ip": 0,
+          "op": 29.0000066371961,
+          "st": 0,
+          "bm": 0
+        },
+        {
+          "ddd": 0,
+          "ind": 5,
+          "ty": 2,
+          "nm": "圆角矩形 1",
+          "refId": "image_4",
+          "sr": 1,
+          "ks": {
+            "o": {
+              "a": 0,
+              "k": 100,
+              "ix": 11
+            },
+            "r": {
+              "a": 0,
+              "k": 0,
+              "ix": 10
+            },
+            "p": {
+              "a": 0,
+              "k": [
+                16,
+                16,
+                0
+              ],
+              "ix": 2
+            },
+            "a": {
+              "a": 0,
+              "k": [
+                16,
+                16,
+                0
+              ],
+              "ix": 1
+            },
+            "s": {
+              "a": 0,
+              "k": [
+                100,
+                100,
+                100
+              ],
+              "ix": 6
+            }
+          },
+          "ao": 0,
+          "hasMask": true,
+          "masksProperties": [
+            {
+              "inv": false,
+              "mode": "a",
+              "pt": {
+                "a": 1,
+                "k": [
+                  {
+                    "i": {
+                      "x": 0.667,
+                      "y": 1
+                    },
+                    "o": {
+                      "x": 0.333,
+                      "y": 0
+                    },
+                    "n": "0p667_1_0p333_0",
+                    "t": 0,
+                    "s": [
+                      {
+                        "i": [
+                          [
+                            -1.105,
+                            0
+                          ],
+                          [
+                            0,
+                            -1.105
+                          ],
+                          [
+                            0,
+                            0
+                          ],
+                          [
+                            1.105,
+                            0
+                          ],
+                          [
+                            0,
+                            1.105
+                          ],
+                          [
+                            0,
+                            0
+                          ]
+                        ],
+                        "o": [
+                          [
+                            1.105,
+                            0
+                          ],
+                          [
+                            0,
+                            0
+                          ],
+                          [
+                            0,
+                            1.105
+                          ],
+                          [
+                            -1.105,
+                            0
+                          ],
+                          [
+                            0,
+                            0
+                          ],
+                          [
+                            0,
+                            -1.105
+                          ]
+                        ],
+                        "v": [
+                          [
+                            16,
+                            0.125
+                          ],
+                          [
+                            18,
+                            2.125
+                          ],
+                          [
+                            18,
+                            29.75
+                          ],
+                          [
+                            16,
+                            31.75
+                          ],
+                          [
+                            14,
+                            29.75
+                          ],
+                          [
+                            14,
+                            2.125
+                          ]
+                        ],
+                        "c": true
+                      }
+                    ],
+                    "e": [
+                      {
+                        "i": [
+                          [
+                            -1.105,
+                            0
+                          ],
+                          [
+                            0,
+                            -1.105
+                          ],
+                          [
+                            0,
+                            0
+                          ],
+                          [
+                            1.105,
+                            0
+                          ],
+                          [
+                            0,
+                            1.105
+                          ],
+                          [
+                            0,
+                            0
+                          ]
+                        ],
+                        "o": [
+                          [
+                            1.105,
+                            0
+                          ],
+                          [
+                            0,
+                            0
+                          ],
+                          [
+                            0,
+                            1.105
+                          ],
+                          [
+                            -1.105,
+                            0
+                          ],
+                          [
+                            0,
+                            0
+                          ],
+                          [
+                            0,
+                            -1.105
+                          ]
+                        ],
+                        "v": [
+                          [
+                            16,
+                            8.875
+                          ],
+                          [
+                            18,
+                            10.875
+                          ],
+                          [
+                            18,
+                            20.625
+                          ],
+                          [
+                            16,
+                            22.625
+                          ],
+                          [
+                            14,
+                            20.625
+                          ],
+                          [
+                            14,
+                            10.875
+                          ]
+                        ],
+                        "c": true
+                      }
+                    ]
+                  },
+                  {
+                    "i": {
+                      "x": 0.667,
+                      "y": 1
+                    },
+                    "o": {
+                      "x": 0.333,
+                      "y": 0
+                    },
+                    "n": "0p667_1_0p333_0",
+                    "t": 14,
+                    "s": [
+                      {
+                        "i": [
+                          [
+                            -1.105,
+                            0
+                          ],
+                          [
+                            0,
+                            -1.105
+                          ],
+                          [
+                            0,
+                            0
+                          ],
+                          [
+                            1.105,
+                            0
+                          ],
+                          [
+                            0,
+                            1.105
+                          ],
+                          [
+                            0,
+                            0
+                          ]
+                        ],
+                        "o": [
+                          [
+                            1.105,
+                            0
+                          ],
+                          [
+                            0,
+                            0
+                          ],
+                          [
+                            0,
+                            1.105
+                          ],
+                          [
+                            -1.105,
+                            0
+                          ],
+                          [
+                            0,
+                            0
+                          ],
+                          [
+                            0,
+                            -1.105
+                          ]
+                        ],
+                        "v": [
+                          [
+                            16,
+                            8.875
+                          ],
+                          [
+                            18,
+                            10.875
+                          ],
+                          [
+                            18,
+                            20.625
+                          ],
+                          [
+                            16,
+                            22.625
+                          ],
+                          [
+                            14,
+                            20.625
+                          ],
+                          [
+                            14,
+                            10.875
+                          ]
+                        ],
+                        "c": true
+                      }
+                    ],
+                    "e": [
+                      {
+                        "i": [
+                          [
+                            -1.105,
+                            0
+                          ],
+                          [
+                            0,
+                            -1.105
+                          ],
+                          [
+                            0,
+                            0
+                          ],
+                          [
+                            1.105,
+                            0
+                          ],
+                          [
+                            0,
+                            1.105
+                          ],
+                          [
+                            0,
+                            0
+                          ]
+                        ],
+                        "o": [
+                          [
+                            1.105,
+                            0
+                          ],
+                          [
+                            0,
+                            0
+                          ],
+                          [
+                            0,
+                            1.105
+                          ],
+                          [
+                            -1.105,
+                            0
+                          ],
+                          [
+                            0,
+                            0
+                          ],
+                          [
+                            0,
+                            -1.105
+                          ]
+                        ],
+                        "v": [
+                          [
+                            16,
+                            0.125
+                          ],
+                          [
+                            18,
+                            2.125
+                          ],
+                          [
+                            18,
+                            30
+                          ],
+                          [
+                            16,
+                            32
+                          ],
+                          [
+                            14,
+                            30
+                          ],
+                          [
+                            14,
+                            2.125
+                          ]
+                        ],
+                        "c": true
+                      }
+                    ]
+                  },
+                  {
+                    "t": 28.0000064083273
+                  }
+                ],
+                "ix": 1
+              },
+              "o": {
+                "a": 0,
+                "k": 100,
+                "ix": 3
+              },
+              "x": {
+                "a": 0,
+                "k": 0,
+                "ix": 4
+              },
+              "nm": "蒙版 1"
+            }
+          ],
+          "ip": 0,
+          "op": 29.0000066371961,
+          "st": 0,
+          "bm": 0
+        }
+      ]
+    }
+  ],
+  "layers": [
+    {
+      "ddd": 0,
+      "ind": 1,
+      "ty": 0,
+      "nm": "画板 1",
+      "refId": "comp_0",
+      "sr": 1,
+      "ks": {
+        "o": {
+          "a": 0,
+          "k": 100,
+          "ix": 11
+        },
+        "r": {
+          "a": 0,
+          "k": 0,
+          "ix": 10
+        },
+        "p": {
+          "a": 0,
+          "k": [
+            16,
+            16,
+            0
+          ],
+          "ix": 2
+        },
+        "a": {
+          "a": 0,
+          "k": [
+            16,
+            16,
+            0
+          ],
+          "ix": 1
+        },
+        "s": {
+          "a": 0,
+          "k": [
+            100,
+            100,
+            100
+          ],
+          "ix": 6
+        }
+      },
+      "ao": 0,
+      "w": 32,
+      "h": 32,
+      "ip": 0,
+      "op": 29.0000066371961,
+      "st": 0,
+      "bm": 0
+    }
+  ],
+  "markers": []
+}

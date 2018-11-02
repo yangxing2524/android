@@ -1,0 +1,6 @@
+<?xml version="1.0" encoding="utf-8"?>
+<selector xmlns:android="http://schemas.android.com/apk/res/android">
+    <item android:state_selected="true" android:drawable="@drawable/pg_arrow_bottom_focus"/>
+    <item android:state_selected="false" android:drawable="@drawable/pg_arrow_bottom"/>
+    <item android:drawable="@drawable/pg_arrow_bottom"/>
+</selector>

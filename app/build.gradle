@@ -241,6 +241,17 @@ dependencies {
     //banner
     implementation 'com.youth.banner:banner:1.4.8'
 
+
+    //沉浸式状态栏
+    compile 'com.readystatesoftware.systembartint:systembartint:1.0.3'
+    
+    compile 'org.greenrobot:eventbus:3.0.0'
+
+    //支持加载 json动画
+    compile ('com.airbnb.android:lottie:2.5.5'){
+        exclude group: 'com.android.support'
+    }
+
     // AOP
     implementation 'org.aspectj:aspectjrt:1.8.9'
     implementation 'me.iwf.photopicker:PhotoPicker:0.9.5@aar'
@@ -289,6 +300,8 @@ dependencies {
         // workaround issue #73
         exclude group: 'com.google.android', module: 'android'
     }
+
+    compile 'com.aliyun.dpa:oss-android-sdk:2.4.2'
 
 }
 

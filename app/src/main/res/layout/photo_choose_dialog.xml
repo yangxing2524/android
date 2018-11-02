@@ -1,0 +1,46 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+              android:layout_width="match_parent"
+              android:layout_height="match_parent"
+              android:background="@color/transparent"
+              android:gravity="bottom"
+              android:orientation="vertical"
+              android:padding="5dip">
+
+    <Button
+        android:id="@+id/openPhones"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="@drawable/photo_gallery_selector"
+        android:paddingBottom="@dimen/space_10"
+        android:paddingTop="@dimen/space_10"
+        android:text="图库"
+        android:textSize="@dimen/space_16"/>
+
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/line_height"
+        android:background="#DAD9DB"/>
+
+    <Button
+        android:id="@+id/openCamera"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="@drawable/photo_camera_selector"
+        android:paddingBottom="@dimen/space_10"
+        android:paddingTop="@dimen/space_10"
+        android:text="拍照"
+        android:textSize="@dimen/space_16"/>
+
+    <Button
+        android:id="@+id/cancel"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="@dimen/space_05"
+        android:background="@drawable/photo_cancel_selector"
+        android:paddingBottom="@dimen/space_10"
+        android:paddingTop="@dimen/space_10"
+        android:text="取消"
+        android:textSize="@dimen/space_16"/>
+
+</LinearLayout>

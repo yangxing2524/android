@@ -1,0 +1,27 @@
+<!DOCTYPE HTML>
+<html>
+<header>
+    <meta charset="utf-8">
+    <title>test</title>
+
+</header>
+<body>
+
+    <input type="button" style="width:100px;height:100px" value="开始录音" onclick="javascript:qlchat.startAudioRecord();"/>
+    <input type="button" style="width:100px;height:100px" value="停止录音" onclick="stopAudioRecord();"/>
+    <input type="button" style="width:100px;height:100px" value="播放录音" onclick="playAudio();"/>
+    <input type="button" style="width:100px;height:100px" value="暂停播放" onclick="javascript:qlchat.startAudioRecord();"/>
+    <!--<input type="button" style="width:100px;height:100px" value="暂停播放" onclick="javascript:qlchat.pauseAudio(123);"/>-->
+</body>
+<script type="text/javascript">
+        function playAudio() {
+            qlchat.playAudio({localId : "123"});
+        }
+
+        function stopAudioRecord() {
+            qlchat.stopAudioRecord({localId : "321", success : function(req){
+                alert(req);
+            }});
+        }
+</script>
+</html>

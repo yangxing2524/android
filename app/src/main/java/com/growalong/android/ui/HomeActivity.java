@@ -5,7 +5,7 @@ import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.os.Build;
 import android.os.Bundle;
-import android.support.v4.app.FragmentActivity;
+import android.support.annotation.Nullable;
 import android.support.v4.app.FragmentTabHost;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -28,21 +28,19 @@ import java.util.List;
 /**
  * Tab页主界面
  */
-public class HomeActivity extends FragmentActivity {
+public class HomeActivity extends QLActivity {
     private static final String TAG = HomeActivity.class.getSimpleName();
     private LayoutInflater layoutInflater;
     private FragmentTabHost mTabHost;
     private final Class fragmentArray[] = {ConversationFragment.class, ContactFragment.class, SettingFragment.class};
-    private int mTitleArray[] = {R.string.home_conversation_tab, R.string.home_contact_tab, R.string.home_setting_tab};
+    private int mTitleArray[] = {R.string.conversation, R.string.course, R.string.mine};
     private int mImageViewArray[] = {R.drawable.tab_conversation, R.drawable.tab_contact, R.drawable.tab_setting};
     private String mTextviewArray[] = {"contact", "conversation", "setting"};
     private ImageView msgUnread;
 
 
     @Override
-    protected void onCreate(Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_home);
+    protected void onCreateBaseView(@Nullable Bundle savedInstanceState) {
         if (requestPermission()) {
             Intent intent = new Intent(HomeActivity.this,SplashActivity.class);
             finish();
@@ -51,7 +49,11 @@ public class HomeActivity extends FragmentActivity {
             initView();
             Toast.makeText(this, getString(TIMManager.getInstance().getEnv() == 0 ? R.string.env_normal : R.string.env_test), Toast.LENGTH_SHORT).show();
         }
+    }
 
+    @Override
+    protected int getLayoutId() {
+        return R.layout.activity_home;
     }
 
     private void initView() {
@@ -82,10 +84,13 @@ public class HomeActivity extends FragmentActivity {
         return view;
     }
 
-
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode,resultCode,data);
+        if(requestCode == CommonPhotoSelectorDialog.PHOTOREQUESTCODE || requestCode == CommonPhotoSelectorDialog.PHOTOREQUESTCODE1){
+             SettingFragment settingFragment = (SettingFragment) getSupportFragmentManager().findFragmentByTag(mTextviewArray[2]);
+            settingFragment.onActivityResult(requestCode, resultCode,  data);
+        }
     }
 
     public void logout(){

@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<shape xmlns:android="http://schemas.android.com/apk/res/android"
+       android:shape="rectangle">
+
+    <!-- 边框填充的颜色 -->
+    <solid android:color="#cecece"/>
+
+    <!-- 设置进度条的四个角为弧形 -->
+    <corners android:radius="@dimen/y4"/>
+    <!-- padding：边界的间隔 -->
+    <padding
+        android:bottom="@dimen/y1"
+        android:left="@dimen/y1"
+        android:right="@dimen/y1"
+        android:top="@dimen/y1"/>
+</shape>
