@@ -77,6 +77,7 @@ public class ConversationPresenter implements Observer {
 
 
     public void getConversation(){
+
         List<TIMConversation> list = TIMManagerExt.getInstance().getConversationList();
         List<TIMConversation> result = new ArrayList<>();
         for (TIMConversation conversation : list){

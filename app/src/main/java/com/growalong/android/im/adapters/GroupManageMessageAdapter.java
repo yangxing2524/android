@@ -16,7 +16,7 @@ import com.tencent.imsdk.ext.group.TIMGroupPendencyHandledStatus;
 import com.tencent.imsdk.ext.group.TIMGroupPendencyItem;
 import com.growalong.android.R;
 import com.growalong.android.im.model.GroupFuture;
-import com.growalong.android.im.model.UserInfo;
+import com.growalong.android.im.model.ImUserInfo;
 import com.tencent.qcloud.ui.CircleImageView;
 
 import java.util.List;
@@ -63,7 +63,7 @@ public class GroupManageMessageAdapter extends ArrayAdapter<GroupFuture> {
         final TIMGroupPendencyItem data = getItem(position).getFutureItem();
         String from = data.getFromUser(), to = data.getToUser();
         if (data.getPendencyType() == TIMGroupPendencyGetType.APPLY_BY_SELF){
-            if (from.equals(UserInfo.getInstance().getId())){
+            if (from.equals(ImUserInfo.getInstance().getId())){
                 //自己申请加入群
                 viewHolder.avatar.setImageResource(R.drawable.head_group);
                 viewHolder.name.setText(data.getGroupId());
@@ -76,7 +76,7 @@ public class GroupManageMessageAdapter extends ArrayAdapter<GroupFuture> {
             }
             viewHolder.remark.setText(data.getRequestMsg());
         }else{
-            if (to.equals(UserInfo.getInstance().getId())){
+            if (to.equals(ImUserInfo.getInstance().getId())){
                 //别人邀请我入群
                 viewHolder.avatar.setImageResource(R.drawable.head_group);
                 viewHolder.name.setText(data.getGroupId());

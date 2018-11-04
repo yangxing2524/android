@@ -6,6 +6,7 @@ import android.text.TextUtils;
 import android.text.TextWatcher;
 import android.text.method.HideReturnsTransformationMethod;
 import android.text.method.PasswordTransformationMethod;
+import android.util.Log;
 import android.view.View;
 import android.widget.EditText;
 import android.widget.ImageView;
@@ -14,19 +15,24 @@ import android.widget.TextView;
 import com.growalong.android.R;
 import com.growalong.android.account.AccountManager;
 import com.growalong.android.app.MyApplication;
+import com.growalong.android.im.model.ImUserInfo;
 import com.growalong.android.model.ApiException;
 import com.growalong.android.model.BaseGenericModel;
 import com.growalong.android.model.BaseParams;
 import com.growalong.android.model.LoginBean;
 import com.growalong.android.model.NetLoginBean;
+import com.growalong.android.model.NetLoginIMBean;
+import com.growalong.android.model.NoDataParams;
 import com.growalong.android.model.PasswordLoginParams;
 import com.growalong.android.net.retrofit.BaseRetrofitClient;
 import com.growalong.android.net.retrofit.service.ILoginApis;
 import com.growalong.android.rxevent.NotificationEvent;
-import com.growalong.android.ui.HomeActivity;
+import com.growalong.android.ui.MainActivity;
 import com.growalong.android.util.LogUtil;
 import com.growalong.android.util.RxUtil;
 import com.growalong.android.util.ToastUtil;
+import com.tencent.imsdk.TIMCallBack;
+import com.tencent.imsdk.TIMManager;
 
 import org.greenrobot.eventbus.EventBus;
 
@@ -144,12 +150,8 @@ public class PasswordLoginFragment extends NewBaseFragment implements View.OnCli
                         LoginBean user = netLoginBean.getUser();
                         AccountManager.getInstance().setVisitor(false);
                         AccountManager.getInstance().saveAccountInfoFormLocate(user);
-                        EventBus.getDefault().post(NotificationEvent.LOGIN_SUCCESS);
 
-                        hideLoadingDialog();
-                        HomeActivity.startThis(getActivity());
-                        ToastUtil.shortShow(getResources().getString(R.string.login_succ));
-                        getActivity().finish();
+                        getIMInfo(user);
                     }
                 }, new Action1<Throwable>() {
                     @Override
@@ -165,6 +167,57 @@ public class PasswordLoginFragment extends NewBaseFragment implements View.OnCli
                 });
         addSubscribe(subscribe);
     }
+
+    private void getIMInfo(final LoginBean user) {
+        BaseParams<NoDataParams> baseParams = new BaseParams<>(new NoDataParams());
+        Observable<BaseGenericModel<NetLoginIMBean>> observable = mILoginApis.loginForIM(baseParams);
+        Subscription subscribe = observable.compose(RxUtil.<NetLoginIMBean>handleResult())
+                .subscribe(new Action1<NetLoginIMBean>() {
+                    @Override
+                    public void call(final NetLoginIMBean netLoginIMBean) {
+
+                        TIMManager.getInstance().login(user.getUserId(), netLoginIMBean.getUserSig(), new TIMCallBack() {
+                            @Override
+                            public void onError(int code, String desc) {
+                                //错误码 code 和错误描述 desc，可用于定位请求失败原因
+                                //错误码 code 列表请参见错误码表
+                                Log.d("im", "login failed. code: " + code + " errmsg: " + desc);
+                            }
+
+                            @Override
+                            public void onSuccess() {
+                                Log.d("im", "login succ");
+
+                                AccountManager.getInstance().setIMUserSig(netLoginIMBean.getUserSig());
+
+                                ImUserInfo.getInstance().setUserSig(netLoginIMBean.getUserSig());
+                                ImUserInfo.getInstance().setId(user.getUserId());
+
+                                EventBus.getDefault().post(NotificationEvent.LOGIN_SUCCESS);
+
+                                hideLoadingDialog();
+                                MainActivity.startThis(getActivity());
+                                ToastUtil.shortShow(getResources().getString(R.string.login_succ));
+                                getActivity().finish();
+                            }
+                        });
+
+                    }
+                }, new Action1<Throwable>() {
+                    @Override
+                    public void call(Throwable throwable) {
+                        EventBus.getDefault().post(NotificationEvent.LOGIN_FAIL);
+                        if (throwable instanceof ApiException) {
+                            showError(throwable.getMessage());
+                        } else {
+                            LogUtil.e("", throwable.getMessage());
+                            showError("登录失败");
+                        }
+                    }
+                });
+        addSubscribe(subscribe);
+    }
+
 
     public void checkoutData(String phoneNumber, String password) {
         if (TextUtils.isEmpty(phoneNumber) || TextUtils.isEmpty(password)) {

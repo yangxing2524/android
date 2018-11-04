@@ -16,7 +16,7 @@ import android.view.WindowManager;
 import android.widget.Toast;
 
 import com.growalong.android.R;
-import com.growalong.android.im.model.UserInfo;
+import com.growalong.android.im.model.ImUserInfo;
 import com.growalong.android.im.utils.PushUtil;
 import com.growalong.android.ui.customview.DialogActivity;
 import com.huawei.android.pushagent.PushManager;
@@ -131,7 +131,7 @@ public class IMSplashActivity extends FragmentActivity implements SplashView,TIM
         userConfig = GroupEvent.getInstance().init(userConfig);
         userConfig = MessageEvent.getInstance().init(userConfig);
         TIMManager.getInstance().setUserConfig(userConfig);
-        LoginBusiness.loginIm(UserInfo.getInstance().getId(), UserInfo.getInstance().getUserSig(), this);
+        LoginBusiness.loginIm(ImUserInfo.getInstance().getId(), ImUserInfo.getInstance().getUserSig(), this);
     }
 
     /**
@@ -148,7 +148,7 @@ public class IMSplashActivity extends FragmentActivity implements SplashView,TIM
      */
     @Override
     public boolean isUserLogin() {
-        return UserInfo.getInstance().getId()!= null && (!TLSService.getInstance().needLogin(UserInfo.getInstance().getId()));
+        return ImUserInfo.getInstance().getId()!= null && (!TLSService.getInstance().needLogin(ImUserInfo.getInstance().getId()));
     }
 
     /**
@@ -212,7 +212,7 @@ public class IMSplashActivity extends FragmentActivity implements SplashView,TIM
 //        }
 //        MiPushClient.clearNotification(getApplicationContext());
         Log.d(TAG, "imsdk env " + TIMManager.getInstance().getEnv());
-        Intent intent = new Intent(this, HomeActivity.class);
+        Intent intent = new Intent(this, MainActivity.class);
         startActivity(intent);
         finish();
     }
@@ -225,8 +225,8 @@ public class IMSplashActivity extends FragmentActivity implements SplashView,TIM
             Log.d(TAG, "login error no " + TLSService.getInstance().getLastErrno());
             if (0 == TLSService.getInstance().getLastErrno()){
                 String id = TLSService.getInstance().getLastUserIdentifier();
-                UserInfo.getInstance().setId(id);
-                UserInfo.getInstance().setUserSig(TLSService.getInstance().getUserSig(id));
+                ImUserInfo.getInstance().setId(id);
+                ImUserInfo.getInstance().setUserSig(TLSService.getInstance().getUserSig(id));
                 navToHome();
             } else if (resultCode == RESULT_CANCELED){
                 finish();
@@ -260,8 +260,8 @@ public class IMSplashActivity extends FragmentActivity implements SplashView,TIM
         //初始化TLS
         TlsBusiness.init(getApplicationContext());
         String id =  TLSService.getInstance().getLastUserIdentifier();
-        UserInfo.getInstance().setId(id);
-        UserInfo.getInstance().setUserSig(TLSService.getInstance().getUserSig(id));
+        ImUserInfo.getInstance().setId(id);
+        ImUserInfo.getInstance().setUserSig(TLSService.getInstance().getUserSig(id));
         presenter = new SplashPresenter(this);
         presenter.start();
     }

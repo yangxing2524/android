@@ -3,14 +3,14 @@ package com.growalong.android.im.model;
 /**
  * 用户数据
  */
-public class UserInfo {
+public class ImUserInfo {
 
     private String id;
     private String userSig;
 
-    private static UserInfo ourInstance = new UserInfo();
+    private static ImUserInfo ourInstance = new ImUserInfo();
 
-    public static UserInfo getInstance() {
+    public static ImUserInfo getInstance() {
         return ourInstance;
     }
 

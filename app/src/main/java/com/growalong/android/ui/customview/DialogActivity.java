@@ -12,7 +12,7 @@ import android.widget.Toast;
 import com.growalong.android.R;
 import com.growalong.android.im.model.FriendshipInfo;
 import com.growalong.android.im.model.GroupInfo;
-import com.growalong.android.im.model.UserInfo;
+import com.growalong.android.im.model.ImUserInfo;
 import com.growalong.android.ui.SplashActivity;
 import com.huawei.android.pushagent.PushManager;
 import com.tencent.imsdk.TIMCallBack;
@@ -42,7 +42,7 @@ public class DialogActivity extends Activity implements View.OnClickListener {
     public void onClick(View v) {
         switch (v.getId()){
             case R.id.btnOk:
-                LoginBusiness.loginIm(UserInfo.getInstance().getId(), UserInfo.getInstance().getUserSig(), new TIMCallBack() {
+                LoginBusiness.loginIm(ImUserInfo.getInstance().getId(), ImUserInfo.getInstance().getUserSig(), new TIMCallBack() {
                     @Override
                     public void onError(int i, String s) {
                         Toast.makeText(DialogActivity.this, getString(R.string.login_error), Toast.LENGTH_SHORT).show();
@@ -70,8 +70,8 @@ public class DialogActivity extends Activity implements View.OnClickListener {
     }
 
     private void logout(){
-        TlsBusiness.logout(UserInfo.getInstance().getId());
-        UserInfo.getInstance().setId(null);
+        TlsBusiness.logout(ImUserInfo.getInstance().getId());
+        ImUserInfo.getInstance().setId(null);
         FriendshipInfo.getInstance().clear();
         GroupInfo.getInstance().clear();
         Intent intent = new Intent(this,SplashActivity.class);

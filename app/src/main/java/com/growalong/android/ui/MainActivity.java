@@ -18,7 +18,7 @@ import android.widget.Toast;
 import com.growalong.android.R;
 import com.growalong.android.im.model.FriendshipInfo;
 import com.growalong.android.im.model.GroupInfo;
-import com.growalong.android.im.model.UserInfo;
+import com.growalong.android.im.model.ImUserInfo;
 import com.tencent.imsdk.TIMManager;
 import com.tencent.qcloud.presentation.event.MessageEvent;
 import com.tencent.qcloud.tlslibrary.service.TlsBusiness;
@@ -29,8 +29,8 @@ import java.util.List;
 /**
  * Tab页主界面
  */
-public class HomeActivity extends QLActivity {
-    private static final String TAG = HomeActivity.class.getSimpleName();
+public class MainActivity extends QLActivity {
+    private static final String TAG = MainActivity.class.getSimpleName();
     private LayoutInflater layoutInflater;
     private FragmentTabHost mTabHost;
     private final Class fragmentArray[] = {ConversationFragment.class, ContactFragment.class, SettingFragment.class};
@@ -40,14 +40,14 @@ public class HomeActivity extends QLActivity {
     private ImageView msgUnread;
 
     public static void startThis(FragmentActivity activity) {
-        activity.startActivity(new Intent(activity, HomeActivity.class));
+        activity.startActivity(new Intent(activity, MainActivity.class));
     }
 
 
     @Override
     protected void onCreateBaseView(@Nullable Bundle savedInstanceState) {
         if (requestPermission()) {
-            Intent intent = new Intent(HomeActivity.this,SplashActivity.class);
+            Intent intent = new Intent(MainActivity.this,SplashActivity.class);
             finish();
             startActivity(intent);
         }else {
@@ -99,12 +99,13 @@ public class HomeActivity extends QLActivity {
     }
 
     public void logout(){
-        TlsBusiness.logout(UserInfo.getInstance().getId());
-        UserInfo.getInstance().setId(null);
+        TlsBusiness.logout(ImUserInfo.getInstance().getId());
+        ImUserInfo.getInstance().setId(null);
+        ImUserInfo.getInstance().setUserSig(null);
         MessageEvent.getInstance().clear();
         FriendshipInfo.getInstance().clear();
         GroupInfo.getInstance().clear();
-        Intent intent = new Intent(HomeActivity.this,SplashActivity.class);
+        Intent intent = new Intent(MainActivity.this,SplashActivity.class);
         finish();
         startActivity(intent);
 

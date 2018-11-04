@@ -12,7 +12,7 @@ import android.widget.Toast;
 
 import com.growalong.android.R;
 import com.growalong.android.im.model.GroupInfo;
-import com.growalong.android.im.model.UserInfo;
+import com.growalong.android.im.model.ImUserInfo;
 import com.tencent.imsdk.TIMCallBack;
 import com.tencent.imsdk.TIMConversationType;
 import com.tencent.imsdk.TIMGroupAddOpt;
@@ -72,7 +72,7 @@ public class GroupProfileActivity extends FragmentActivity implements GroupInfoV
     @Override
     public void showGroupInfo(List<TIMGroupDetailInfo> groupInfos) {
         info = groupInfos.get(0);
-        isGroupOwner = info.getGroupOwner().equals(UserInfo.getInstance().getId());
+        isGroupOwner = info.getGroupOwner().equals(ImUserInfo.getInstance().getId());
         roleType = GroupInfo.getInstance().getRole(identify);
         type = info.getGroupType();
         LineControllerView member = (LineControllerView) findViewById(R.id.member);
@@ -250,7 +250,7 @@ public class GroupProfileActivity extends FragmentActivity implements GroupInfoV
                 new ListPickerDialog().show(messageOptList,getSupportFragmentManager(), new DialogInterface.OnClickListener() {
                     @Override
                     public void onClick(DialogInterface dialog, final int which) {
-                        TIMGroupManagerExt.ModifyMemberInfoParam param = new TIMGroupManagerExt.ModifyMemberInfoParam(identify, UserInfo.getInstance().getId());
+                        TIMGroupManagerExt.ModifyMemberInfoParam param = new TIMGroupManagerExt.ModifyMemberInfoParam(identify, ImUserInfo.getInstance().getId());
                         param.setReceiveMessageOpt(messageOptContent.get(messageOptList[which]));
                         TIMGroupManagerExt.getInstance().modifyMemberInfo(param, new TIMCallBack() {
                             @Override

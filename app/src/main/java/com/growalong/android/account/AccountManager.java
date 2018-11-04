@@ -5,6 +5,7 @@ import android.content.SharedPreferences;
 import android.text.TextUtils;
 
 import com.growalong.android.app.MyApplication;
+import com.growalong.android.im.model.ImUserInfo;
 import com.growalong.android.model.LoginBean;
 
 
@@ -18,6 +19,7 @@ public class AccountManager {
     private static final String USER_NAME = "user_name";
     private static final String USER_ID = "user_id";
     private static final String PHONE_NUMBER = "phone_number";
+    private static final String IM_USER_SIG = "im_user_sig";
 
     private static final String IS_VISITOR = "is_visitor";
 
@@ -134,6 +136,9 @@ public class AccountManager {
         mAccountInfo.setUserHead(mSharedPreferences.getString(USER_HEAD, ""));
         mAccountInfo.setSessionId(mSharedPreferences.getString(SESSION_ID, ""));
         mAccountInfo.setPhoneNumber(mSharedPreferences.getString(PHONE_NUMBER, ""));
+        ImUserInfo.getInstance().setId(mSharedPreferences.getString(USER_ID, ""));
+        ImUserInfo.getInstance().setUserSig(mSharedPreferences.getString(IM_USER_SIG, ""));
+
         return mAccountInfo;
     }
 
@@ -150,6 +155,7 @@ public class AccountManager {
         mVisitorInfo.setUserHead(mSharedPreferences.getString(VISITOR_USER_HEAD, ""));
         mVisitorInfo.setSessionId(mSharedPreferences.getString(VISITOR_SESSION_ID, ""));
         mVisitorInfo.setPhoneNumber(mSharedPreferences.getString(VISITOR_PHONE_NUMBER, ""));
+        ImUserInfo.getInstance().setUserSig(mSharedPreferences.getString(IM_USER_SIG, ""));
         mIsVisitor = mSharedPreferences.getBoolean(IS_VISITOR, false);
         return mVisitorInfo;
     }
@@ -195,5 +201,12 @@ public class AccountManager {
     public static String getSessionId(Context context) {
         SharedPreferences sharedPreferences = context.getSharedPreferences(ACCOUNT_KEY, Context.MODE_PRIVATE);
         return sharedPreferences.getString(SESSION_ID, "");
+    }
+
+    public void setIMUserSig(String string) {
+        mSharedPreferences.edit().putString(IM_USER_SIG, string).apply();
+    }
+    public String getIMUserSig() {
+       return mSharedPreferences.getString(IM_USER_SIG, "");
     }
 }

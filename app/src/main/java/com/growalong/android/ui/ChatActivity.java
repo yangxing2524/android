@@ -4,9 +4,10 @@ import android.content.Context;
 import android.content.Intent;
 import android.graphics.BitmapFactory;
 import android.net.Uri;
+import android.os.Build;
 import android.os.Bundle;
+import android.os.Environment;
 import android.os.Handler;
-import android.provider.MediaStore;
 import android.support.v4.app.FragmentActivity;
 import android.view.ContextMenu;
 import android.view.Menu;
@@ -21,13 +22,22 @@ import android.widget.Toast;
 
 import com.growalong.android.R;
 import com.growalong.android.im.adapters.ChatAdapter;
+import com.growalong.android.im.model.CustomMessage;
+import com.growalong.android.im.model.FileMessage;
 import com.growalong.android.im.model.FriendProfile;
 import com.growalong.android.im.model.FriendshipInfo;
 import com.growalong.android.im.model.GroupInfo;
+import com.growalong.android.im.model.ImageMessage;
 import com.growalong.android.im.model.Message;
 import com.growalong.android.im.model.MessageFactory;
 import com.growalong.android.im.model.TextMessage;
+import com.growalong.android.im.model.UGCMessage;
+import com.growalong.android.im.model.VideoMessage;
+import com.growalong.android.im.model.VoiceMessage;
+import com.growalong.android.im.utils.FileUtil;
+import com.growalong.android.im.utils.MediaUtil;
 import com.growalong.android.im.utils.RecorderUtil;
+import com.growalong.android.util.ToastUtil;
 import com.tencent.imsdk.TIMConversationType;
 import com.tencent.imsdk.TIMMessage;
 import com.tencent.imsdk.TIMMessageStatus;
@@ -36,14 +46,6 @@ import com.tencent.imsdk.ext.message.TIMMessageExt;
 import com.tencent.imsdk.ext.message.TIMMessageLocator;
 import com.tencent.qcloud.presentation.presenter.ChatPresenter;
 import com.tencent.qcloud.presentation.viewfeatures.ChatView;
-import com.growalong.android.im.model.CustomMessage;
-import com.growalong.android.im.model.FileMessage;
-import com.growalong.android.im.model.ImageMessage;
-import com.growalong.android.im.model.UGCMessage;
-import com.growalong.android.im.model.VideoMessage;
-import com.growalong.android.im.model.VoiceMessage;
-import com.growalong.android.im.utils.FileUtil;
-import com.growalong.android.im.utils.MediaUtil;
 import com.tencent.qcloud.ui.ChatInput;
 import com.tencent.qcloud.ui.TemplateTitle;
 import com.tencent.qcloud.ui.VoiceSendingView;
@@ -61,7 +63,7 @@ public class ChatActivity extends FragmentActivity implements ChatView {
     private ListView listView;
     private ChatPresenter presenter;
     private ChatInput input;
-    private static final int CAPTURE_IMAGE_ACTIVITY_REQUEST_CODE = 100;
+    private static final int CAPTURE_IMAGE_ACTIVITY_REQUEST_CODE = CommonPhotoSelectorDialog.PHOTOREQUESTCODE1;
     private static final int IMAGE_STORE = 200;
     private static final int FILE_CODE = 300;
     private static final int IMAGE_PREVIEW = 400;
@@ -329,14 +331,25 @@ public class ChatActivity extends FragmentActivity implements ChatView {
      */
     @Override
     public void sendPhoto() {
-        Intent intent_photo = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
-        if (intent_photo.resolveActivity(getPackageManager()) != null) {
-            File tempFile = FileUtil.getTempFile(FileUtil.FileType.IMG);
-            if (tempFile != null) {
-                fileUri = Uri.fromFile(tempFile);
+//        Intent intent_photo = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
+//        if (intent_photo.resolveActivity(getPackageManager()) != null) {
+//            File tempFile = FileUtil.getTempFile(FileUtil.FileType.IMG);
+//            if (tempFile != null) {
+//                fileUri = Uri.fromFile(tempFile);
+//            }
+//            intent_photo.putExtra(MediaStore.EXTRA_OUTPUT, fileUri);
+//            startActivityForResult(intent_photo, CAPTURE_IMAGE_ACTIVITY_REQUEST_CODE);
+//        }
+
+        String status = Environment.getExternalStorageState();
+        if (status.equals(Environment.MEDIA_MOUNTED)) {
+            try {
+                CameraProtectActivity.startThisActivityForResult(this);
+            } catch (Exception e) {
+                ToastUtil.shortShow("没有找到储存目录");
             }
-            intent_photo.putExtra(MediaStore.EXTRA_OUTPUT, fileUri);
-            startActivityForResult(intent_photo, CAPTURE_IMAGE_ACTIVITY_REQUEST_CODE);
+        } else {
+            ToastUtil.shortShow("没有储存卡");
         }
     }
 
@@ -488,8 +501,13 @@ public class ChatActivity extends FragmentActivity implements ChatView {
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
         if (requestCode == CAPTURE_IMAGE_ACTIVITY_REQUEST_CODE) {
-            if (resultCode == RESULT_OK && fileUri != null) {
-                showImagePreview(fileUri.getPath());
+            if (resultCode == RESULT_OK) {
+                String stringExtra = data.getStringExtra(CameraProtectActivity.IMAGE_PATH);
+                if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.N) {
+                    String fileDir = (Environment.getExternalStorageDirectory() + stringExtra).replace("/external_storage_root", "");
+                    stringExtra = fileDir;
+                }
+                showImagePreview(stringExtra);
             }
         } else if (requestCode == IMAGE_STORE) {
             if (resultCode == RESULT_OK && data != null) {
@@ -547,7 +565,7 @@ public class ChatActivity extends FragmentActivity implements ChatView {
         if (path == null) return;
         File file = new File(path);
         if (file.exists()){
-            if (file.length() > 1024 * 1024 * 10){
+            if (file.length() > 1024 * 1024 * 1024){
                 Toast.makeText(this, getString(R.string.chat_file_too_large),Toast.LENGTH_SHORT).show();
             }else{
                 Message message = new FileMessage(path);

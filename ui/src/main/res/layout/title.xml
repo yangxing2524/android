@@ -54,8 +54,10 @@
             android:textSize="16sp"
             android:textColor="@color/text_blue1"/>
     </LinearLayout>
-    <View android:layout_width="match_parent"
+
+    <View
+        android:layout_width="match_parent"
         android:layout_height="1px"
-        android:background="@color/line"
-        android:layout_alignParentBottom="true"/>
+        android:layout_alignParentBottom="true"
+        android:background="@color/line" />
 </RelativeLayout>

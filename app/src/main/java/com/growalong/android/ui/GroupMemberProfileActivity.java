@@ -12,7 +12,7 @@ import android.widget.Toast;
 import com.growalong.android.R;
 import com.growalong.android.im.model.GroupInfo;
 import com.growalong.android.im.model.GroupMemberProfile;
-import com.growalong.android.im.model.UserInfo;
+import com.growalong.android.im.model.ImUserInfo;
 import com.tencent.imsdk.TIMCallBack;
 import com.tencent.imsdk.TIMGroupMemberRoleType;
 import com.tencent.imsdk.TIMValueCallBack;
@@ -136,7 +136,7 @@ public class GroupMemberProfileActivity extends FragmentActivity {
         }
         LineControllerView nameCard = (LineControllerView) findViewById(R.id.groupCard);
         nameCard.setContent(userCard);
-        if (UserInfo.getInstance().getId().equals(userIdentify)){
+        if (ImUserInfo.getInstance().getId().equals(userIdentify)){
             nameCard.setCanNav(true);
             nameCard.setOnClickListener(new View.OnClickListener() {
                 @Override

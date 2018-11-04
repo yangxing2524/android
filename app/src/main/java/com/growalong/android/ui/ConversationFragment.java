@@ -1,7 +1,6 @@
 package com.growalong.android.ui;
 
 
-import android.content.Intent;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.view.ContextMenu;
@@ -13,6 +12,15 @@ import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.ListView;
 
+import com.growalong.android.R;
+import com.growalong.android.im.adapters.ConversationAdapter;
+import com.growalong.android.im.model.Conversation;
+import com.growalong.android.im.model.CustomMessage;
+import com.growalong.android.im.model.FriendshipConversation;
+import com.growalong.android.im.model.GroupManageConversation;
+import com.growalong.android.im.model.MessageFactory;
+import com.growalong.android.im.model.NomalConversation;
+import com.growalong.android.im.utils.PushUtil;
 import com.tencent.imsdk.TIMConversation;
 import com.tencent.imsdk.TIMConversationType;
 import com.tencent.imsdk.TIMMessage;
@@ -25,23 +33,12 @@ import com.tencent.qcloud.presentation.presenter.GroupManagerPresenter;
 import com.tencent.qcloud.presentation.viewfeatures.ConversationView;
 import com.tencent.qcloud.presentation.viewfeatures.FriendshipMessageView;
 import com.tencent.qcloud.presentation.viewfeatures.GroupManageMessageView;
-import com.growalong.android.R;
-import com.growalong.android.im.adapters.ConversationAdapter;
-import com.growalong.android.im.model.Conversation;
-import com.growalong.android.im.model.CustomMessage;
-import com.growalong.android.im.model.FriendshipConversation;
-import com.growalong.android.im.model.GroupManageConversation;
-import com.growalong.android.im.model.MessageFactory;
-import com.growalong.android.im.model.NomalConversation;
-import com.growalong.android.im.utils.PushUtil;
 
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Iterator;
 import java.util.LinkedList;
 import java.util.List;
-
-import com.growalong.android.agora.openvcall.ui.AgoraMainActivity;
 
 /**
  * 会话列表界面
@@ -75,12 +72,6 @@ public class ConversationFragment extends Fragment implements ConversationView,F
             listView = (ListView) view.findViewById(R.id.list);
             adapter = new ConversationAdapter(getActivity(), R.layout.item_conversation, conversationList);
             listView.setAdapter(adapter);
-            view.findViewById(R.id.title1).setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View v) {
-                    startActivity(new Intent(getContext(), AgoraMainActivity.class));
-                }
-            });
             listView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
                 @Override
                 public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
@@ -213,8 +204,8 @@ public class ConversationFragment extends Fragment implements ConversationView,F
     public void refresh() {
         Collections.sort(conversationList);
         adapter.notifyDataSetChanged();
-        if (getActivity() instanceof  HomeActivity)
-            ((HomeActivity) getActivity()).setMsgUnread(getTotalUnreadNum() == 0);
+        if (getActivity() instanceof MainActivity)
+            ((MainActivity) getActivity()).setMsgUnread(getTotalUnreadNum() == 0);
     }
 
 

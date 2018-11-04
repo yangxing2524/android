@@ -94,7 +94,7 @@ public class GroupManageConversation extends Conversation {
         String from = lastMessage.getFromUser();
         String to = lastMessage.getToUser();
 
-        boolean isSelf = from.equals(UserInfo.getInstance().getId());
+        boolean isSelf = from.equals(ImUserInfo.getInstance().getId());
         switch (lastMessage.getPendencyType()){
             case INVITED_BY_OTHER:
                 if (isSelf){
@@ -103,7 +103,7 @@ public class GroupManageConversation extends Conversation {
                             to+
                             MyApplication.getContext().getResources().getString(R.string.summary_group_add);
                 }else{
-                    if (to.equals(UserInfo.getInstance().getId())){
+                    if (to.equals(ImUserInfo.getInstance().getId())){
                         return from+
                                 MyApplication.getContext().getResources().getString(R.string.summary_group_invite)+
                                 MyApplication.getContext().getResources().getString(R.string.summary_me)+
