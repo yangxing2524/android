@@ -14,5 +14,5 @@ public class Constants {
     public static final String PATH_CACHE = PATH_DATA + "/NetCache";
     public static final String endpoint = "https://oss-cn-beijing.aliyuncs.com";
     public static final String bucketName = "growalong-oss";
-    public static String private_key = isOnline ? "11fc842697eb4f5561c05f6cec82536b" : "11fc842697eb4f5561c05f6cec82536b";
+    public static String private_key = "846d2cb0c7f09c3ae582c421696d308c";
 }

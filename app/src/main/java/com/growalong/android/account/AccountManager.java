@@ -5,6 +5,7 @@ import android.content.SharedPreferences;
 import android.text.TextUtils;
 
 import com.growalong.android.app.MyApplication;
+import com.growalong.android.model.LoginBean;
 
 
 /**
@@ -51,6 +52,18 @@ public class AccountManager {
     public boolean isVisitor() {
         getVisitorAccountInfoFormLocate();
         return mIsVisitor;
+    }
+
+    public void saveAccountInfoFormLocate(LoginBean data) {
+        SharedPreferences.Editor edit = mSharedPreferences.edit();
+        edit.putString(USER_ID, data.getUserId());
+        edit.putString(USER_NAME, data.getName());
+        edit.putString(USER_HEAD, data.getHeadImgUrl());
+        edit.putString(SESSION_ID, data.getSid());
+        edit.putString(PHONE_NUMBER, data.getMobile());
+        edit.apply();
+        mAccountInfo = getAccountInfoFormLocate();
+        savePhoneNumber(data.getMobile());
     }
 
     public void setVisitor(boolean visitor) {

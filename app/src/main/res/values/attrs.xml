@@ -15,4 +15,134 @@
         <!-- 是否是开关 -->
         <attr name="isSwitch" format="boolean"/>
     </declare-styleable>
+
+
+    <declare-styleable name="MaterialRippleLayout">
+        <attr name="mrl_rippleColor" format="color" localization="suggested"/>
+        <attr name="mrl_rippleDimension" format="dimension" localization="suggested"/>
+        <attr name="mrl_rippleOverlay" format="boolean" localization="suggested"/>
+        <attr name="mrl_rippleAlpha" format="float" localization="suggested"/>
+        <attr name="mrl_rippleDuration" format="integer" localization="suggested"/>
+        <attr name="mrl_rippleFadeDuration" format="integer" localization="suggested"/>
+        <attr name="mrl_rippleHover" format="boolean" localization="suggested"/>
+        <attr name="mrl_rippleBackground" format="color" localization="suggested"/>
+        <attr name="mrl_rippleDelayClick" format="boolean" localization="suggested"/>
+        <attr name="mrl_ripplePersistent" format="boolean" localization="suggested"/>
+        <attr name="mrl_rippleInAdapter" format="boolean" localization="suggested"/>
+        <attr name="mrl_rippleRoundedCorners" format="dimension" localization="suggested"/>
+    </declare-styleable>
+    <declare-styleable name="LineBreakLabelChangeColor">
+        <!--标签之间左右距离-->
+        <attr name="leftAndRightSpace" format="dimension"/>
+        <!--标签行距-->
+        <attr name="rowSpace" format="dimension"/>
+    </declare-styleable>
+    <declare-styleable name="SwipeLayout">
+        <attr name="drag_edge" format="enum">
+            <enum name="left" value="0"/>
+            <enum name="right" value="1"/>
+            <enum name="top" value="2"/>
+            <enum name="bottom" value="3"/>
+        </attr>
+        <attr name="horizontalSwipeOffset" format="dimension"/>
+        <attr name="verticalSwipeOffset" format="dimension"/>
+        <attr name="show_mode" format="enum">
+            <enum name="lay_down" value="0"/>
+            <enum name="pull_out" value="1"/>
+        </attr>
+    </declare-styleable>
+    <declare-styleable name="superrecyclerview">
+        <attr name="layout_empty" format="reference"/>
+        <attr name="layout_moreProgress" format="reference"/>
+        <attr name="layout_progress" format="reference"/>
+        <attr name="recyclerClipToPadding" format="boolean"/>
+        <attr name="recycler_show_no_more" format="boolean"/>
+        <attr name="recyclerPadding" format="dimension"/>
+        <attr name="recyclerPaddingTop" format="dimension"/>
+        <attr name="recyclerPaddingBottom" format="dimension"/>
+        <attr name="recyclerPaddingLeft" format="dimension"/>
+        <attr name="recyclerPaddingRight" format="dimension"/>
+        <attr name="recyclerBackground" format="reference"/>
+        <attr name="scrollbarStyle">
+            <flag name="insideOverlay" value="0x0"/>
+            <flag name="insideInset" value="0x01000000"/>
+            <flag name="outsideOverlay" value="0x02000000"/>
+            <flag name="outsideInset" value="0x03000000"/>
+        </attr>
+
+        <attr name="mainLayoutId" format="reference"/>
+    </declare-styleable>
+    <declare-styleable name="ProgressWheel">
+        <attr name="matProg_progressIndeterminate" format="boolean"/>
+        <attr name="matProg_barColor" format="color"/>
+        <attr name="matProg_rimColor" format="color"/>
+        <attr name="matProg_rimWidth" format="dimension"/>
+        <attr name="matProg_spinSpeed" format="float"/>
+        <attr name="matProg_barSpinCycleTime" format="integer"/>
+        <attr name="matProg_circleRadius" format="dimension"/>
+        <attr name="matProg_fillRadius" format="boolean"/>
+        <attr name="matProg_barWidth" format="dimension"/>
+        <attr name="matProg_linearProgress" format="boolean"/>
+    </declare-styleable>
+
+    <declare-styleable name="OptionsTextStyle">
+        <attr name="optionsTextDrawableLeft" format="reference"/>
+        <attr name="optionsText" format="reference|string"/>
+        <attr name="optionsTextContent" format="reference|string"/>
+        <attr name="optionsTextDrawableRight" format="reference"/>
+    </declare-styleable>
+
+    <declare-styleable name="ExpandTextView">
+        <attr name="textcolor" format="color"/>
+        <attr name="textsize" format="dimension"/>
+        <attr name="icon" format="reference"/>
+        <attr name="lines" format="integer"/>
+        <attr name="text" format="string"/>
+    </declare-styleable>
+
+    <declare-styleable name="RoundImageView">
+        <attr name="border_width" format="dimension"/>
+        <attr name="border_color" format="color"/>
+        <attr name="scale_height_width" format="float"/>
+        <attr name="radius" format="dimension"/>
+    </declare-styleable>
+    <declare-styleable name="CircleImageView">
+        <attr name="circle_border_width" format="dimension"/>
+        <attr name="circle_border_color" format="color"/>
+    </declare-styleable>
+    <declare-styleable name="CircleAnimaImageView">
+        <attr name="circle_anima_border_width" format="dimension"/>
+        <attr name="circle_anima_border_color" format="color"/>
+    </declare-styleable>
+    <declare-styleable name="ItemFeedComment">
+        <attr name="is_show_comment" format="boolean"/>
+        <attr name="max_img" format="integer"/>
+        <attr name="is_show_head" format="boolean"/>
+    </declare-styleable>
+
+    <declare-styleable name="SwitchView">
+        <attr name="hasShadow" format="boolean"/>
+        <attr name="primaryColor" format="color"/>
+        <attr name="primaryColorDark" format="color"/>
+        <attr name="isOpened" format="boolean"/>
+    </declare-styleable>
+    <declare-styleable name="SlidingTabLayout">
+        <attr name="slidingTabMode">
+            <enum name="scrollable" value="0"/>
+            <enum name="fixed" value="1"/>
+        </attr>
+        <attr name="slidingTabGravity">
+            <enum name="fill" value="0"/>
+            <enum name="center" value="1"/>
+        </attr>
+    </declare-styleable>
+    <declare-styleable name="QLMediaView">
+        <attr name="type">
+            <enum name="video" value="0"/>
+            <enum name="audio" value="1"/>
+        </attr>
+    </declare-styleable>
+    <declare-styleable name="TopBarView">
+        <attr name="new_icon" format="boolean"/>
+    </declare-styleable>
 </resources>

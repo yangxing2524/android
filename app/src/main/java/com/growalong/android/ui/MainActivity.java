@@ -6,6 +6,7 @@ import android.content.pm.PackageManager;
 import android.os.Build;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
+import android.support.v4.app.FragmentActivity;
 import android.support.v4.app.FragmentTabHost;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -37,6 +38,10 @@ public class HomeActivity extends QLActivity {
     private int mImageViewArray[] = {R.drawable.tab_conversation, R.drawable.tab_contact, R.drawable.tab_setting};
     private String mTextviewArray[] = {"contact", "conversation", "setting"};
     private ImageView msgUnread;
+
+    public static void startThis(FragmentActivity activity) {
+        activity.startActivity(new Intent(activity, HomeActivity.class));
+    }
 
 
     @Override

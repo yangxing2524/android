@@ -1,5 +1,5 @@
 <resources>
-    <string name="app_name">随心聊IM</string>
+    <string name="app_name">growalong</string>
 
     <string name="conversation">通话</string>
     <string name="course">课程</string>
@@ -339,4 +339,8 @@
     // DO NOT TRANSLATE
     <string name="bit_rate_value_with_unit">%d kbps</string>
     <string name="frame_rate_value_with_unit">%d fps</string>
+    <string name="login_btn">登录</string>
+
+    <string name="login_checkout_phone_number_hint">请输入11位的手机号码</string>
+    <string name="login_checkout_password_hint">请输入8位以上的密码</string>
 </resources>

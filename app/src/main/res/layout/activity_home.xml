@@ -13,6 +13,7 @@
         android:layout_height="1px"
         android:background="#1A000000" />
 
+
     <android.support.v4.app.FragmentTabHost
         android:id="@android:id/tabhost"
         android:background="@color/background"

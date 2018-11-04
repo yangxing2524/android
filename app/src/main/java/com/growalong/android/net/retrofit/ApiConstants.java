@@ -5,4 +5,6 @@ package com.growalong.android.net.retrofit;
  */
 public class ApiConstants {
     public static final String imgUpload = "v1/common/sts-auth";    //获取上传图片令牌
+
+    public static final String loginForPhoneNumber = "/v1/common/login.do";
 }

@@ -2,19 +2,22 @@ package com.growalong.android.net.retrofit.service;
 
 import com.growalong.android.model.BaseGenericModel;
 import com.growalong.android.model.BaseParams;
+import com.growalong.android.model.NetLoginBean;
 import com.growalong.android.net.retrofit.ApiConstants;
-import com.growalong.android.upload.OosDataModel;
 
-import retrofit2.Call;
 import retrofit2.http.Body;
 import retrofit2.http.POST;
+import rx.Observable;
 
 /**
- * Created by murphy on 10/12/16.
+ * Created by gangqing on 2016/10/9.
  */
 
-public interface IUploadApis {
+public interface ILoginApis {
 
-    @POST(ApiConstants.imgUpload)
-    Call<BaseGenericModel<OosDataModel>> getUploadParams(@Body BaseParams baseParams);
+    @POST(ApiConstants.loginForPhoneNumber)
+    Observable<BaseGenericModel<NetLoginBean>> loginForPassword(@Body BaseParams body);
+
+
+
 }

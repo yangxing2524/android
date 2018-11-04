@@ -27,3 +27,5 @@
 
 -keep class qalsdk.**{*;}
 -dontwarn qalsdk.**
+
+
