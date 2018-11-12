@@ -160,7 +160,6 @@ android {
     sourceSets {
         main {
             jniLibs.srcDirs = ['libs']
-            aidl.srcDirs = ['src/main/java/com/thinkwu/live/aidl']
         }
     }
     aaptOptions {
@@ -292,6 +291,7 @@ dependencies {
     implementation 'com.davemorrissey.labs:subsampling-scale-image-view:3.5.0'
     implementation 'com.aliyun.dpa:oss-android-sdk:2.4.2'
     implementation 'com.android.support:support-v4:27.1.0'
+
 
     implementation 'org.slf4j:slf4j-api:1.7.21'
     implementation 'io.agora.rtc:full-sdk:2.3.1'

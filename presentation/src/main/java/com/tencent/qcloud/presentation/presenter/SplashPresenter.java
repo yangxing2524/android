@@ -29,7 +29,7 @@ public class SplashPresenter {
                     view.navToLogin();
                 }
             }
-        }, 1000);
+        }, 500);
     }
 
 

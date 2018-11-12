@@ -26,6 +26,7 @@ public abstract class NewBaseFragment extends Fragment {
     public Unbinder mUnBinder;
     protected View mView;
     protected boolean isInit;
+    public final int PAGE_SIZE = 20;
 
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {

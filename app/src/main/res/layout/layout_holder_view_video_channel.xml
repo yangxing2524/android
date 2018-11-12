@@ -1,0 +1,56 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:background="@color/white"
+    android:orientation="vertical">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal">
+
+        <View
+            android:layout_width="2dp"
+            android:layout_height="@dimen/space_16"
+            android:layout_gravity="center_vertical"
+            android:layout_marginLeft="@dimen/space_15"
+            android:background="@mipmap/icon_channel_home_title_left"
+            android:visibility="invisible" />
+
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="@dimen/y30"
+            android:layout_marginTop="@dimen/y30"
+            android:layout_marginBottom="@dimen/y30"
+            android:drawablePadding="@dimen/y14"
+            android:gravity="center_vertical"
+            android:text="视频简介"
+            android:textColor="@color/text"
+            android:textSize="@dimen/y32"
+            android:textStyle="bold" />
+
+    </LinearLayout>
+
+    <ImageView
+        android:id="@+id/image"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginLeft="@dimen/y30"
+        android:layout_marginRight="@dimen/y30"
+        android:layout_marginBottom="@dimen/y40"
+        android:src="@mipmap/bg_channel_vedio_intro" />
+
+    <TextView
+        android:id="@+id/text"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginLeft="@dimen/y30"
+        android:layout_marginTop="@dimen/y14"
+        android:layout_marginRight="@dimen/y30"
+        android:layout_marginBottom="@dimen/y20"
+        android:lineSpacingExtra="@dimen/y8"
+        android:textColor="@color/color_666666"
+        android:textSize="@dimen/y32" />
+</LinearLayout>

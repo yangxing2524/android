@@ -8,4 +8,9 @@ public class ApiConstants {
 
     public static final String loginForPhoneNumber = "/v1/common/login.do";
     public static final String loginForIM = "/v1/user/getUserSig.do"; //获取直播userSig
+    public static final String courseList = "/v1/user/getMyCourse.do"; //用户课程列表
+    public static final String courseDetailList = "/v1/course/get.do"; //课程基础信息
+    public static final String courseMaterialList = "/v1/course/material.do"; //课程素材
+
+
 }

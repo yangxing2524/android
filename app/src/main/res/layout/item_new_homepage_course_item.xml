@@ -1,0 +1,56 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="@dimen/y210"
+    android:background="@color/white"
+    android:paddingLeft="@dimen/y20"
+    android:paddingRight="@dimen/y20">
+
+    <com.growalong.android.ui.customview.RoundImageView
+        android:id="@+id/img"
+        android:layout_width="@dimen/y190"
+        android:layout_height="@dimen/y142"
+        android:layout_centerVertical="true"
+        app:radius="@dimen/y4" />
+
+    <LinearLayout
+        android:id="@+id/layout_content"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_centerVertical="true"
+        android:layout_marginLeft="@dimen/y26"
+        android:layout_toRightOf="@+id/img"
+        android:orientation="vertical">
+
+        <TextView
+            android:id="@+id/title"
+            android:layout_width="wrap_content"
+            android:layout_height="0dp"
+            android:layout_weight="1"
+            android:layout_marginRight="@dimen/y10"
+            android:maxEms="8"
+            android:gravity="center_vertical"
+            android:paddingLeft="3dp"
+            android:paddingRight="3dp"
+            android:textSize="11sp"
+            tools:text="666" />
+
+        <TextView
+            android:id="@+id/intro"
+            android:layout_width="wrap_content"
+            android:layout_height="0dp"
+            android:ellipsize="end"
+            android:maxLines="1"
+            android:text=""
+            android:gravity="center_vertical"
+            android:layout_weight="1"
+            android:textColor="@color/color_424242"
+            android:textSize="@dimen/y28" />
+    </LinearLayout>
+
+    <View
+        style="@style/horizontal_line"
+        android:layout_alignParentBottom="true" />
+</RelativeLayout>

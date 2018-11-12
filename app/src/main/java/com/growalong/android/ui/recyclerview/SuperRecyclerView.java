@@ -225,6 +225,7 @@ public class SuperRecyclerView extends FrameLayout implements ISuperRefreshView<
         if (mScrollbarStyle != -1) {
             mRecycler.setScrollBarStyle(mScrollbarStyle);
         }
+        hideProgress();
     }
 
     public void setmOnScrollChangeListener(OnScrollChangeListener mOnScrollChangeListener) {

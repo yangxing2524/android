@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="wrap_content"
+    android:layout_height="wrap_content"
+    android:paddingBottom="10dp"
+    android:paddingTop="10dp"
+    android:paddingLeft="@dimen/y16"
+    android:paddingRight="@dimen/y16"
+    android:layout_weight="1">
+
+    <TextView
+        android:id="@+id/item_content"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:paddingLeft="@dimen/y30"
+        android:paddingRight="@dimen/y30"
+        android:paddingTop="@dimen/y6"
+        android:paddingBottom="@dimen/y6"
+        android:layout_centerInParent="true"
+        android:background="@drawable/selector_tabbackground"
+        android:gravity="center"
+        android:maxLines="1"
+        android:textColor="@drawable/selector_tabtext"
+        android:textSize="13sp" />
+</RelativeLayout>

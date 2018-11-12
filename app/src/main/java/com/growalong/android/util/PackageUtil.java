@@ -36,7 +36,7 @@ public class PackageUtil {
         }
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.N) {
             intent.setFlags(Intent.FLAG_GRANT_READ_URI_PERMISSION);
-            Uri contentUri = FileProvider.getUriForFile(context, "com.thinkwu.live.fileProvider", file);
+            Uri contentUri = FileProvider.getUriForFile(context, "com.growalong.android.fileProvider", file);
             intent.setDataAndType(contentUri, "application/vnd.android.package-archive");
         } else {
             intent.setDataAndType(Uri.parse("file://" + filePath), "application/vnd.android.package-archive");

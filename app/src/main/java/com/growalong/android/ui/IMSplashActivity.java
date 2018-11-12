@@ -18,7 +18,6 @@ import android.widget.Toast;
 import com.growalong.android.R;
 import com.growalong.android.im.model.ImUserInfo;
 import com.growalong.android.im.utils.PushUtil;
-import com.growalong.android.ui.customview.DialogActivity;
 import com.huawei.android.pushagent.PushManager;
 import com.meizu.cloud.pushsdk.util.MzSystemUtils;
 import com.tencent.imsdk.TIMCallBack;

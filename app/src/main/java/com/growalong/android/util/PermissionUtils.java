@@ -155,7 +155,7 @@ public class PermissionUtils {
                         Intent intent = new Intent();
                         intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
                         intent.setAction("android.settings.APPLICATION_DETAILS_SETTINGS");
-                        intent.setData(Uri.fromParts("package", "com.thinkwu.live", null));
+                        intent.setData(Uri.fromParts("package", "com.growalong.android", null));
                         try {
                             context.startActivity(intent);
                         } catch (Exception e) {

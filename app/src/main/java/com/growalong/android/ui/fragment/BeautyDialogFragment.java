@@ -1,4 +1,4 @@
-package com.growalong.android.ui.customview;
+package com.growalong.android.ui.fragment;
 
 import android.app.Dialog;
 import android.app.DialogFragment;
@@ -18,6 +18,7 @@ import android.widget.TextView;
 
 import com.growalong.android.R;
 import com.growalong.android.im.utils.TCUtils;
+import com.growalong.android.ui.customview.TCHorizontalScrollView;
 
 import java.util.ArrayList;
 

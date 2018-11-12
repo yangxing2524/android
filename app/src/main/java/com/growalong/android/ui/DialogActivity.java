@@ -1,4 +1,4 @@
-package com.growalong.android.ui.customview;
+package com.growalong.android.ui;
 
 import android.app.Activity;
 import android.app.ActivityManager;
@@ -13,7 +13,6 @@ import com.growalong.android.R;
 import com.growalong.android.im.model.FriendshipInfo;
 import com.growalong.android.im.model.GroupInfo;
 import com.growalong.android.im.model.ImUserInfo;
-import com.growalong.android.ui.SplashActivity;
 import com.huawei.android.pushagent.PushManager;
 import com.tencent.imsdk.TIMCallBack;
 import com.tencent.qcloud.presentation.business.LoginBusiness;
@@ -30,7 +29,6 @@ public class DialogActivity extends Activity implements View.OnClickListener {
         requestWindowFeature(Window.FEATURE_NO_TITLE);
         setContentView(R.layout.activity_dialog);
         setFinishOnTouchOutside(false);
-
     }
 
     /**
@@ -40,7 +38,7 @@ public class DialogActivity extends Activity implements View.OnClickListener {
      */
     @Override
     public void onClick(View v) {
-        switch (v.getId()){
+        switch (v.getId()) {
             case R.id.btnOk:
                 LoginBusiness.loginIm(ImUserInfo.getInstance().getId(), ImUserInfo.getInstance().getUserSig(), new TIMCallBack() {
                     @Override
@@ -54,9 +52,9 @@ public class DialogActivity extends Activity implements View.OnClickListener {
                         Toast.makeText(DialogActivity.this, getString(R.string.login_succ), Toast.LENGTH_SHORT).show();
                         String deviceMan = android.os.Build.MANUFACTURER;
                         //注册小米和华为推送
-                        if (deviceMan.equals("Xiaomi") && shouldMiInit()){
+                        if (deviceMan.equals("Xiaomi") && shouldMiInit()) {
                             MiPushClient.registerPush(getApplicationContext(), "2882303761517480335", "5411748055335");
-                        }else if (deviceMan.equals("HUAWEI")){
+                        } else if (deviceMan.equals("HUAWEI")) {
                             PushManager.requestToken(getApplicationContext());
                         }
                         finish();
@@ -69,12 +67,12 @@ public class DialogActivity extends Activity implements View.OnClickListener {
         }
     }
 
-    private void logout(){
+    private void logout() {
         TlsBusiness.logout(ImUserInfo.getInstance().getId());
         ImUserInfo.getInstance().setId(null);
         FriendshipInfo.getInstance().clear();
         GroupInfo.getInstance().clear();
-        Intent intent = new Intent(this,SplashActivity.class);
+        Intent intent = new Intent(this, SplashActivity.class);
         intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
         startActivity(intent);
     }

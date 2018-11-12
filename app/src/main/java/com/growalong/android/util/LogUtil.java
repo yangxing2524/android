@@ -10,7 +10,7 @@ import com.growalong.android.BuildConfig;
 public class LogUtil {
 
     public static boolean isDebug = BuildConfig.DEBUG;
-    private static final String TAG = "com.thinkwu.live";
+    private static final String TAG = "com.growalong.android";
 
     public static void e(String tag,String o) {
         if(isDebug) {

@@ -3,7 +3,6 @@ package com.growalong.android.present;
 import rx.Subscriber;
 
 /**
- * Created by yangxing on 2016/12/16.
  */
 
 public abstract class CommSubscriber<T> extends Subscriber<T> {

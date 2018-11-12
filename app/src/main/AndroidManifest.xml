@@ -222,7 +222,7 @@
         <activity android:name=".ui.ChooseFriendActivity" />
         <activity android:name=".ui.GroupMemberActivity" />
         <activity
-            android:name=".ui.customview.DialogActivity"
+            android:name=".ui.DialogActivity"
             android:theme="@android:style/Theme.Dialog" />
         <activity android:name=".ui.GroupMemberProfileActivity" />
         <activity android:name=".ui.FriendshipHandleActivity" />
@@ -239,6 +239,12 @@
             android:configChanges="orientation|keyboardHidden|screenSize" />
         <activity
             android:name=".ui.LoginMainActivity"
+            android:configChanges="orientation|keyboardHidden|screenSize" />
+        <activity
+            android:name=".ui.CourseDetailActivity"
+            android:configChanges="orientation|keyboardHidden|screenSize" />
+        <activity
+            android:name=".ui.TopicDetailVideoActivity"
             android:configChanges="orientation|keyboardHidden|screenSize" />
         <activity
             android:name=".ui.CameraProtectActivity"

@@ -1,7 +1,6 @@
 package com.growalong.android.model;
 
 /**
- * Created by yangxing on 2018/11/3.
  */
 public class LoginBean {
     private String sid;

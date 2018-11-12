@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="utf-8"?>
+<com.growalong.android.ui.recyclerview.SuperRecyclerView xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:id="@+id/recyclerview"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/main_gray"
+    app:layout_empty="@layout/error_layout"
+    app:layout_moreProgress="@layout/layout_more_progress"
+    app:mainLayoutId="@layout/layout_recyclerview_verticalscroll"
+    app:recyclerClipToPadding="false"
+    app:scrollbarStyle="insideInset" />

@@ -1,5 +1,24 @@
 <resources>
-    <string name="app_name">growalong</string>
+    <string name="app_name">test</string>
+
+    <item name="tag_first" type="id"></item>
+    <item name="push_tag" type="id"></item>
+    <item name="tag_second" type="id"></item>
+    <item name="tag_third" type="id"></item>
+    <item name="tag_4th" type="id"></item>
+    <item name="color_id" type="id"></item>
+    <item name="tag_sort" type="id"></item>
+    <item name="live_tag" type="id"></item>
+    <item name="tag_collection" type="id"></item>
+    <item name="banner_tag" type="id"></item>
+    <item name="recycle_tag" type="id"></item>
+    <item name="buy_tag" type="id"></item>
+    <item name="buy_topic_tag" type="id"></item>
+    <item name="live_home_tag" type="id"></item>
+    <item name="main_home_tag" type="id"></item>
+    <item name="new_live_topic" type="id"></item>
+    <item name="new_live_channel" type="id"></item>
+    <item name="view_trace_tag" type="id"></item>
 
     <string name="conversation">通话</string>
     <string name="course">课程</string>
@@ -41,6 +60,7 @@
 
     <!-- home activity -->
     <string name="send_success">发送成功</string>
+    <string name="courseDetail">课程详情</string>
 
     <!-- home activity -->
     <string name="home_conversation_tab">通话</string>
@@ -343,4 +363,8 @@
 
     <string name="login_checkout_phone_number_hint">请输入11位的手机号码</string>
     <string name="login_checkout_password_hint">请输入8位以上的密码</string>
+    <string name="loadRetry">重新加载</string>
+    <string name="net_error">OPPS~网络不给力</string>
+    <string name="course_intro">课程介绍</string>
+    <string name="update">更新</string>
 </resources>
