@@ -64,17 +64,17 @@ public class CourseDetailAdapter extends RecyclerView.Adapter<RecyclerView.ViewH
             TopViewHolder topViewHolder = (TopViewHolder) holder;
             topViewHolder.setData(mData.getCourseDetailInfoModel());
         } else if (holder instanceof TitleViewHolder) {
-            String content = mData.getMaterialModelList().get(position + 1).getContent();
+            String content = mData.getMaterialModelList().get(position - 1).getContent();
             TitleViewHolder viewHolder = (TitleViewHolder) holder;
             viewHolder.setData(content, R.mipmap.icon_channel_home_title_left);
         } else if (holder instanceof IntroductionImageViewHolder) {
-            String content = mData.getMaterialModelList().get(position + 1).getContent();
+            String content = mData.getMaterialModelList().get(position - 1).getContent();
             IntroductionImageViewHolder viewHolder = (IntroductionImageViewHolder) holder;
-            viewHolder.setData(content);
+            viewHolder.setData(content, mData.getMaterialModelList().get(position - 1).getTitle());
         } else if (holder instanceof ChannelVideoViewHolder) {
-            String content = mData.getMaterialModelList().get(position + 1).getContent();
+            String content = mData.getMaterialModelList().get(position - 1).getContent();
             ChannelVideoViewHolder viewHolder = (ChannelVideoViewHolder) holder;
-            viewHolder.setData(content);
+            viewHolder.setData(content, mData.getMaterialModelList().get(position - 1).getTitle());
         }
     }
 
@@ -83,7 +83,7 @@ public class CourseDetailAdapter extends RecyclerView.Adapter<RecyclerView.ViewH
         if (position == 0) {
             return 0;
         } else {
-            String type = mData.getMaterialModelList().get(position + 1).getType();
+            String type = mData.getMaterialModelList().get(position - 1).getType();
             if ("file".equals(type)) {
                 return VIEW_TYPE_FILE;
             } else if ("video".equals(type)) {
@@ -164,19 +164,22 @@ public class CourseDetailAdapter extends RecyclerView.Adapter<RecyclerView.ViewH
         private View mRootView;
         private SubsamplingScaleImageView mImage;
         private Context mContext;
+        private TextView mTitle;
 
         public IntroductionImageViewHolder(View itemView) {
             super(itemView);
             mContext = itemView.getContext();
             mRootView = itemView.findViewById(R.id.root_view);
             mImage = (SubsamplingScaleImageView) itemView.findViewById(R.id.image);
+            mTitle = itemView.findViewById(R.id.text);
         }
 
-        public void setData(String url) {
+        public void setData(String url, String title) {
             if (!TextUtils.isEmpty(url)) {
                 int width = MyApplication.getInstance().getScreenWidth() - mRootView.getPaddingLeft() - mRootView.getPaddingLeft();
                 GlideUtils.FitXY(mContext, Utils.compressQualityOSSImageUrl(url), mImage, width);
             }
+            mTitle.setText(title);
         }
     }
 }

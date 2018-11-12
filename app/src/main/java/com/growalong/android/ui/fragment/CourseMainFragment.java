@@ -31,7 +31,15 @@ public class CourseMainFragment extends NewBaseFragment {
 
             @Override
             public Fragment getItem(int position) {
-                return CourseOverFragment.newInstance();
+                Fragment fragment;
+                if(position == 0) {
+                   fragment =  CourseOverFragment.newInstance();
+                }else if(position == 1){
+                    fragment = CourseStartingFragment.newInstance();
+                }else{
+                    fragment = CourseStartingFragment.newInstance();
+                }
+                return fragment;
             }
 
             @Override

@@ -75,7 +75,7 @@ public class CourseDetailFragment extends NewBaseListFragment {
             public void onSuccess(CourseDetailInfoModel courseDatailInfoModel) {
                 mCourseDetailModel.setCourseDetailInfoModel(courseDatailInfoModel);
                 mAdapter.notifyDataSetChanged();
-                coursePresenter.getCourseMaterial(courseId, 2).subscribe(new CommSubscriber<List<CourseMaterialModel>>() {
+                coursePresenter.getCourseMaterial(courseId, 0).subscribe(new CommSubscriber<List<CourseMaterialModel>>() {
                     @Override
                     public void onSuccess(List<CourseMaterialModel> courseMaterialModels) {
                         mCourseDetailModel.setMaterialModelList(courseMaterialModels);

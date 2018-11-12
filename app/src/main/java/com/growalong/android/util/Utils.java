@@ -14,7 +14,7 @@ public class Utils {
      * @return
      */
     public static String compressQualityOSSImageUrl(String url) {
-        return url + "@50q";
+        return url;
     }
 
     public static String stampToDate(long s, String format) {
