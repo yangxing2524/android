@@ -1,0 +1,158 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical">
+
+    <View
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/y300"
+        android:background="@mipmap/min_top_bg" />
+
+    <LinearLayout
+        android:id="@+id/top"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginLeft="@dimen/y30"
+        android:layout_marginTop="@dimen/y110"
+        android:layout_marginRight="@dimen/y30"
+        android:background="@drawable/background_white1_white3_rect"
+        android:orientation="horizontal"
+        android:padding="@dimen/y40">
+
+        <LinearLayout
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:orientation="vertical">
+
+            <TextView
+                android:id="@+id/name"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:drawableRight="@mipmap/women"
+                android:drawablePadding="@dimen/y30"
+                android:paddingTop="@dimen/y6"
+                android:textColor="@color/color_020202"
+                android:textSize="22sp"
+                tools:text="中国小朋友" />
+
+            <TextView
+                android:id="@+id/interest"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:paddingTop="@dimen/y16"
+                android:textColor="@color/color_020202"
+                android:textSize="15sp"
+                tools:text="画画、唱歌" />
+
+            <TextView
+                android:id="@+id/location"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:paddingTop="@dimen/y16"
+                android:textColor="@color/color_999999"
+                android:textSize="13sp"
+                tools:text="广东、广州" />
+        </LinearLayout>
+
+        <ImageView
+            android:id="@+id/headview"
+            android:layout_width="@dimen/y100"
+            android:layout_height="@dimen/y100"
+            android:layout_marginLeft="@dimen/y20"
+            android:src="@mipmap/head_default" />
+    </LinearLayout>
+
+    <RelativeLayout
+        android:id="@+id/study_level"
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/y100"
+        android:layout_below="@+id/top"
+        android:layout_marginLeft="@dimen/y30"
+        android:layout_marginTop="@dimen/y30"
+        android:layout_marginRight="@dimen/y30">
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerVertical="true"
+            android:drawableRight="@mipmap/level_tag"
+            android:drawablePadding="@dimen/y18"
+            android:text="学习阶段" />
+
+        <ImageView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentRight="true"
+            android:layout_centerVertical="true"
+            android:src="@mipmap/arr_right" />
+
+        <View
+            android:layout_width="match_parent"
+            android:layout_height="1px"
+            android:layout_alignParentBottom="true"
+            android:background="@color/color_f0f0f0" />
+    </RelativeLayout>
+
+    <RelativeLayout
+        android:id="@+id/my_download"
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/y100"
+        android:layout_below="@+id/study_level"
+        android:layout_marginLeft="@dimen/y30"
+        android:layout_marginTop="@dimen/y30"
+        android:layout_marginRight="@dimen/y30">
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerVertical="true"
+            android:drawablePadding="@dimen/y18"
+            android:text="下载" />
+
+        <ImageView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentRight="true"
+            android:layout_centerVertical="true"
+            android:src="@mipmap/arr_right" />
+
+        <View
+            android:layout_width="match_parent"
+            android:layout_height="1px"
+            android:layout_alignParentBottom="true"
+            android:background="@color/color_f0f0f0" />
+    </RelativeLayout>
+
+    <RelativeLayout
+        android:id="@+id/collect"
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/y100"
+        android:layout_below="@+id/my_download"
+        android:layout_marginLeft="@dimen/y30"
+        android:layout_marginTop="@dimen/y30"
+        android:layout_marginRight="@dimen/y30">
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerVertical="true"
+            android:drawablePadding="@dimen/y18"
+            android:text="收藏" />
+
+        <ImageView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentRight="true"
+            android:layout_centerVertical="true"
+            android:src="@mipmap/arr_right" />
+
+        <View
+            android:layout_width="match_parent"
+            android:layout_height="1px"
+            android:layout_alignParentBottom="true"
+            android:background="@color/color_f0f0f0" />
+    </RelativeLayout>
+</RelativeLayout>

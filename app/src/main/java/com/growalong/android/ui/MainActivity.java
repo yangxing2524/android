@@ -20,6 +20,7 @@ import com.growalong.android.im.model.FriendshipInfo;
 import com.growalong.android.im.model.GroupInfo;
 import com.growalong.android.im.model.ImUserInfo;
 import com.growalong.android.ui.fragment.CourseMainFragment;
+import com.growalong.android.ui.fragment.MyFragment;
 import com.tencent.imsdk.TIMManager;
 import com.tencent.qcloud.presentation.event.MessageEvent;
 import com.tencent.qcloud.tlslibrary.service.TlsBusiness;
@@ -34,7 +35,7 @@ public class MainActivity extends QLActivity {
     private static final String TAG = MainActivity.class.getSimpleName();
     private LayoutInflater layoutInflater;
     private FragmentTabHost mTabHost;
-    private final Class fragmentArray[] = {ConversationFragment.class, CourseMainFragment.class, SettingFragment.class};
+    private final Class fragmentArray[] = {ConversationFragment.class, CourseMainFragment.class, MyFragment.class};
     private int mTitleArray[] = {R.string.conversation, R.string.course, R.string.mine};
     private int mImageViewArray[] = {R.drawable.tab_conversation, R.drawable.tab_contact, R.drawable.tab_setting};
     private String mTextviewArray[] = {"contact", "conversation", "setting"};
@@ -94,8 +95,8 @@ public class MainActivity extends QLActivity {
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode,resultCode,data);
         if(requestCode == CommonPhotoSelectorDialog.PHOTOREQUESTCODE || requestCode == CommonPhotoSelectorDialog.PHOTOREQUESTCODE1){
-             SettingFragment settingFragment = (SettingFragment) getSupportFragmentManager().findFragmentByTag(mTextviewArray[2]);
-            settingFragment.onActivityResult(requestCode, resultCode,  data);
+            MyFragment fragment = (MyFragment) getSupportFragmentManager().findFragmentByTag(mTextviewArray[2]);
+            fragment.onActivityResult(requestCode, resultCode,  data);
         }
     }
 

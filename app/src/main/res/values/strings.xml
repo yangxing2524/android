@@ -99,6 +99,7 @@
     <!-- Add newfriend activity -->
     <string name="search_default">搜索</string>
     <string name="search_cancel">取消</string>
+    <string name="myCollect">我的收藏</string>
     <string name="search_hint">搜索ID或手机号</string>
     <string name="search_no_result">很抱歉，没有找到符合内容</string>
 
