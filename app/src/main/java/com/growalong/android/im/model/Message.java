@@ -32,7 +32,7 @@ public abstract class Message {
         return message;
     }
 
-
+    public abstract String getContent();
     /**
      * 显示消息
      *

@@ -83,6 +83,11 @@ public class CustomMessage extends Message {
         }
     }
 
+    @Override
+    public String getContent() {
+        return null;
+    }
+
     /**
      * 显示消息
      *

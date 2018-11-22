@@ -64,6 +64,11 @@ public class UGCMessage extends Message{
         message.addElement(elem);
     }
 
+    @Override
+    public String getContent() {
+        return null;
+    }
+
     /**
      * 显示消息
      *

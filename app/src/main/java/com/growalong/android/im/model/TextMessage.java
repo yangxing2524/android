@@ -100,6 +100,22 @@ public class TextMessage extends Message {
     }
 
 
+    @Override
+    public String getContent() {
+        List<TIMElem> elems = new ArrayList<>();
+        boolean hasText = false;
+        for (int i = 0; i < message.getElementCount(); ++i){
+            elems.add(message.getElement(i));
+            if (message.getElement(i).getType() == TIMElemType.Text){
+                hasText = true;
+            }
+        }
+        SpannableStringBuilder stringBuilder = getString(elems, MyApplication.getInstance().context);
+        if (!hasText){
+            stringBuilder.insert(0," ");
+        }
+        return stringBuilder.toString();
+    }
 
     /**
      * 在聊天界面显示消息

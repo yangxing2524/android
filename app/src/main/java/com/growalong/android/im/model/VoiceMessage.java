@@ -29,7 +29,7 @@ public class VoiceMessage extends Message {
 
     private static final String TAG = "VoiceMessage";
 
-    public VoiceMessage(TIMMessage message){
+    public VoiceMessage(TIMMessage message) {
         this.message = message;
     }
 
@@ -40,7 +40,7 @@ public class VoiceMessage extends Message {
      * @param duration 时长
      * @param filePath 语音数据地址
      */
-    public VoiceMessage(long duration,String filePath){
+    public VoiceMessage(long duration, String filePath) {
         message = new TIMMessage();
         TIMSoundElem elem = new TIMSoundElem();
         elem.setPath(filePath);
@@ -48,11 +48,17 @@ public class VoiceMessage extends Message {
         message.addElement(elem);
     }
 
+    @Override
+    public String getContent() {
+        return ((TIMSoundElem) message.getElement(0)).getPath() + "*" +
+                ((TIMSoundElem) message.getElement(0)).getDuration();
+    }
+
     /**
      * 显示消息
      *
      * @param viewHolder 界面样式
-     * @param context 显示消息的上下文
+     * @param context    显示消息的上下文
      */
     @Override
     public void showMessage(ChatAdapter.ViewHolder viewHolder, Context context) {
@@ -61,7 +67,7 @@ public class VoiceMessage extends Message {
         linearLayout.setOrientation(LinearLayout.HORIZONTAL);
         linearLayout.setGravity(Gravity.CENTER);
         ImageView voiceIcon = new ImageView(MyApplication.getContext());
-        voiceIcon.setBackgroundResource(message.isSelf()?R.drawable.right_voice: R.drawable.left_voice);
+        voiceIcon.setBackgroundResource(message.isSelf() ? R.drawable.right_voice : R.drawable.left_voice);
         final AnimationDrawable frameAnimatio = (AnimationDrawable) voiceIcon.getBackground();
 
         TextView tv = new TextView(MyApplication.getContext());
@@ -72,12 +78,12 @@ public class VoiceMessage extends Message {
         int width = (int) TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_DIP, 14, context.getResources().getDisplayMetrics());
         LinearLayout.LayoutParams lp = new LinearLayout.LayoutParams(ViewGroup.LayoutParams.WRAP_CONTENT, ViewGroup.LayoutParams.WRAP_CONTENT);
         LinearLayout.LayoutParams imageLp = new LinearLayout.LayoutParams(width, height);
-        if (message.isSelf()){
+        if (message.isSelf()) {
             linearLayout.addView(tv);
             imageLp.setMargins(10, 0, 0, 0);
             voiceIcon.setLayoutParams(imageLp);
             linearLayout.addView(voiceIcon);
-        }else{
+        } else {
             voiceIcon.setLayoutParams(imageLp);
             linearLayout.addView(voiceIcon);
             lp.setMargins(10, 0, 0, 0);
@@ -138,7 +144,7 @@ public class VoiceMessage extends Message {
                             frameAnimatio.selectDrawable(0);
                         }
                     });
-                }catch (Exception e) {
+                } catch (Exception e) {
 
                 }
 

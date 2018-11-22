@@ -19,6 +19,13 @@ import com.growalong.android.R;
 import com.growalong.android.account.AccountManager;
 import com.growalong.android.im.model.ImUserInfo;
 import com.growalong.android.im.utils.PushUtil;
+import com.growalong.android.model.BaseGenericModel;
+import com.growalong.android.model.BaseParams;
+import com.growalong.android.model.NetLoginIMBean;
+import com.growalong.android.model.NoDataParams;
+import com.growalong.android.net.retrofit.BaseRetrofitClient;
+import com.growalong.android.net.retrofit.service.ILoginApis;
+import com.growalong.android.util.RxUtil;
 import com.growalong.android.util.ToastUtil;
 import com.huawei.android.pushagent.PushManager;
 import com.meizu.cloud.pushsdk.util.MzSystemUtils;
@@ -43,6 +50,10 @@ import com.xiaomi.mipush.sdk.MiPushClient;
 
 import java.util.ArrayList;
 import java.util.List;
+
+import rx.Observable;
+import rx.Subscription;
+import rx.functions.Action1;
 
 public class SplashActivity extends QLActivity implements SplashView, TIMCallBack {
     private final int REQUEST_PHONE_PERMISSIONS = 0;
@@ -141,6 +152,47 @@ public class SplashActivity extends QLActivity implements SplashView, TIMCallBac
             case 6200:
                 Toast.makeText(this, getString(R.string.login_error_timeout), Toast.LENGTH_SHORT).show();
                 navToLogin();
+                break;
+            case 70001:
+                BaseParams<NoDataParams> baseParams = new BaseParams<>(new NoDataParams());
+                ILoginApis iLoginApis = BaseRetrofitClient.getInstance().create(ILoginApis.class);
+                Observable<BaseGenericModel<NetLoginIMBean>> observable = iLoginApis.loginForIM(baseParams);
+                Subscription subscribe = observable.compose(RxUtil.<NetLoginIMBean>handleResult())
+                        .subscribe(new Action1<NetLoginIMBean>() {
+                            @Override
+                            public void call(final NetLoginIMBean netLoginIMBean) {
+
+                                final String userId = AccountManager.getUserId(SplashActivity.this);
+                                TIMManager.getInstance().login(userId, netLoginIMBean.getUserSig(), new TIMCallBack() {
+                                    @Override
+                                    public void onError(int code, String desc) {
+                                        //错误码 code 和错误描述 desc，可用于定位请求失败原因
+                                        //错误码 code 列表请参见错误码表
+                                        Log.d("im", "login failed. code: " + code + " errmsg: " + desc);
+                                    }
+
+                                    @Override
+                                    public void onSuccess() {
+                                        Log.d("im", "login succ");
+
+                                        AccountManager.getInstance().setIMUserSig(netLoginIMBean.getUserSig());
+
+                                        ImUserInfo.getInstance().setUserSig(netLoginIMBean.getUserSig());
+                                        ImUserInfo.getInstance().setId(userId);
+                                        Intent intent = new Intent(SplashActivity.this, LoginMainActivity.class);
+                                        startActivity(intent);
+                                    }
+                                });
+
+                            }
+                        }, new Action1<Throwable>() {
+                            @Override
+                            public void call(Throwable throwable) {
+                                Toast.makeText(SplashActivity.this, getString(R.string.login_error), Toast.LENGTH_SHORT).show();
+                                navToLogin();
+                            }
+                        });
+                addSubscribe(subscribe);
                 break;
             default:
                 Toast.makeText(this, getString(R.string.login_error), Toast.LENGTH_SHORT).show();

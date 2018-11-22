@@ -56,6 +56,11 @@ public class ImageMessage extends Message {
     }
 
 
+    @Override
+    public String getContent() {
+        return ((TIMImageElem)message.getElement(0)).getPath();
+    }
+
     /**
      * 显示消息
      *

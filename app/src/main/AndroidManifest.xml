@@ -253,6 +253,9 @@
             android:name=".ui.CameraProtectActivity"
             android:configChanges="orientation|keyboardHidden|screenSize" />
         <activity
+            android:name=".ui.SettingActivity"
+            android:configChanges="orientation|keyboardHidden|screenSize" />
+        <activity
             android:name="com.growalong.android.agora.openvcall.ui.AgoraSettingsActivity"
             android:configChanges="orientation|keyboardHidden|screenSize" />
     </application>

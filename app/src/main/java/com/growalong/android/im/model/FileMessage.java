@@ -33,7 +33,10 @@ public class FileMessage extends Message {
         message.addElement(elem);
     }
 
-
+    @Override
+    public String getContent() {
+        return ((TIMFileElem)message.getElement(0)).getPath();
+    }
 
     /**
      * 显示消息

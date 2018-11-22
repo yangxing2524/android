@@ -1,13 +1,18 @@
 package com.growalong.android.model;
 
+import android.os.Parcel;
+import android.os.Parcelable;
+
 /**
  * Created by yangxing on 2018/11/14.
  */
-public class UserInfoModel {
+public class UserInfoModel implements Parcelable {
     private long id;
     private String mobile;      //手机号码
     private String headImgUrl;      //头像
     private String name;        //昵称
+    private String cnName;        //
+    private String enName;        //
     private String status;      //状态 1：正常，0禁用,2已配对
     private int age;            //年龄
     private String birthday;    //生日 YYYY-MM-DD
@@ -17,6 +22,53 @@ public class UserInfoModel {
     private String familyInfo;  //家庭介绍
     private int grade;          //用户级别 1,2,3
     private int nation;         //国籍身份 1,中国家庭 2，英国家庭
+
+
+    protected UserInfoModel(Parcel in) {
+        id = in.readLong();
+        mobile = in.readString();
+        headImgUrl = in.readString();
+        name = in.readString();
+        cnName = in.readString();
+        enName = in.readString();
+        status = in.readString();
+        age = in.readInt();
+        birthday = in.readString();
+        gender = in.readInt();
+        hobby = in.readString();
+        address = in.readString();
+        familyInfo = in.readString();
+        grade = in.readInt();
+        nation = in.readInt();
+    }
+
+    public String getCnName() {
+        return cnName;
+    }
+
+    public void setCnName(String cnName) {
+        this.cnName = cnName;
+    }
+
+    public String getEnName() {
+        return enName;
+    }
+
+    public void setEnName(String enName) {
+        this.enName = enName;
+    }
+
+    public static final Creator<UserInfoModel> CREATOR = new Creator<UserInfoModel>() {
+        @Override
+        public UserInfoModel createFromParcel(Parcel in) {
+            return new UserInfoModel(in);
+        }
+
+        @Override
+        public UserInfoModel[] newArray(int size) {
+            return new UserInfoModel[size];
+        }
+    };
 
     public long getId() {
         return id;
@@ -120,5 +172,29 @@ public class UserInfoModel {
 
     public void setNation(int nation) {
         this.nation = nation;
+    }
+
+    @Override
+    public int describeContents() {
+        return 0;
+    }
+
+    @Override
+    public void writeToParcel(Parcel dest, int flags) {
+        dest.writeLong(id);
+        dest.writeString(mobile);
+        dest.writeString(headImgUrl);
+        dest.writeString(name);
+        dest.writeString(cnName);
+        dest.writeString(enName);
+        dest.writeString(status);
+        dest.writeInt(age);
+        dest.writeString(birthday);
+        dest.writeInt(gender);
+        dest.writeString(hobby);
+        dest.writeString(address);
+        dest.writeString(familyInfo);
+        dest.writeInt(grade);
+        dest.writeInt(nation);
     }
 }

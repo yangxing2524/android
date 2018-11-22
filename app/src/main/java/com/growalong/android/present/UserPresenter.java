@@ -1,5 +1,6 @@
 package com.growalong.android.present;
 
+import com.google.gson.JsonElement;
 import com.growalong.android.model.BaseParams;
 import com.growalong.android.model.CollectModel;
 import com.growalong.android.model.NetCollectModel;
@@ -26,10 +27,15 @@ public class UserPresenter {
         iCourseApis = BaseRetrofitClient.getInstance().create(IUserApis.class);
     }
 
-    public Observable<UserInfoModel> getCourseDetail(String userId, String type) {
+    public Observable<UserInfoModel> getUserInfo(String userId, String type) {
         BaseParams<UserIdTypeParams> baseParams = new BaseParams<>(new UserIdTypeParams(type, Long.valueOf(userId)));
         return iCourseApis.getUserInfo(baseParams).compose(RxUtil.<UserInfoModel>handleResult())
                 .compose(NewBasePresenter.<UserInfoModel>asyAndMainResponseTransformer());//网络操作在异步线程，观察者在主线程;
+    }
+    public Observable<JsonElement> updateUserInfo(UserInfoModel userInfoModel) {
+        BaseParams<UserInfoModel> baseParams = new BaseParams<>(userInfoModel);
+        return iCourseApis.updateUserInfo(baseParams).compose(RxUtil.<JsonElement>handleResult())
+                .compose(NewBasePresenter.<JsonElement>asyAndMainResponseTransformer());//网络操作在异步线程，观察者在主线程;
     }
 
     public Observable<List<CollectModel>> getMyCollect(int page) {
@@ -42,5 +48,10 @@ public class UserPresenter {
                     }
                 })
                 .compose(NewBasePresenter.<List<CollectModel>>asyAndMainResponseTransformer());//网络操作在异步线程，观察者在主线程;
+    }
+    public Observable<JsonElement> addCollect(CollectModel addCollectParams) {
+        BaseParams<CollectModel> baseParams = new BaseParams<>(addCollectParams);
+        return iCourseApis.addCollect(baseParams).compose(RxUtil.<JsonElement>handleResult())
+                .compose(NewBasePresenter.<JsonElement>asyAndMainResponseTransformer());//网络操作在异步线程，观察者在主线程;
     }
 }

@@ -83,6 +83,11 @@ public class VideoMessage extends Message {
         message.addElement(elem);
     }
 
+    @Override
+    public String getContent() {
+        return ((TIMVideoElem)message.getElement(0)).getVideoPath();
+    }
+
     /**
      * 显示消息
      *

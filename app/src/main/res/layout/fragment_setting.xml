@@ -4,13 +4,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:background="@color/background"
-    android:orientation="vertical"
-    >
-
-    <com.tencent.qcloud.ui.TemplateTitle
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        app:titleText="@string/home_setting_tab" />
+    android:orientation="vertical">
 
     <View
         android:layout_width="match_parent"
@@ -23,13 +17,22 @@
         android:layout_height="56dp"
         android:background="@color/white"
         android:gravity="center_vertical"
-        android:orientation="horizontal">
+        android:orientation="horizontal"
+        android:paddingLeft="20dp"
+        android:paddingRight="20dp">
+
+        <TextView
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:text="@string/head"
+            android:textColor="@color/color_474747"
+            android:textSize="16sp" />
 
         <com.tencent.qcloud.ui.CircleImageView
+            android:id="@+id/headview"
             android:layout_width="45dp"
             android:layout_height="45dp"
-            android:id="@+id/headview"
-            android:layout_marginLeft="20dp"
             android:src="@drawable/head_me" />
 
         <LinearLayout
@@ -37,7 +40,8 @@
             android:layout_height="wrap_content"
             android:layout_marginLeft="20dp"
             android:background="@color/white"
-            android:orientation="vertical">
+            android:orientation="vertical"
+            android:visibility="gone">
 
             <TextView
                 android:id="@id/name"
@@ -47,6 +51,7 @@
                 android:singleLine="true"
                 android:textColor="@color/black"
                 android:textSize="18sp" />
+
 
             <TextView
                 android:id="@+id/idtext"
@@ -64,43 +69,47 @@
         android:background="@color/line" />
 
     <com.tencent.qcloud.ui.LineControllerView
-        android:id="@+id/nickName"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="20dp"
-        app:canNav="true"
-        app:name="@string/setting_nick_name_change" />
-
-
-    <com.tencent.qcloud.ui.LineControllerView
-        android:id="@+id/friendConfirm"
+        android:id="@+id/ChineseName"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         app:canNav="true"
-        app:content="@string/setting_friend_need_confirm"
-        app:name="@string/setting_friend_confirm" />
+        app:name="@string/children_chinese_name" />
 
     <com.tencent.qcloud.ui.LineControllerView
-        android:id="@+id/messageNotify"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        app:canNav="true"
-        app:name="@string/setting_message_notify" />
-
-    <com.tencent.qcloud.ui.LineControllerView
-        android:id="@+id/blackList"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        app:canNav="true"
-        app:name="@string/setting_black_list" />
-
-    <com.tencent.qcloud.ui.LineControllerView
-        android:id="@+id/about"
+        android:id="@+id/EnglishName"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         app:canNav="true"
         app:isBottom="true"
-        app:name="@string/setting_about" />
+        app:name="@string/children_english_name" />
+    <com.tencent.qcloud.ui.LineControllerView
+        android:id="@+id/gender"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        app:canNav="true"
+        app:isBottom="true"
+        app:name="@string/gender" />
+    <com.tencent.qcloud.ui.LineControllerView
+        android:id="@+id/age"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        app:canNav="true"
+        app:isBottom="true"
+        app:name="@string/age" />
+    <com.tencent.qcloud.ui.LineControllerView
+        android:id="@+id/favorite"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        app:canNav="true"
+        app:isBottom="true"
+        app:name="@string/favorite" />
+    <com.tencent.qcloud.ui.LineControllerView
+        android:id="@+id/location"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        app:canNav="true"
+        app:isBottom="true"
+        app:name="@string/location" />
 
 
     <TextView

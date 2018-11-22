@@ -120,7 +120,10 @@ public class EditActivity extends Activity implements TIMCallBack{
         title.setMoreTextAction(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                editAction.onEdit(input.getText().toString(),EditActivity.this);
+                if(editAction != null) {
+                    editAction.onEdit(input.getText().toString(), EditActivity.this);
+                }
+                onSuccess();
             }
         });
 

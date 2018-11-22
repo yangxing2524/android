@@ -130,4 +130,8 @@ public interface ChatView extends MvpView {
      */
     void showToast(String msg);
 
+    /**
+     * 视频
+     */
+    void openVideo();
 }

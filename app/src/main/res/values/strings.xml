@@ -93,6 +93,12 @@
     <string name="setting_about">关于</string>
     <string name="setting_friend_need_confirm">需验证</string>
     <string name="setting_nick_name_change">修改昵称</string>
+    <string name="setting_chinese_name_change">修改中文名</string>
+    <string name="setting_english_name_change">修改英文名</string>
+    <string name="setting_favorite_change">修改爱好</string>
+    <string name="setting_age_change">修改年龄</string>
+    <string name="setting_gender_change">修改性别</string>
+    <string name="setting_location_change">修改住址</string>
     <string name="setting_friend_confirm_change_err">修改验证类型失败</string>
 
 
@@ -141,6 +147,7 @@
     <string name="chat_file">文件</string>
     <string name="chat_photo">拍摄</string>
     <string name="chat_video">小视频</string>
+    <string name="chat_video_chat">视频通话</string>
     <string name="chat_press_talk">按住 说话</string>
     <string name="chat_release_send">松开 结束</string>
     <string name="chat_up_finger">手指上滑，取消发送</string>
@@ -152,6 +159,7 @@
     <string name="chat_pullback_not_support">改会话不支持消息撤回</string>
     <string name="chat_del">删除</string>
     <string name="chat_save">保存</string>
+    <string name="chat_collect">收藏</string>
     <string name="chat_file_too_large">文件过大，发送失败</string>
     <string name="chat_file_not_exist">文件不存在，发送失败</string>
     <string name="chat_image_preview_title">图片预览</string>
@@ -368,4 +376,14 @@
     <string name="net_error">OPPS~网络不给力</string>
     <string name="course_intro">课程介绍</string>
     <string name="update">更新</string>
+    <string name="collect_success">添加收藏成功</string>
+    <string name="collect_failed">添加收藏失败</string>
+    <string name="my_info">我的信息</string>
+    <string name="head">头像</string>
+    <string name="children_chinese_name">孩子中文名</string>
+    <string name="children_english_name">孩子英文名</string>
+    <string name="gender">性别</string>
+    <string name="age">年龄</string>
+    <string name="favorite">爱好</string>
+    <string name="location">地址</string>
 </resources>

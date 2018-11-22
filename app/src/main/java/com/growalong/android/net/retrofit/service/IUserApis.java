@@ -1,5 +1,6 @@
 package com.growalong.android.net.retrofit.service;
 
+import com.google.gson.JsonElement;
 import com.growalong.android.model.BaseGenericModel;
 import com.growalong.android.model.BaseParams;
 import com.growalong.android.model.NetCollectModel;
@@ -17,6 +18,12 @@ public interface IUserApis {
     @POST(ApiConstants.getUserInfo)
     Observable<BaseGenericModel<UserInfoModel>> getUserInfo(@Body BaseParams baseParams);
 
+    @POST(ApiConstants.updateUserInfo)
+    Observable<BaseGenericModel<JsonElement>> updateUserInfo(@Body BaseParams baseParams);
+
     @POST(ApiConstants.getMyCollect)
     Observable<BaseGenericModel<NetCollectModel>> getMyCollect(@Body BaseParams baseParams);
+
+    @POST(ApiConstants.addCollect)
+    Observable<BaseGenericModel<JsonElement>> addCollect(@Body BaseParams baseParams);
 }

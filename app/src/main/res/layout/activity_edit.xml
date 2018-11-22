@@ -4,7 +4,8 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     xmlns:app="http://schemas.android.com/apk/res-auto"
-    tools:context="com.tencent.qcloud.timchat.ui.EditActivity">
+    tools:context=".ui.EditActivity"
+    >
 
     <com.tencent.qcloud.ui.TemplateTitle
         android:id="@+id/editTitle"

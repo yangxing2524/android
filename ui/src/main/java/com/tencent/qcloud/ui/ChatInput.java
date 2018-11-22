@@ -3,7 +3,6 @@ package com.tencent.qcloud.ui;
 import android.Manifest;
 import android.app.Activity;
 import android.content.Context;
-import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.content.res.AssetManager;
 import android.graphics.Bitmap;
@@ -14,13 +13,9 @@ import android.support.v4.app.FragmentActivity;
 import android.text.Editable;
 import android.text.Spannable;
 import android.text.SpannableString;
-import android.text.SpannableStringBuilder;
 import android.text.TextWatcher;
-import android.text.method.KeyListener;
 import android.text.style.ImageSpan;
 import android.util.AttributeSet;
-import android.util.Log;
-import android.view.KeyEvent;
 import android.view.LayoutInflater;
 import android.view.MotionEvent;
 import android.view.View;
@@ -80,6 +75,8 @@ public class ChatInput extends RelativeLayout implements TextWatcher,View.OnClic
         morePanel = (LinearLayout) findViewById(R.id.morePanel);
         LinearLayout BtnImage = (LinearLayout) findViewById(R.id.btn_photo);
         BtnImage.setOnClickListener(this);
+        LinearLayout btn_video_chat = (LinearLayout) findViewById(R.id.btn_video_chat);
+        btn_video_chat.setOnClickListener(this);
         LinearLayout BtnPhoto = (LinearLayout) findViewById(R.id.btn_image);
         BtnPhoto.setOnClickListener(this);
         LinearLayout btnVideo = (LinearLayout) findViewById(R.id.btn_video);
@@ -338,6 +335,12 @@ public class ChatInput extends RelativeLayout implements TextWatcher,View.OnClic
         }
         if (id == R.id.btn_keyboard){
             updateView(InputMode.TEXT);
+        }
+
+        if(id == R.id.btn_video_chat){
+            if(activity!=null && requestCamera(activity)){
+                chatView.openVideo();
+            }
         }
         if (id == R.id.btn_video){
             if (getContext() instanceof FragmentActivity){

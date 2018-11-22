@@ -12,6 +12,9 @@ public class ApiConstants {
     public static final String courseDetailList = "/v1/course/get.do"; //课程基础信息
     public static final String courseMaterialList = "/v1/course/material.do"; //课程素材
     public static final String getUserInfo = "/v1/user/get.do"; //获取用户信息
+    public static final String updateUserInfo = "/v1/user/update.do"; //更新用户信息
     public static final String getMyCollect = "/v1/user/getCollection.do"; //获取我的收藏
+    public static final String addCollect = "/v1/user/collect.do"; //添加收藏
+    public static final String getRoom = "/v1/user/getRoom.do"; //获取房间号
 
 }

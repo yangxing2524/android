@@ -49,10 +49,10 @@ public class MainActivity extends QLActivity {
     @Override
     protected void onCreateBaseView(@Nullable Bundle savedInstanceState) {
         if (requestPermission()) {
-            Intent intent = new Intent(MainActivity.this,SplashActivity.class);
+            Intent intent = new Intent(MainActivity.this, SplashActivity.class);
             finish();
             startActivity(intent);
-        }else {
+        } else {
             initView();
             Toast.makeText(this, getString(TIMManager.getInstance().getEnv() == 0 ? R.string.env_normal : R.string.env_test), Toast.LENGTH_SHORT).show();
         }
@@ -74,9 +74,7 @@ public class MainActivity extends QLActivity {
             //将Tab按钮添加进Tab选项卡中
             mTabHost.addTab(tabSpec, fragmentArray[i], null);
             mTabHost.getTabWidget().setDividerDrawable(null);
-
         }
-
     }
 
     private View getTabItemView(int index) {
@@ -85,7 +83,7 @@ public class MainActivity extends QLActivity {
         icon.setImageResource(mImageViewArray[index]);
         TextView title = (TextView) view.findViewById(R.id.title);
         title.setText(mTitleArray[index]);
-        if (index == 0){
+        if (index == 0) {
             msgUnread = (ImageView) view.findViewById(R.id.tabUnread);
         }
         return view;
@@ -93,21 +91,21 @@ public class MainActivity extends QLActivity {
 
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
-        super.onActivityResult(requestCode,resultCode,data);
-        if(requestCode == CommonPhotoSelectorDialog.PHOTOREQUESTCODE || requestCode == CommonPhotoSelectorDialog.PHOTOREQUESTCODE1){
+        super.onActivityResult(requestCode, resultCode, data);
+        if (requestCode == CommonPhotoSelectorDialog.PHOTOREQUESTCODE || requestCode == CommonPhotoSelectorDialog.PHOTOREQUESTCODE1) {
             MyFragment fragment = (MyFragment) getSupportFragmentManager().findFragmentByTag(mTextviewArray[2]);
-            fragment.onActivityResult(requestCode, resultCode,  data);
+            fragment.onActivityResult(requestCode, resultCode, data);
         }
     }
 
-    public void logout(){
+    public void logout() {
         TlsBusiness.logout(ImUserInfo.getInstance().getId());
         ImUserInfo.getInstance().setId(null);
         ImUserInfo.getInstance().setUserSig(null);
         MessageEvent.getInstance().clear();
         FriendshipInfo.getInstance().clear();
         GroupInfo.getInstance().clear();
-        Intent intent = new Intent(MainActivity.this,SplashActivity.class);
+        Intent intent = new Intent(MainActivity.this, SplashActivity.class);
         finish();
         startActivity(intent);
 
@@ -117,13 +115,13 @@ public class MainActivity extends QLActivity {
     /**
      * 设置未读tab显示
      */
-    public void setMsgUnread(boolean noUnread){
-        msgUnread.setVisibility(noUnread?View.GONE:View.VISIBLE);
+    public void setMsgUnread(boolean noUnread) {
+        msgUnread.setVisibility(noUnread ? View.GONE : View.VISIBLE);
     }
 
 
-    private boolean requestPermission(){
-        if (afterM()){
+    private boolean requestPermission() {
+        if (afterM()) {
             final List<String> permissionsList = new ArrayList<>();
             if ((checkSelfPermission(Manifest.permission.WRITE_EXTERNAL_STORAGE) != PackageManager.PERMISSION_GRANTED) ||
                     (checkSelfPermission(Manifest.permission.READ_PHONE_STATE) != PackageManager.PERMISSION_GRANTED)) {
@@ -133,7 +131,7 @@ public class MainActivity extends QLActivity {
         return false;
     }
 
-    private boolean afterM(){
+    private boolean afterM() {
         return Build.VERSION.SDK_INT >= Build.VERSION_CODES.M;
     }
 

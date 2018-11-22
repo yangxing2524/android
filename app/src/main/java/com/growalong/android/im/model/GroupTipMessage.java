@@ -24,6 +24,11 @@ public class GroupTipMessage extends Message {
     }
 
 
+    @Override
+    public String getContent() {
+        return null;
+    }
+
     /**
      * 显示消息
      *

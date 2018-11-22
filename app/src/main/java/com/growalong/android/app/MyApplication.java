@@ -66,8 +66,6 @@ public class MyApplication extends DefaultApplicationLike {
     public static volatile Handler applicationHandler;
     private static IWXAPI mApi;
 
-    public static boolean canPlayAac = true;
-    public static boolean canPlaym4a = true;
     public Context context;
     private DisplayMetrics displayMetrics = null;
     private static Realm realm;

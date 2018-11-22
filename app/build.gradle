@@ -181,6 +181,8 @@ android {
 
 dependencies {
     implementation fileTree(include: ['*.jar'], dir: 'libs')
+    
+    compile project(':pickerview')
 
     //    compile project(':PhotoPicker')
     implementation 'com.android.support:multidex:1.0.1'
