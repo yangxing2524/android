@@ -33,6 +33,7 @@ public class UserPresenter {
                 .compose(NewBasePresenter.<UserInfoModel>asyAndMainResponseTransformer());//网络操作在异步线程，观察者在主线程;
     }
     public Observable<JsonElement> updateUserInfo(UserInfoModel userInfoModel) {
+        userInfoModel.setType("c");
         BaseParams<UserInfoModel> baseParams = new BaseParams<>(userInfoModel);
         return iCourseApis.updateUserInfo(baseParams).compose(RxUtil.<JsonElement>handleResult())
                 .compose(NewBasePresenter.<JsonElement>asyAndMainResponseTransformer());//网络操作在异步线程，观察者在主线程;

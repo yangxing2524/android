@@ -19,14 +19,19 @@ import android.widget.Toast;
 
 import com.bigkoo.pickerview.TimePickerView;
 import com.bumptech.glide.Glide;
+import com.google.gson.JsonElement;
 import com.growalong.android.R;
+import com.growalong.android.app.AppManager;
 import com.growalong.android.model.UploadModel;
 import com.growalong.android.model.UserInfoModel;
+import com.growalong.android.present.CommSubscriber;
+import com.growalong.android.present.UserPresenter;
 import com.growalong.android.ui.fragment.NewBaseFragment;
 import com.growalong.android.upload.IUploadCallBack;
 import com.growalong.android.upload.UploadOssHelper;
 import com.growalong.android.util.LogUtil;
 import com.growalong.android.util.ToastUtil;
+import com.growalong.android.util.Utils;
 import com.tencent.imsdk.TIMCallBack;
 import com.tencent.imsdk.TIMUserProfile;
 import com.tencent.qcloud.presentation.business.LoginBusiness;
@@ -74,6 +79,7 @@ public class SettingFragment extends NewBaseFragment implements FriendInfoView {
 
     //时间选择器
     private TimePickerView mPvTime;
+    private boolean hasChangeInfo;
 
     public SettingFragment() {
         // Required empty public constructor
@@ -84,19 +90,25 @@ public class SettingFragment extends NewBaseFragment implements FriendInfoView {
     @Override
     protected void initEventAndData(Bundle savedInstanceState, View view) {
 
-        mPvTime = new TimePickerView(activity, TimePickerView.Type.YEAR_MONTH);
-        final SimpleDateFormat formatter = new SimpleDateFormat("yyyy年MM月");
+        mPvTime = new TimePickerView(activity, TimePickerView.Type.YEAR_MONTH_DAY);
+        final SimpleDateFormat formatter = new SimpleDateFormat(getResources().getString(R.string.data));
         //时间选择后回调
         mPvTime.setOnTimeSelectListener(new TimePickerView.OnTimeSelectListener() {
 
             @Override
             public void onTimeSelect(Date date) {
-                String time = formatter.format(date);
-                age.setContent(time);
+                try {
+                    int age = Utils.getAge(date);
+                    SettingFragment.this.age.setContent(age + "岁");
+                    userInfoModel.setAge(age);
+                    userInfoModel.setBirthday((new SimpleDateFormat("yyyy-MM-dd")).format(date));
+                } catch (Exception e) {
+                    e.printStackTrace();
+                }
             }
         });
 
-        userInfoModel = getActivity().getIntent().getParcelableExtra("user");
+        userInfoModel = AppManager.getInstance().getUserInfoModel();
         photoSelectorDialog = new CommonPhotoSelectorDialog(getActivity());
         name = (TextView) view.findViewById(R.id.name);
         setOnClickListener(view);
@@ -107,7 +119,7 @@ public class SettingFragment extends NewBaseFragment implements FriendInfoView {
                 showPhoneDialog();
             }
         });
-        Glide.with(getActivity()).load(userInfoModel.getHeadImgUrl()).asBitmap().into(headView);
+        Glide.with(getActivity()).load(userInfoModel.getHeadImgUrl()).into(headView);
 
         setChineseName(userInfoModel.getName());
         gender.setContent(userInfoModel.getGender() == 0 ? "女" : "男");
@@ -246,6 +258,7 @@ public class SettingFragment extends NewBaseFragment implements FriendInfoView {
         if (requestCode == REQ_CHANGE_CHINESE) {
             if (resultCode == getActivity().RESULT_OK) {
                 setChineseName(data.getStringExtra(EditActivity.RETURN_EXTRA));
+                userInfoModel.setCnName(data.getStringExtra(EditActivity.RETURN_EXTRA));
             }
         }
 
@@ -279,16 +292,39 @@ public class SettingFragment extends NewBaseFragment implements FriendInfoView {
                 favorite.setContent(userInfoModel.getHobby());
             }
         } else {
-            dealResult(requestCode, data);
+            hasChangeInfo = changeHeadView(requestCode, data);
         }
 
+        if (resultCode == getActivity().RESULT_OK) {
+            hasChangeInfo = true;
+        }
+    }
+
+    @Override
+    public void onDestroy() {
+        super.onDestroy();
+        if (hasChangeInfo) {
+            UserPresenter userPresenter = new UserPresenter();
+            userPresenter.updateUserInfo(userInfoModel).subscribe(new CommSubscriber<JsonElement>() {
+                @Override
+                public void onSuccess(JsonElement jsonObject) {
+                    ToastUtil.shortShow("信息修改成功");
+                }
+
+                @Override
+                public void onFailure(Throwable e) {
+                    super.onFailure(e);
+                    ToastUtil.shortShow("信息修改失败");
+                }
+            });
+        }
     }
 
     @SuppressLint("NewApi")
-    private void dealResult(int requestCode, Intent data) {
+    private boolean changeHeadView(int requestCode, Intent data) {
         String mUploadPath = null;
         if (data == null) {
-            return;
+            return false;
         }
         if (requestCode == 99) {
             mUploadPath = data.getStringExtra(CameraProtectActivity.IMAGE_PATH);
@@ -297,9 +333,11 @@ public class SettingFragment extends NewBaseFragment implements FriendInfoView {
                 mUploadPath = fileDir;
             }
 //            mPresenter.showLocalImage(mUploadPath, dvHeader);
-            Glide.with(this).load(mUploadPath).into((ImageView) headView);
+            Glide.with(this).load(mUploadPath).into(headView);
             newUploadImage(mUploadPath);
+            return true;
         } else if (requestCode == CommonPhotoSelectorDialog.PHOTOREQUESTCODE) {
+
             try {
                 Uri originalUri = data.getData();
                 final boolean isKitKat = Build.VERSION.SDK_INT >= Build.VERSION_CODES.KITKAT;
@@ -323,12 +361,14 @@ public class SettingFragment extends NewBaseFragment implements FriendInfoView {
                     mUploadPath = originalUri.getPath();
                 }
 //                mPresenter.showLocalImage(mUploadPath, dvHeader);
-                Glide.with(this).load(mUploadPath).into((ImageView) headView);
+                Glide.with(this).load(mUploadPath).into(headView);
                 newUploadImage(mUploadPath);
             } catch (Exception e) {
                 Log.e("EditAccountInfoActivity", e.toString());
             }
+            return true;
         }
+        return false;
     }
 
 
@@ -372,6 +412,9 @@ public class SettingFragment extends NewBaseFragment implements FriendInfoView {
 //                mPresenter.updateInfo(mName, uploadModel.getOssFilePath());
                 LogUtil.e("file path :" + uploadModel.getOssFilePath());
                 ((QLActivity) getActivity()).hideLoadingDialog();
+
+                userInfoModel.setHeadImgUrl(uploadModel.getOssFilePath());
+                hasChangeInfo = true;
             }
 
             @Override

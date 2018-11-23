@@ -25,6 +25,13 @@ public class SettingActivity extends QLActivity {
     }
 
     @Override
+    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+        SettingFragment fragment = (SettingFragment) getSupportFragmentManager().findFragmentById(R.id.fragment);
+        fragment.onActivityResult(requestCode, resultCode, data);
+    }
+
+    @Override
     protected int getLayoutId() {
         return R.layout.activity_setting;
     }

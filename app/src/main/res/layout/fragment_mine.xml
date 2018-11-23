@@ -57,7 +57,7 @@
                 tools:text="广东、广州" />
         </LinearLayout>
 
-        <ImageView
+        <com.tencent.qcloud.ui.CircleImageView
             android:id="@+id/headview"
             android:layout_width="@dimen/y100"
             android:layout_height="@dimen/y100"

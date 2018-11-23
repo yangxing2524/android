@@ -69,11 +69,6 @@ public class TimePickerView extends BasePickerView implements View.OnClickListen
         wheelTime.setEndYear(endYear);
     }
 
-
-    public void setTime(int year, int month, int day) {
-        wheelTime.setPicker(year, month, day, 0, 0);
-    }
-
     /**
      * 设置选中时间
      *

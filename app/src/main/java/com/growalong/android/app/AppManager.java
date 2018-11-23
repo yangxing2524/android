@@ -2,6 +2,7 @@ package com.growalong.android.app;
 
 import android.app.Activity;
 
+import com.growalong.android.model.UserInfoModel;
 import com.tencent.tinker.loader.shareutil.ShareTinkerInternals;
 
 import java.util.Stack;
@@ -15,6 +16,16 @@ public class AppManager {
      * AppManager单例
      */
     private static AppManager instance;
+
+    private UserInfoModel userInfoModel;
+
+    public UserInfoModel getUserInfoModel() {
+        return userInfoModel;
+    }
+
+    public void setUserInfoModel(UserInfoModel userInfoModel) {
+        this.userInfoModel = userInfoModel;
+    }
 
     /**
      * 单例

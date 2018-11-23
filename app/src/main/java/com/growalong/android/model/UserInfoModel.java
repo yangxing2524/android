@@ -22,7 +22,15 @@ public class UserInfoModel implements Parcelable {
     private String familyInfo;  //家庭介绍
     private int grade;          //用户级别 1,2,3
     private int nation;         //国籍身份 1,中国家庭 2，英国家庭
+    private String type = "c";
 
+    public String getType() {
+        return type;
+    }
+
+    public void setType(String type) {
+        this.type = type;
+    }
 
     protected UserInfoModel(Parcel in) {
         id = in.readLong();
@@ -40,6 +48,7 @@ public class UserInfoModel implements Parcelable {
         familyInfo = in.readString();
         grade = in.readInt();
         nation = in.readInt();
+        type = in.readString();
     }
 
     public String getCnName() {
@@ -196,5 +205,6 @@ public class UserInfoModel implements Parcelable {
         dest.writeString(familyInfo);
         dest.writeInt(grade);
         dest.writeInt(nation);
+        dest.writeString(type);
     }
 }

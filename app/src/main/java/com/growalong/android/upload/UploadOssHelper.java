@@ -43,9 +43,9 @@ public class UploadOssHelper {
     private OSSAsyncTask mTask;
 
     //图片地址
-    public static String imageHttp = "https://img.grow-along.com/";
+    public static String imageHttp = "http://img.grow-along.com/";
     //语音地址
-    public static String audioHttp = "https://media.qlchat.com/";
+    public static String audioHttp = "http://media.grow-along.com/";
 
     /**
      * 普通异步上传

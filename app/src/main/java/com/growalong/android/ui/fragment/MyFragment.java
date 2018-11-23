@@ -1,6 +1,5 @@
 package com.growalong.android.ui.fragment;
 
-import android.content.Intent;
 import android.graphics.drawable.Drawable;
 import android.os.Bundle;
 import android.view.View;
@@ -10,6 +9,7 @@ import android.widget.TextView;
 import com.bumptech.glide.Glide;
 import com.growalong.android.R;
 import com.growalong.android.account.AccountManager;
+import com.growalong.android.app.AppManager;
 import com.growalong.android.model.UserInfoModel;
 import com.growalong.android.present.CommSubscriber;
 import com.growalong.android.present.UserPresenter;
@@ -53,19 +53,7 @@ public class MyFragment extends NewBaseFragment implements View.OnClickListener 
             @Override
             public void onSuccess(UserInfoModel userInfoModel) {
                 mUserInfoModel = userInfoModel;
-                name.setText(userInfoModel.getName());
-                interest.setText(userInfoModel.getHobby());
-                location.setText(userInfoModel.getFamilyInfo());
-                Glide.with(activity).load(userInfoModel.getHeadImgUrl()).asBitmap().into(headView);
-                Drawable drawable;
-                if (userInfoModel.getGender() == 1) {
-                    //男
-                    drawable = getResources().getDrawable(R.mipmap.man);
-                } else {
-                    drawable = getResources().getDrawable(R.mipmap.women);
-                }
-                drawable.setBounds(0, 0, drawable.getMinimumWidth(), drawable.getMinimumHeight());
-                name.setCompoundDrawables(drawable, null, null, null);
+                updateInfo();
 
                 //获取到的个人信息之后才添加点击事件
                 study_level.setOnClickListener(MyFragment.this);
@@ -82,12 +70,30 @@ public class MyFragment extends NewBaseFragment implements View.OnClickListener 
         top.setOnClickListener(this);
     }
 
+    private void updateInfo() {
+        if(getView() == null || mUserInfoModel == null){
+            return;
+        }
+        AppManager.getInstance().setUserInfoModel(mUserInfoModel);
+        name.setText(mUserInfoModel.getName());
+        interest.setText(mUserInfoModel.getHobby());
+        location.setText(mUserInfoModel.getFamilyInfo());
+        Glide.with(activity).load(mUserInfoModel.getHeadImgUrl()).asBitmap().into(headView);
+        Drawable drawable;
+        if (mUserInfoModel.getGender() == 1) {
+            //男
+            drawable = getResources().getDrawable(R.mipmap.man);
+        } else {
+            drawable = getResources().getDrawable(R.mipmap.women);
+        }
+        drawable.setBounds(0, 0, drawable.getMinimumWidth(), drawable.getMinimumHeight());
+        name.setCompoundDrawables(drawable, null, null, null);
+    }
 
     @Override
-    public void onActivityResult(int requestCode, int resultCode, Intent data) {
-        super.onActivityResult(requestCode, resultCode, data);
-
-
+    public void onResume() {
+        super.onResume();
+        updateInfo();
     }
 
     @Override
