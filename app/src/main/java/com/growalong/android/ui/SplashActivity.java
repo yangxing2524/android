@@ -82,8 +82,8 @@ public class SplashActivity extends QLActivity implements SplashView, TIMCallBac
                 new NotifyDialog().show(getString(R.string.tls_expire), getSupportFragmentManager(), new DialogInterface.OnClickListener() {
                     @Override
                     public void onClick(DialogInterface dialog, int which) {
-                        Intent intent = new Intent(SplashActivity.this, LoginMainActivity.class);
-                        startActivity(intent);
+                        LoginMainActivity.startThis(SplashActivity.this);
+                        finish();
                     }
                 });
             }
@@ -119,8 +119,8 @@ public class SplashActivity extends QLActivity implements SplashView, TIMCallBac
      */
     @Override
     public void navToLogin() {
-        Intent intent = new Intent(getApplicationContext(), LoginMainActivity.class);
-        startActivityForResult(intent, LOGIN_RESULT_CODE);
+        LoginMainActivity.startThis(this);
+        finish();
     }
 
     /**
@@ -179,8 +179,8 @@ public class SplashActivity extends QLActivity implements SplashView, TIMCallBac
 
                                         ImUserInfo.getInstance().setUserSig(netLoginIMBean.getUserSig());
                                         ImUserInfo.getInstance().setId(userId);
-                                        Intent intent = new Intent(SplashActivity.this, LoginMainActivity.class);
-                                        startActivity(intent);
+                                        LoginMainActivity.startThis(SplashActivity.this);
+                                        finish();
                                     }
                                 });
 

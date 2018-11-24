@@ -1,6 +1,7 @@
 package com.growalong.android.present;
 
 import com.google.gson.JsonElement;
+import com.growalong.android.app.MyApplication;
 import com.growalong.android.model.BaseParams;
 import com.growalong.android.model.CollectModel;
 import com.growalong.android.model.NetCollectModel;
@@ -33,7 +34,7 @@ public class UserPresenter {
                 .compose(NewBasePresenter.<UserInfoModel>asyAndMainResponseTransformer());//网络操作在异步线程，观察者在主线程;
     }
     public Observable<JsonElement> updateUserInfo(UserInfoModel userInfoModel) {
-        userInfoModel.setType("c");
+        userInfoModel.setType(MyApplication.TYPE);
         BaseParams<UserInfoModel> baseParams = new BaseParams<>(userInfoModel);
         return iCourseApis.updateUserInfo(baseParams).compose(RxUtil.<JsonElement>handleResult())
                 .compose(NewBasePresenter.<JsonElement>asyAndMainResponseTransformer());//网络操作在异步线程，观察者在主线程;

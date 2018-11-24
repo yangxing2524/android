@@ -63,6 +63,8 @@ public class ChatAdapter extends ArrayAdapter<Message> {
             viewHolder.rightPanel = (RelativeLayout) view.findViewById(R.id.rightPanel);
             viewHolder.sending = (ProgressBar) view.findViewById(R.id.sending);
             viewHolder.error = (ImageView) view.findViewById(R.id.sendError);
+            viewHolder.rightAvatar = (ImageView) view.findViewById(R.id.rightAvatar);
+            viewHolder.leftAvatar = (ImageView) view.findViewById(R.id.leftAvatar);
             viewHolder.sender = (TextView) view.findViewById(R.id.sender);
             viewHolder.rightDesc = (TextView) view.findViewById(R.id.rightDesc);
             viewHolder.systemMessage = (TextView) view.findViewById(R.id.systemMessage);
@@ -82,7 +84,7 @@ public class ChatAdapter extends ArrayAdapter<Message> {
         public RelativeLayout leftPanel;
         public RelativeLayout rightPanel;
         public ProgressBar sending;
-        public ImageView error;
+        public ImageView error, rightAvatar, leftAvatar;
         public TextView sender;
         public TextView systemMessage;
         public TextView rightDesc;

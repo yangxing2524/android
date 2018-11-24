@@ -73,6 +73,7 @@ public class MyApplication extends DefaultApplicationLike {
     private static List<String> qlLive;
     public static HashMap<String, Object> map = new HashMap<>();
 
+    public static String TYPE = "c";
     public MyApplication(Application application, int tinkerFlags, boolean tinkerLoadVerifyFlag,
                          long applicationStartElapsedTime, long applicationStartMillisTime, Intent tinkerResultIntent) {
         super(application, tinkerFlags, tinkerLoadVerifyFlag, applicationStartElapsedTime, applicationStartMillisTime, tinkerResultIntent);

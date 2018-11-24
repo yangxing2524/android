@@ -19,15 +19,18 @@ import com.growalong.android.R;
 import com.growalong.android.agora.openvcall.model.AgoraConstantApp;
 
 public class AgoraMainActivity extends AgoraBaseActivity {
+    private String id;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_main);
+        setContentView(R.layout.activity_main_agora);
     }
 
     @Override
     protected void initUIandEvent() {
         EditText v_channel = (EditText) findViewById(R.id.channel_name);
+        id = getIntent().getStringExtra("id");
         v_channel.addTextChangedListener(new TextWatcher() {
             @Override
             public void beforeTextChanged(CharSequence s, int start, int count, int after) {

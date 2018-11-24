@@ -26,4 +26,7 @@ public interface IUserApis {
 
     @POST(ApiConstants.addCollect)
     Observable<BaseGenericModel<JsonElement>> addCollect(@Body BaseParams baseParams);
+
+    @POST(ApiConstants.logout)
+    Observable<BaseGenericModel<JsonElement>> logout(@Body BaseParams baseParams);
 }

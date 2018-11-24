@@ -1,20 +1,24 @@
 package com.growalong.android.ui;
 
+import android.Manifest;
 import android.content.Context;
 import android.content.Intent;
+import android.content.pm.PackageManager;
 import android.graphics.BitmapFactory;
 import android.net.Uri;
 import android.os.Build;
 import android.os.Bundle;
 import android.os.Environment;
 import android.os.Handler;
-import android.support.v4.app.FragmentActivity;
+import android.support.annotation.NonNull;
+import android.support.annotation.Nullable;
+import android.support.v4.app.ActivityCompat;
+import android.support.v4.content.ContextCompat;
 import android.view.ContextMenu;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.MotionEvent;
 import android.view.View;
-import android.view.WindowManager;
 import android.widget.AbsListView;
 import android.widget.AdapterView;
 import android.widget.ListView;
@@ -22,7 +26,9 @@ import android.widget.Toast;
 
 import com.google.gson.JsonElement;
 import com.growalong.android.R;
-import com.growalong.android.agora.openvcall.ui.AgoraMainActivity;
+import com.growalong.android.agora.openvcall.model.AgoraConstantApp;
+import com.growalong.android.agora.openvcall.ui.AgoraChatActivity;
+import com.growalong.android.app.MyApplication;
 import com.growalong.android.im.adapters.ChatAdapter;
 import com.growalong.android.im.model.CustomMessage;
 import com.growalong.android.im.model.FileMessage;
@@ -63,9 +69,13 @@ import java.io.File;
 import java.util.ArrayList;
 import java.util.List;
 
-public class ChatActivity extends FragmentActivity implements ChatView {
+public class ChatActivity extends QLActivity implements ChatView {
 
     private static final String TAG = "ChatActivity";
+
+    public static final String VIDEO_CHAT_REQUEST = "[video_chat_request]_";
+    public static final String VIDEO_CHAT_FAILED = "[video_chat_failed]_";
+    public static final String VIDEO_CHAT_OVER = "[video_chat_over]_";
 
     private List<Message> messageList = new ArrayList<>();
     private ChatAdapter adapter;
@@ -95,12 +105,102 @@ public class ChatActivity extends FragmentActivity implements ChatView {
     }
 
 
-    @Override
-    protected void onCreate(Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_chat);
-        getWindow().setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_STATE_HIDDEN);
+    private void initVideo() {
+        InitPresenter initPresenter = new InitPresenter();
+        initPresenter.getRoom().subscribe(new CommSubscriber<List<String>>() {
+            @Override
+            public void onSuccess(List<String> strings) {
+                LogUtil.e(strings.toString());
+            }
 
+            @Override
+            public void onFailure(Throwable e) {
+                super.onFailure(e);
+            }
+        });
+    }
+
+    @Override
+    protected void onPause() {
+        super.onPause();
+        //退出聊天界面时输入框有内容，保存草稿
+        if (input.getText().length() > 0) {
+            TextMessage message = new TextMessage(input.getText());
+            presenter.saveDraft(message.getMessage());
+        } else {
+            presenter.saveDraft(null);
+        }
+//        RefreshEvent.getInstance().onRefresh();
+        presenter.readMessages();
+        MediaUtil.getInstance().stop();
+    }
+
+    @Override
+    protected void onDestroy() {
+        super.onDestroy();
+        presenter.stop();
+    }
+
+    public boolean checkSelfPermission(String permission, int requestCode) {
+        if (ContextCompat.checkSelfPermission(this,
+                permission)
+                != PackageManager.PERMISSION_GRANTED) {
+
+            ActivityCompat.requestPermissions(this,
+                    new String[]{permission},
+                    requestCode);
+            return false;
+        }
+
+        if (Manifest.permission.CAMERA.equals(permission)) {
+            MyApplication.getInstance().initWorkerThread();
+        }
+        return true;
+    }
+
+    private boolean checkSelfPermissions() {
+        return checkSelfPermission(Manifest.permission.RECORD_AUDIO, AgoraConstantApp.PERMISSION_REQ_ID_RECORD_AUDIO) &&
+                checkSelfPermission(Manifest.permission.CAMERA, AgoraConstantApp.PERMISSION_REQ_ID_CAMERA) &&
+                checkSelfPermission(Manifest.permission.WRITE_EXTERNAL_STORAGE, AgoraConstantApp.PERMISSION_REQ_ID_WRITE_EXTERNAL_STORAGE);
+    }
+
+    @Override
+    public void onRequestPermissionsResult(int requestCode,
+                                           @NonNull String permissions[], @NonNull int[] grantResults) {
+        switch (requestCode) {
+            case AgoraConstantApp.PERMISSION_REQ_ID_RECORD_AUDIO: {
+                if (grantResults.length > 0
+                        && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
+                    checkSelfPermission(Manifest.permission.CAMERA, AgoraConstantApp.PERMISSION_REQ_ID_CAMERA);
+                } else {
+                    finish();
+                }
+                break;
+            }
+            case AgoraConstantApp.PERMISSION_REQ_ID_CAMERA: {
+                if (grantResults.length > 0
+                        && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
+                    checkSelfPermission(Manifest.permission.WRITE_EXTERNAL_STORAGE, AgoraConstantApp.PERMISSION_REQ_ID_WRITE_EXTERNAL_STORAGE);
+                    MyApplication.getInstance().initWorkerThread();
+                } else {
+                    finish();
+                }
+                break;
+            }
+            case AgoraConstantApp.PERMISSION_REQ_ID_WRITE_EXTERNAL_STORAGE: {
+                if (grantResults.length > 0
+                        && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
+                } else {
+                    finish();
+                }
+                break;
+            }
+        }
+    }
+
+    @Override
+    protected void onCreateBaseView(@Nullable Bundle savedInstanceState) {
+        checkSelfPermissions();
         initVideo();
         userPresenter = new UserPresenter();
         identify = getIntent().getStringExtra("identify");
@@ -188,40 +288,9 @@ public class ChatActivity extends FragmentActivity implements ChatView {
         presenter.start();
     }
 
-    private void initVideo() {
-        InitPresenter initPresenter = new InitPresenter();
-        initPresenter.getRoom().subscribe(new CommSubscriber<List<String>>() {
-            @Override
-            public void onSuccess(List<String> strings) {
-                LogUtil.e(strings.toString());
-            }
-
-            @Override
-            public void onFailure(Throwable e) {
-                super.onFailure(e);
-            }
-        });
-    }
-
     @Override
-    protected void onPause() {
-        super.onPause();
-        //退出聊天界面时输入框有内容，保存草稿
-        if (input.getText().length() > 0) {
-            TextMessage message = new TextMessage(input.getText());
-            presenter.saveDraft(message.getMessage());
-        } else {
-            presenter.saveDraft(null);
-        }
-//        RefreshEvent.getInstance().onRefresh();
-        presenter.readMessages();
-        MediaUtil.getInstance().stop();
-    }
-
-    @Override
-    protected void onDestroy() {
-        super.onDestroy();
-        presenter.stop();
+    protected int getLayoutId() {
+        return R.layout.activity_chat;
     }
 
 
@@ -483,9 +552,29 @@ public class ChatActivity extends FragmentActivity implements ChatView {
     }
 
     @Override
+    //请求视频
     public void openVideo() {
-        Intent intent = new Intent(this, AgoraMainActivity.class);
-        startActivity(intent);
+//        String id = VIDEO_CHAT_REQUEST + System.currentTimeMillis();
+        String channel = VIDEO_CHAT_REQUEST;
+        Message message = new TextMessage(channel);
+        presenter.sendMessage(message.getMessage());
+
+//        Intent intent = new Intent(this, AgoraMainActivity.class);
+//        intent.putExtra("id", id);
+//        startActivity(intent);
+
+        MyApplication.mVideoSettings.mChannelName = channel;
+
+//        EditText v_encryption_key = (EditText) findViewById(R.id.encryption_key);
+//        String encryption = v_encryption_key.getText().toString();
+//        vSettings().mEncryptionKey = encryption;
+
+        Intent i = new Intent(this, AgoraChatActivity.class);
+        i.putExtra(AgoraConstantApp.ACTION_KEY_CHANNEL_NAME, channel);
+        i.putExtra(AgoraConstantApp.ACTION_KEY_ENCRYPTION_KEY, "");
+        i.putExtra(AgoraConstantApp.ACTION_KEY_ENCRYPTION_MODE, getResources().getStringArray(R.array.encryption_mode_values)[MyApplication.mVideoSettings.mEncryptionModeIndex]);
+
+        startActivity(i);
     }
 
 

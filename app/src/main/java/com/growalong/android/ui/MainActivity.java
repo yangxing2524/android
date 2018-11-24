@@ -16,9 +16,15 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.growalong.android.R;
+import com.growalong.android.account.AccountManager;
+import com.growalong.android.app.AppManager;
+import com.growalong.android.app.MyApplication;
 import com.growalong.android.im.model.FriendshipInfo;
 import com.growalong.android.im.model.GroupInfo;
 import com.growalong.android.im.model.ImUserInfo;
+import com.growalong.android.model.UserInfoModel;
+import com.growalong.android.present.CommSubscriber;
+import com.growalong.android.present.UserPresenter;
 import com.growalong.android.ui.fragment.CourseMainFragment;
 import com.growalong.android.ui.fragment.MyFragment;
 import com.tencent.imsdk.TIMManager;
@@ -75,6 +81,21 @@ public class MainActivity extends QLActivity {
             mTabHost.addTab(tabSpec, fragmentArray[i], null);
             mTabHost.getTabWidget().setDividerDrawable(null);
         }
+
+        UserPresenter userPresenter = new UserPresenter();
+        userPresenter.getUserInfo(AccountManager.getInstance().getAccountInfo().getUserId(), "c").subscribe(new CommSubscriber<UserInfoModel>() {
+            @Override
+            public void onSuccess(UserInfoModel userInfoModel) {
+                AppManager.getInstance().setUserInfoModel(userInfoModel);
+            }
+
+            @Override
+            public void onFailure(Throwable e) {
+                super.onFailure(e);
+            }
+        });
+
+        MyApplication.getInstance().initWorkerThread();
     }
 
     private View getTabItemView(int index) {

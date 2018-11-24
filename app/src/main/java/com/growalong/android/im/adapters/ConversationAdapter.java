@@ -7,9 +7,14 @@ import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
 import android.widget.TextView;
 
+import com.bumptech.glide.Glide;
 import com.growalong.android.R;
 import com.growalong.android.im.model.Conversation;
+import com.growalong.android.im.model.FriendProfile;
+import com.growalong.android.im.model.FriendshipInfo;
+import com.growalong.android.im.model.NomalConversation;
 import com.growalong.android.im.utils.TimeUtil;
+import com.tencent.imsdk.TIMConversationType;
 import com.tencent.qcloud.ui.CircleImageView;
 
 import java.util.List;
@@ -38,10 +43,10 @@ public class ConversationAdapter extends ArrayAdapter<Conversation> {
 
     @Override
     public View getView(int position, View convertView, ViewGroup parent) {
-        if (convertView != null){
+        if (convertView != null) {
             view = convertView;
             viewHolder = (ViewHolder) view.getTag();
-        }else{
+        } else {
             view = LayoutInflater.from(getContext()).inflate(resourceId, null);
             viewHolder = new ViewHolder();
             viewHolder.tvName = (TextView) view.findViewById(R.id.name);
@@ -53,20 +58,38 @@ public class ConversationAdapter extends ArrayAdapter<Conversation> {
         }
         final Conversation data = getItem(position);
         viewHolder.tvName.setText(data.getName());
-        viewHolder.avatar.setImageResource(data.getAvatar());
+
+
+        if (data instanceof NomalConversation) {
+            NomalConversation nomalConversation = (NomalConversation) data;
+            if (nomalConversation.getType() == TIMConversationType.C2C) {
+                FriendProfile profile = FriendshipInfo.getInstance().getProfile(data.getIdentify());
+                String url = profile.getAvatarUrl();
+                if(url == null){
+                    viewHolder.avatar.setImageResource(data.getAvatar());
+                }else {
+                    Glide.with(viewHolder.avatar.getContext()).load(url).asBitmap().into(viewHolder.avatar);
+                }
+            }else{
+                viewHolder.avatar.setImageResource(data.getAvatar());
+            }
+        } else {
+            viewHolder.avatar.setImageResource(data.getAvatar());
+        }
+
         viewHolder.lastMessage.setText(data.getLastMessageSummary());
         viewHolder.time.setText(TimeUtil.getTimeStr(data.getLastMessageTime()));
         long unRead = data.getUnreadNum();
-        if (unRead <= 0){
+        if (unRead <= 0) {
             viewHolder.unread.setVisibility(View.INVISIBLE);
-        }else{
+        } else {
             viewHolder.unread.setVisibility(View.VISIBLE);
             String unReadStr = String.valueOf(unRead);
-            if (unRead < 10){
+            if (unRead < 10) {
                 viewHolder.unread.setBackground(getContext().getResources().getDrawable(R.drawable.point1));
-            }else{
+            } else {
                 viewHolder.unread.setBackground(getContext().getResources().getDrawable(R.drawable.point2));
-                if (unRead > 99){
+                if (unRead > 99) {
                     unReadStr = getContext().getResources().getString(R.string.time_more);
                 }
             }
@@ -75,7 +98,7 @@ public class ConversationAdapter extends ArrayAdapter<Conversation> {
         return view;
     }
 
-    public class ViewHolder{
+    public class ViewHolder {
         public TextView tvName;
         public CircleImageView avatar;
         public TextView lastMessage;

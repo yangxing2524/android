@@ -23,7 +23,8 @@ public class CourseMainFragment extends NewBaseFragment {
     NonOffSlidingTabLayout mTablayout;
     private PagerAdapter mAdapter;
 
-    private String[] tiltes = {"已完成", "进行中", "我的消息"};
+    private String[] tiltes = {"已完成", "进行中"};
+//    private String[] tiltes = {"已完成", "进行中", "我的消息"};
     @Override
     protected void initEventAndData(Bundle savedInstanceState, View view) {
 
@@ -31,12 +32,10 @@ public class CourseMainFragment extends NewBaseFragment {
 
             @Override
             public Fragment getItem(int position) {
-                Fragment fragment;
+                Fragment fragment = null;
                 if(position == 0) {
                    fragment =  CourseOverFragment.newInstance();
                 }else if(position == 1){
-                    fragment = CourseStartingFragment.newInstance();
-                }else{
                     fragment = CourseStartingFragment.newInstance();
                 }
                 return fragment;
@@ -44,7 +43,7 @@ public class CourseMainFragment extends NewBaseFragment {
 
             @Override
             public int getCount() {
-                return 3;
+                return 2;
             }
 
 

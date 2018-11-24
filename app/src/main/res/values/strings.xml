@@ -387,4 +387,5 @@
     <string name="favorite">爱好</string>
     <string name="location">地址</string>
     <string name="data">yyy年MM月dd日</string>
+    <string name="logout_success">退出登录成功</string>
 </resources>

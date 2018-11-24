@@ -138,8 +138,8 @@ public class IMSplashActivity extends FragmentActivity implements SplashView,TIM
      */
     @Override
     public void navToLogin() {
-        Intent intent = new Intent(getApplicationContext(), LoginMainActivity.class);
-        startActivityForResult(intent, LOGIN_RESULT_CODE);
+        LoginMainActivity.startThis(this);
+        finish();
     }
 
     /**

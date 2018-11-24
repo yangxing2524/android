@@ -119,7 +119,7 @@ public abstract class QLActivity extends AppCompatActivity {
     /**
      * 设置layout前配置
      */
-    private void doBeforeSetContentView() {
+    protected void doBeforeSetContentView() {
         //设置昼夜主题
         initTheme();
         // 把actvity放到application栈中管理

@@ -35,6 +35,7 @@ public class NomalConversation extends Conversation {
     }
 
 
+
     @Override
     public int getAvatar() {
         switch (type){

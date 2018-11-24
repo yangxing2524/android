@@ -44,32 +44,30 @@ public class FriendshipManagerPresenter {
     private long pendSeq, decideSeq, recommendSeq;
     private boolean isEnd;
 
-    public FriendshipManagerPresenter(FriendshipMessageView view){
+    public FriendshipManagerPresenter(FriendshipMessageView view) {
         this(view, null, null);
     }
 
-    public FriendshipManagerPresenter(FriendInfoView view){
+    public FriendshipManagerPresenter(FriendInfoView view) {
         this(null, null, view);
     }
 
-    public FriendshipManagerPresenter(FriendshipManageView view){
+    public FriendshipManagerPresenter(FriendshipManageView view) {
         this(null, view, null);
     }
 
-    public FriendshipManagerPresenter(FriendshipMessageView view1, FriendshipManageView view2, FriendInfoView view3){
+    public FriendshipManagerPresenter(FriendshipMessageView view1, FriendshipManageView view2, FriendInfoView view3) {
         friendshipManageView = view2;
         friendshipMessageView = view1;
         friendInfoView = view3;
     }
 
 
-
-
     /**
      * 获取好友关系链最后一条消息,和未读消息数
      * 包括：好友已决系统消息，好友未决系统消息，推荐好友消息
      */
-    public void getFriendshipLastMessage(){
+    public void getFriendshipLastMessage() {
         TIMFriendFutureMeta meta = new TIMFriendFutureMeta();
         meta.setReqNum(1);
         meta.setDirectionType(TIMPageDirectionType.TIM_PAGE_DIRECTION_DOWN_TYPE);
@@ -83,7 +81,7 @@ public class FriendshipManagerPresenter {
                 | TIMFriendshipManagerExt.TIM_FUTURE_FRIEND_PENDENCY_OUT_TYPE
                 | TIMFriendshipManagerExt.TIM_FUTURE_FRIEND_RECOMMEND_TYPE;
 
-        TIMFriendshipManagerExt.getInstance().getFutureFriends(reqFlag, futureFlags, null, meta ,new TIMValueCallBack<TIMGetFriendFutureListSucc>(){
+        TIMFriendshipManagerExt.getInstance().getFutureFriends(reqFlag, futureFlags, null, meta, new TIMValueCallBack<TIMGetFriendFutureListSucc>() {
 
             @Override
             public void onError(int arg0, String arg1) {
@@ -95,7 +93,7 @@ public class FriendshipManagerPresenter {
                 long unread = arg0.getMeta().getPendencyUnReadCnt() +
                         arg0.getMeta().getDecideUnReadCnt() +
                         arg0.getMeta().getRecommendUnReadCnt();
-                if (friendshipMessageView != null && arg0.getItems().size() > 0){
+                if (friendshipMessageView != null && arg0.getItems().size() > 0) {
                     friendshipMessageView.onGetFriendshipLastMessage(arg0.getItems().get(0), unread);
                 }
             }
@@ -110,7 +108,7 @@ public class FriendshipManagerPresenter {
      * @param identify 同意对方的ID
      * @param callBack 回调
      */
-    public static void acceptFriendRequest(String identify, TIMValueCallBack<TIMFriendResult> callBack){
+    public static void acceptFriendRequest(String identify, TIMValueCallBack<TIMFriendResult> callBack) {
         TIMFriendAddResponse response = new TIMFriendAddResponse(identify);
         response.setType(TIMFriendResponseType.AgreeAndAdd);
         TIMFriendshipManagerExt.getInstance().addFriendResponse(response, callBack);
@@ -122,7 +120,7 @@ public class FriendshipManagerPresenter {
      * @param identify 同意对方的ID
      * @param callBack 回调
      */
-    public static void refuseFriendRequest(String identify, TIMValueCallBack<TIMFriendResult> callBack){
+    public static void refuseFriendRequest(String identify, TIMValueCallBack<TIMFriendResult> callBack) {
         TIMFriendAddResponse response = new TIMFriendAddResponse(identify);
         response.setType(TIMFriendResponseType.Reject);
         TIMFriendshipManagerExt.getInstance().addFriendResponse(response, callBack);
@@ -133,7 +131,7 @@ public class FriendshipManagerPresenter {
      * 获取好友关系链消息
      * 包括：好友已决系统消息，好友未决系统消息，推荐好友消息
      */
-    public void getFriendshipMessage(){
+    public void getFriendshipMessage() {
         TIMFriendFutureMeta meta = new TIMFriendFutureMeta();
         meta.setReqNum(PAGE_SIZE);
         //设置用于分页拉取的seq
@@ -151,7 +149,7 @@ public class FriendshipManagerPresenter {
                 | TIMFriendshipManagerExt.TIM_FUTURE_FRIEND_PENDENCY_OUT_TYPE
                 | TIMFriendshipManagerExt.TIM_FUTURE_FRIEND_RECOMMEND_TYPE;
 
-        TIMFriendshipManagerExt.getInstance().getFutureFriends(reqFlag, futureFlags, null, meta ,new TIMValueCallBack<TIMGetFriendFutureListSucc>(){
+        TIMFriendshipManagerExt.getInstance().getFutureFriends(reqFlag, futureFlags, null, meta, new TIMValueCallBack<TIMGetFriendFutureListSucc>() {
 
             @Override
             public void onError(int arg0, String arg1) {
@@ -163,7 +161,7 @@ public class FriendshipManagerPresenter {
                 pendSeq = arg0.getMeta().getPendencySeq();
                 decideSeq = arg0.getMeta().getDecideSeq();
                 recommendSeq = arg0.getMeta().getRecommendSeq();
-                if (friendshipMessageView != null){
+                if (friendshipMessageView != null) {
                     friendshipMessageView.onGetFriendshipMessage(arg0.getItems());
                 }
             }
@@ -175,7 +173,7 @@ public class FriendshipManagerPresenter {
     /**
      * 获取自己的资料
      */
-    public void getMyProfile(){
+    public void getMyProfile() {
         if (friendInfoView == null) return;
         TIMFriendshipManager.getInstance().getSelfProfile(new TIMValueCallBack<TIMUserProfile>() {
             @Override
@@ -191,21 +189,19 @@ public class FriendshipManagerPresenter {
     }
 
 
-
-
     /**
      * 按照名称搜索好友
      *
-     * @param key 关键字
+     * @param key   关键字
      * @param start 是否从头开始
      */
-    public void searchFriendByName(String key, boolean start){
+    public void searchFriendByName(String key, boolean start) {
         if (friendInfoView == null) return;
-        if (start){
+        if (start) {
             isEnd = false;
             index = 0;
         }
-        if (!isEnd){
+        if (!isEnd) {
             TIMFriendshipManagerExt.getInstance().searchUserByNickname(key, index++, PAGE_SIZE, new TIMValueCallBack<TIMUserSearchSucc>() {
 
                 @Override
@@ -215,17 +211,16 @@ public class FriendshipManagerPresenter {
 
                 @Override
                 public void onSuccess(TIMUserSearchSucc data) {
-                    int getNum = data.getInfoList().size() + (index-1)*PAGE_SIZE;
+                    int getNum = data.getInfoList().size() + (index - 1) * PAGE_SIZE;
                     isEnd = getNum == data.getTotalNum();
                     friendInfoView.showUserInfo(data.getInfoList());
                 }
             });
-        }else{
+        } else {
             friendInfoView.showUserInfo(null);
         }
 
     }
-
 
 
     /**
@@ -233,7 +228,7 @@ public class FriendshipManagerPresenter {
      *
      * @param identify id
      */
-    public void searchFriendById(String identify){
+    public void searchFriendById(String identify) {
         if (friendInfoView == null) return;
         TIMFriendshipManager.getInstance().getUsersProfile(Collections.singletonList(identify), new TIMValueCallBack<List<TIMUserProfile>>() {
             @Override
@@ -253,12 +248,12 @@ public class FriendshipManagerPresenter {
     /**
      * 添加好友
      *
-     * @param id 添加对象Identify
-     * @param remark 备注名
-     * @param group 分组
+     * @param id      添加对象Identify
+     * @param remark  备注名
+     * @param group   分组
      * @param message 附加消息
      */
-    public void addFriend(final String id,String remark,String group,String message){
+    public void addFriend(final String id, String remark, String group, String message) {
         if (friendshipManageView == null) return;
         List<TIMAddFriendRequest> reqList = new ArrayList<>();
         TIMAddFriendRequest req = new TIMAddFriendRequest(id);
@@ -292,7 +287,7 @@ public class FriendshipManagerPresenter {
      *
      * @param id 删除对象Identify
      */
-    public void delFriend(final String id){
+    public void delFriend(final String id) {
         if (friendshipManageView == null) return;
         TIMFriendshipManagerExt.DeleteFriendParam param = new TIMFriendshipManagerExt.DeleteFriendParam();
         param.setType(TIMDelFriendType.TIM_FRIEND_DEL_BOTH);
@@ -319,38 +314,55 @@ public class FriendshipManagerPresenter {
     /**
      * 设置添加好友验证类型
      *
-     * @param type 好友验证类型
+     * @param type     好友验证类型
      * @param callBack 回调
      */
-    public static void setFriendAllowType(TIMFriendAllowType type, TIMCallBack callBack){
+    public static void setFriendAllowType(TIMFriendAllowType type, TIMCallBack callBack) {
         TIMFriendshipManager.ModifyUserProfileParam param = new TIMFriendshipManager.ModifyUserProfileParam();
         param.setAllowType(type);
         TIMFriendshipManager.getInstance().modifyProfile(param, callBack);
     }
 
 
-
     /**
      * 设置我的昵称
      *
-     * @param name 昵称
+     * @param name     昵称
      * @param callBack 回调
      */
-    public static void setMyNick(String name, TIMCallBack callBack){
+    public static void setMyNick(String name, TIMCallBack callBack) {
         TIMFriendshipManager.ModifyUserProfileParam param = new TIMFriendshipManager.ModifyUserProfileParam();
         param.setNickname(name);
         TIMFriendshipManager.getInstance().modifyProfile(param, callBack);
     }
 
+    public static void setModifyFaceUrl(String url) {
+        TIMFriendshipManager.ModifyUserProfileParam param = new TIMFriendshipManager.ModifyUserProfileParam();
+        param.setFaceUrl(url);
+        final String tag = "modify face";
+        TIMFriendshipManager.getInstance().modifyProfile(param, new TIMCallBack() {
+            @Override
+            public void onError(int code, String desc) {
+                //错误码 code 和错误描述 desc，可用于定位请求失败原因
+                //错误码 code 列表请参见错误码表
+                Log.e(tag, "modifyProfile failed: " + code + " desc" + desc);
+            }
+
+            @Override
+            public void onSuccess() {
+                Log.e(tag, "modifyProfile succ");
+            }
+        });
+    }
 
     /**
      * 设置好友备注
      *
      * @param identify 好友identify
-     * @param name 备注名
+     * @param name     备注名
      * @param callBack 回调
      */
-    public static void setRemarkName(String identify, String name, TIMCallBack callBack){
+    public static void setRemarkName(String identify, String name, TIMCallBack callBack) {
         TIMFriendshipManagerExt.ModifySnsProfileParam param = new TIMFriendshipManagerExt.ModifySnsProfileParam(identify);
         param.setRemark(name);
         TIMFriendshipManagerExt.getInstance().modifySnsProfile(param, callBack);
@@ -363,7 +375,7 @@ public class FriendshipManagerPresenter {
      *
      * @param timestamp 时间戳
      */
-    public void readFriendshipMessage(long timestamp){
+    public void readFriendshipMessage(long timestamp) {
         TIMFriendshipManagerExt.getInstance().pendencyReport(timestamp, new TIMCallBack() {
             @Override
             public void onError(int i, String s) {
@@ -393,12 +405,12 @@ public class FriendshipManagerPresenter {
      * 切换好友分组
      *
      * @param identify 好友identify
-     * @param src 源分组，为空表示默认分组
-     * @param dest 目的分组，为空表示默认分组
+     * @param src      源分组，为空表示默认分组
+     * @param dest     目的分组，为空表示默认分组
      */
-    public void changeFriendGroup(final String identify,final @Nullable String src,final @Nullable String dest){
+    public void changeFriendGroup(final String identify, final @Nullable String src, final @Nullable String dest) {
         if (friendshipManageView == null || src != null && dest != null && src.equals(dest)) return;
-        if (src != null){
+        if (src != null) {
             TIMFriendshipManagerExt.getInstance().delFriendsFromFriendGroup(src, Collections.singletonList(identify), new TIMValueCallBack<List<TIMFriendResult>>() {
                 @Override
                 public void onError(int i, String s) {
@@ -408,7 +420,7 @@ public class FriendshipManagerPresenter {
 
                 @Override
                 public void onSuccess(List<TIMFriendResult> timFriendResults) {
-                    if (dest != null){
+                    if (dest != null) {
                         TIMFriendshipManagerExt.getInstance().addFriendsToFriendGroup(dest, Collections.singletonList(identify), new TIMValueCallBack<List<TIMFriendResult>>() {
                             @Override
                             public void onError(int i, String s) {
@@ -421,12 +433,12 @@ public class FriendshipManagerPresenter {
                                 friendshipManageView.onChangeGroup(timFriendResults.get(0).getStatus(), dest);
                             }
                         });
-                    }else{
+                    } else {
                         friendshipManageView.onChangeGroup(TIMFriendStatus.TIM_FRIEND_STATUS_SUCC, dest);
                     }
                 }
             });
-        }else{
+        } else {
             if (dest == null) return;
             TIMFriendshipManagerExt.getInstance().addFriendsToFriendGroup(dest, Collections.singletonList(identify), new TIMValueCallBack<List<TIMFriendResult>>() {
                 @Override
@@ -448,9 +460,9 @@ public class FriendshipManagerPresenter {
      * 删除一个分组
      *
      * @param groupName 好友分组名称
-     * @param callBack 回调
+     * @param callBack  回调
      */
-    public static void delFriendGroup(String groupName, TIMCallBack callBack){
+    public static void delFriendGroup(String groupName, TIMCallBack callBack) {
         TIMFriendshipManagerExt.getInstance().deleteFriendGroup(Collections.singletonList(groupName), callBack);
     }
 
@@ -458,7 +470,7 @@ public class FriendshipManagerPresenter {
      * 创建一个新分组
      *
      * @param groupName 好友分组名称
-     * @param callBack 回调
+     * @param callBack  回调
      */
     public static void createFriendGroup(String groupName, TIMValueCallBack<List<TIMFriendResult>> callBack) {
         TIMFriendshipManagerExt.getInstance().createFriendGroup(Collections.singletonList(groupName), new ArrayList<String>(), callBack);
@@ -470,7 +482,7 @@ public class FriendshipManagerPresenter {
      * @param identfiy 加黑名单列表
      * @param callBack 回调
      */
-    public static void addBlackList(List<String> identfiy, TIMValueCallBack<List<TIMFriendResult>> callBack){
+    public static void addBlackList(List<String> identfiy, TIMValueCallBack<List<TIMFriendResult>> callBack) {
         TIMFriendshipManagerExt.getInstance().addBlackList(identfiy, callBack);
     }
 
@@ -481,7 +493,7 @@ public class FriendshipManagerPresenter {
      * @param identfiy 移除黑名单列表
      * @param callBack 回调
      */
-    public static void delBlackList(List<String> identfiy, TIMValueCallBack<List<TIMFriendResult>> callBack){
+    public static void delBlackList(List<String> identfiy, TIMValueCallBack<List<TIMFriendResult>> callBack) {
         TIMFriendshipManagerExt.getInstance().delBlackList(identfiy, callBack);
     }
 

@@ -1,5 +1,6 @@
 package com.growalong.android.net.retrofit.service;
 
+import com.google.gson.JsonElement;
 import com.growalong.android.model.BaseGenericModel;
 import com.growalong.android.model.BaseParams;
 import com.growalong.android.model.NetLoginBean;
@@ -22,6 +23,8 @@ public interface ILoginApis {
     @POST(ApiConstants.loginForIM)
     Observable<BaseGenericModel<NetLoginIMBean>> loginForIM(@Body BaseParams body);
 
-
+    @POST(ApiConstants.logout)
+    Observable<BaseGenericModel<JsonElement>> logout(@Body BaseParams baseParams);
 
 }
+

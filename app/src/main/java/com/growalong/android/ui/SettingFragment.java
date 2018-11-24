@@ -15,21 +15,28 @@ import android.util.Log;
 import android.view.View;
 import android.widget.ImageView;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import com.bigkoo.pickerview.TimePickerView;
 import com.bumptech.glide.Glide;
 import com.google.gson.JsonElement;
 import com.growalong.android.R;
+import com.growalong.android.account.AccountManager;
 import com.growalong.android.app.AppManager;
+import com.growalong.android.app.MyApplication;
+import com.growalong.android.model.BaseParams;
 import com.growalong.android.model.UploadModel;
 import com.growalong.android.model.UserInfoModel;
+import com.growalong.android.model.request.TypeParams;
+import com.growalong.android.net.retrofit.BaseRetrofitClient;
+import com.growalong.android.net.retrofit.service.ILoginApis;
 import com.growalong.android.present.CommSubscriber;
+import com.growalong.android.present.NewBasePresenter;
 import com.growalong.android.present.UserPresenter;
 import com.growalong.android.ui.fragment.NewBaseFragment;
 import com.growalong.android.upload.IUploadCallBack;
 import com.growalong.android.upload.UploadOssHelper;
 import com.growalong.android.util.LogUtil;
+import com.growalong.android.util.RxUtil;
 import com.growalong.android.util.ToastUtil;
 import com.growalong.android.util.Utils;
 import com.tencent.imsdk.TIMCallBack;
@@ -152,17 +159,34 @@ public class SettingFragment extends NewBaseFragment implements FriendInfoView {
                     @Override
                     public void onError(int i, String s) {
                         if (getActivity() != null) {
-                            Toast.makeText(getActivity(), getResources().getString(R.string.setting_logout_fail), Toast.LENGTH_SHORT).show();
+//                            Toast.makeText(getActivity(), getResources().getString(R.string.setting_logout_fail), Toast.LENGTH_SHORT).show();
                         }
                     }
 
                     @Override
                     public void onSuccess() {
-                        if (getActivity() != null && getActivity() instanceof MainActivity) {
-                            ((MainActivity) getActivity()).logout();
-                        }
+
                     }
                 });
+
+                ILoginApis iLoginApis = BaseRetrofitClient.getInstance().create(ILoginApis.class);
+                BaseParams<TypeParams> baseParams = new BaseParams<>(new TypeParams(MyApplication.TYPE));
+                iLoginApis.logout(baseParams).compose(RxUtil.<JsonElement>handleResult())
+                        .compose(NewBasePresenter.<JsonElement>asyAndMainResponseTransformer())
+                        .subscribe(new CommSubscriber<JsonElement>() {
+                            @Override
+                            public void onSuccess(JsonElement jsonElement) {
+                                AccountManager.getInstance().logout();
+                                LoginMainActivity.startThis(activity);
+                                ToastUtil.shortShow(getResources().getString(R.string.logout_success));
+                            }
+
+                            @Override
+                            public void onFailure(Throwable e) {
+                                super.onFailure(e);
+                                ToastUtil.shortShow(e.getMessage());
+                            }
+                        });
             }
         });
         ChineseName = (LineControllerView) view.findViewById(R.id.ChineseName);
@@ -172,12 +196,13 @@ public class SettingFragment extends NewBaseFragment implements FriendInfoView {
                 EditActivity.navToEdit(SettingFragment.this, getResources().getString(R.string.setting_chinese_name_change), ChineseName.getContent(), REQ_CHANGE_CHINESE, new EditActivity.EditInterface() {
                     @Override
                     public void onEdit(String text, TIMCallBack callBack) {
-
+                        FriendshipManagerPresenter.setMyNick(text, callBack);
                     }
                 }, 20);
 
             }
         });
+
         EnglishName = (LineControllerView) view.findViewById(R.id.EnglishName);
         EnglishName.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -415,6 +440,8 @@ public class SettingFragment extends NewBaseFragment implements FriendInfoView {
 
                 userInfoModel.setHeadImgUrl(uploadModel.getOssFilePath());
                 hasChangeInfo = true;
+
+                FriendshipManagerPresenter.setModifyFaceUrl(uploadModel.getOssFilePath());
             }
 
             @Override

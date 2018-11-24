@@ -253,14 +253,13 @@
                 android:orientation="vertical" />
         </LinearLayout>
 
-        <LinearLayout
-            android:id="@+id/emoticonPanel"
-            android:layout_width="match_parent"
-            android:layout_height="200dp"
-            android:background="@color/background_gray1"
-            android:orientation="vertical"
-            android:visibility="gone">
-
-        </LinearLayout>
     </LinearLayout>
+
+    <LinearLayout
+        android:id="@+id/emoticonPanel"
+        android:layout_width="match_parent"
+        android:layout_height="200dp"
+        android:background="@color/background_gray1"
+        android:orientation="vertical"
+        android:visibility="gone" />
 </LinearLayout>

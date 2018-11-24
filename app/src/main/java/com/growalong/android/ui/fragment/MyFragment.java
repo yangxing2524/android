@@ -10,9 +10,11 @@ import com.bumptech.glide.Glide;
 import com.growalong.android.R;
 import com.growalong.android.account.AccountManager;
 import com.growalong.android.app.AppManager;
+import com.growalong.android.model.ApiException;
 import com.growalong.android.model.UserInfoModel;
 import com.growalong.android.present.CommSubscriber;
 import com.growalong.android.present.UserPresenter;
+import com.growalong.android.ui.LoginMainActivity;
 import com.growalong.android.ui.MyCollectActivity;
 import com.growalong.android.ui.SettingActivity;
 
@@ -49,23 +51,34 @@ public class MyFragment extends NewBaseFragment implements View.OnClickListener 
 
     private void initData() {
 
-        userPresenter.getUserInfo(AccountManager.getInstance().getAccountInfo().getUserId(), "c").subscribe(new CommSubscriber<UserInfoModel>() {
-            @Override
-            public void onSuccess(UserInfoModel userInfoModel) {
-                mUserInfoModel = userInfoModel;
-                updateInfo();
+        mUserInfoModel = AppManager.getInstance().getUserInfoModel();
+        if(mUserInfoModel == null) {
+            userPresenter.getUserInfo(AccountManager.getInstance().getAccountInfo().getUserId(), "c").subscribe(new CommSubscriber<UserInfoModel>() {
+                @Override
+                public void onSuccess(UserInfoModel userInfoModel) {
+                    mUserInfoModel = userInfoModel;
+                    updateInfo();
 
-                //获取到的个人信息之后才添加点击事件
-                study_level.setOnClickListener(MyFragment.this);
-                interest.setOnClickListener(MyFragment.this);
-                collect.setOnClickListener(MyFragment.this);
-            }
+                    //获取到的个人信息之后才添加点击事件
+                    study_level.setOnClickListener(MyFragment.this);
+                    interest.setOnClickListener(MyFragment.this);
+                    collect.setOnClickListener(MyFragment.this);
+                }
 
-            @Override
-            public void onFailure(Throwable e) {
-                super.onFailure(e);
-            }
-        });
+                @Override
+                public void onFailure(Throwable e) {
+                    super.onFailure(e);
+                    if (e instanceof ApiException) {
+                        ApiException apiException = (ApiException) e;
+                        if (apiException.getStatus() == 10001) {
+                            AccountManager.getInstance().logout();
+                            LoginMainActivity.startThis(activity);
+                            activity.finish();
+                        }
+                    }
+                }
+            });
+        }
         headView = getView().findViewById(R.id.headview);
         top.setOnClickListener(this);
     }
