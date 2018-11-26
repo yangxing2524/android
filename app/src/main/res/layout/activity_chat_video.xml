@@ -32,6 +32,7 @@
             android:layout_marginTop="6dp"
             android:textStyle="bold"
             android:textSize="16sp"
+            android:visibility="gone"
             android:textColor="@android:color/white" />
 
         <com.growalong.android.agora.propeller.ui.AGLinearLayout
