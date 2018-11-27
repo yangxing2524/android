@@ -9,8 +9,6 @@ import android.os.Bundle;
 import android.preference.PreferenceManager;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
-import android.text.TextUtils;
-import android.view.KeyEvent;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.SurfaceView;
@@ -18,8 +16,6 @@ import android.view.View;
 import android.view.ViewParent;
 import android.view.ViewStub;
 import android.view.WindowManager;
-import android.view.inputmethod.EditorInfo;
-import android.widget.EditText;
 import android.widget.FrameLayout;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
@@ -29,8 +25,6 @@ import android.widget.TextView;
 import com.growalong.android.R;
 import com.growalong.android.agora.openvcall.model.AGEventHandler;
 import com.growalong.android.agora.openvcall.model.AgoraConstantApp;
-import com.growalong.android.agora.openvcall.model.AgoraMessage;
-import com.growalong.android.agora.openvcall.model.AgoraUser;
 import com.growalong.android.agora.propeller.Constant;
 import com.growalong.android.agora.propeller.UserStatusData;
 import com.growalong.android.agora.propeller.VideoInfoData;
@@ -40,8 +34,6 @@ import com.growalong.android.agora.propeller.ui.RtlLinearLayoutManager;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import java.io.UnsupportedEncodingException;
-import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Iterator;
 
@@ -57,16 +49,13 @@ public class AgoraChatActivity extends AgoraBaseActivity implements AGEventHandl
     private final static Logger log = LoggerFactory.getLogger(AgoraChatActivity.class);
     // should only be modified under UI thread
     private final HashMap<Integer, SurfaceView> mUidsList = new HashMap<>(); // uid = 0 || uid == EngineConfig.mUid
-    public int mLayoutType = LAYOUT_TYPE_DEFAULT;
+    public int mLayoutType = LAYOUT_TYPE_SMALL;
     private GridVideoViewContainer mGridVideoViewContainer;
     private RelativeLayout mSmallVideoViewDock;
     private volatile boolean mVideoMuted = false;
     private volatile boolean mAudioMuted = false;
     private volatile int mAudioRouting = -1; // Default
     private boolean mIsLandscape = false;
-    private InChannelMessageListAdapter mMsgAdapter;
-    private ArrayList<AgoraMessage> mMsgList;
-    private int mDataStreamId;
     private VideoPreProcessing mVideoPreProcessing;
     private SmallVideoViewAdapter mSmallVideoViewAdapter;
 
@@ -100,23 +89,10 @@ public class AgoraChatActivity extends AgoraBaseActivity implements AGEventHandl
         doConfigEngine(encryptionKey, encryptionMode);
 
         mGridVideoViewContainer = (GridVideoViewContainer) findViewById(R.id.grid_video_view_container);
-        mGridVideoViewContainer.setItemEventHandler(new VideoViewEventListener() {
+        mGridVideoViewContainer.setItemEventHandler(new View.OnClickListener() {
             @Override
-            public void onItemDoubleClick(View v, Object item) {
-                log.debug("onItemDoubleClick " + v + " " + item + " " + mLayoutType);
+            public void onClick(View v) {
 
-                if (mUidsList.size() < 2) {
-                    return;
-                }
-
-                UserStatusData user = (UserStatusData) item;
-                int uid = (user.mUid == 0) ? config().mUid : user.mUid;
-
-                if (mLayoutType == LAYOUT_TYPE_DEFAULT && mUidsList.size() != 1) {
-                    switchToSmallVideoView(uid);
-                } else {
-                    switchToDefaultVideoView();
-                }
             }
         });
 
@@ -140,68 +116,8 @@ public class AgoraChatActivity extends AgoraBaseActivity implements AGEventHandl
         LinearLayout bottomContainer = (LinearLayout) findViewById(R.id.bottom_container);
         FrameLayout.MarginLayoutParams fmp = (FrameLayout.MarginLayoutParams) bottomContainer.getLayoutParams();
         fmp.bottomMargin = virtualKeyHeight() + 16;
-
-        initMessageList();
     }
 
-    public void onClickHideIME(View view) {
-        log.debug("onClickHideIME " + view);
-
-        closeIME(findViewById(R.id.msg_content));
-
-        findViewById(R.id.msg_input_container).setVisibility(View.GONE);
-        findViewById(R.id.bottom_action_end_call).setVisibility(View.VISIBLE);
-        findViewById(R.id.bottom_action_container).setVisibility(View.VISIBLE);
-    }
-
-    private void initMessageList() {
-        mMsgList = new ArrayList<>();
-        RecyclerView msgListView = (RecyclerView) findViewById(R.id.msg_list);
-
-        mMsgAdapter = new InChannelMessageListAdapter(this, mMsgList);
-        mMsgAdapter.setHasStableIds(true);
-        msgListView.setAdapter(mMsgAdapter);
-        msgListView.setLayoutManager(new LinearLayoutManager(getApplicationContext(), RecyclerView.VERTICAL, false));
-        msgListView.addItemDecoration(new MessageListDecoration());
-    }
-
-    private void notifyMessageChanged(AgoraMessage msg) {
-        mMsgList.add(msg);
-
-        int MAX_MESSAGE_COUNT = 16;
-
-        if (mMsgList.size() > MAX_MESSAGE_COUNT) {
-            int toRemove = mMsgList.size() - MAX_MESSAGE_COUNT;
-            for (int i = 0; i < toRemove; i++) {
-                mMsgList.remove(i);
-            }
-        }
-
-        mMsgAdapter.notifyDataSetChanged();
-    }
-
-    private void sendChannelMsg(String msgStr) {
-        RtcEngine rtcEngine = rtcEngine();
-        if (mDataStreamId <= 0) {
-            mDataStreamId = rtcEngine.createDataStream(true, true); // boolean reliable, boolean ordered
-        }
-
-        if (mDataStreamId < 0) {
-            String errorMsg = "Create data stream error happened " + mDataStreamId;
-            log.warn(errorMsg);
-            showLongToast(errorMsg);
-            return;
-        }
-
-        byte[] encodedMsg;
-        try {
-            encodedMsg = msgStr.getBytes("UTF-8");
-        } catch (UnsupportedEncodingException e) {
-            encodedMsg = msgStr.getBytes();
-        }
-
-        rtcEngine.sendStreamMessage(mDataStreamId, encodedMsg);
-    }
 
     private void optional() {
         getWindow().addFlags(WindowManager.LayoutParams.FLAG_LAYOUT_IN_SCREEN);
@@ -235,40 +151,6 @@ public class AgoraChatActivity extends AgoraBaseActivity implements AGEventHandl
 
     public void onBtn0Clicked(View view) {
         log.info("onBtn0Clicked " + view + " " + mVideoMuted + " " + mAudioMuted);
-        showMessageEditContainer();
-    }
-
-    private void showMessageEditContainer() {
-        findViewById(R.id.bottom_action_container).setVisibility(View.GONE);
-        findViewById(R.id.bottom_action_end_call).setVisibility(View.GONE);
-        findViewById(R.id.msg_input_container).setVisibility(View.VISIBLE);
-
-        EditText edit = (EditText) findViewById(R.id.msg_content);
-
-        edit.setOnEditorActionListener(new TextView.OnEditorActionListener() {
-            @Override
-            public boolean onEditorAction(TextView v, int actionId, KeyEvent event) {
-                if (actionId == EditorInfo.IME_ACTION_SEND
-                        || (event != null && event.getAction() == KeyEvent.ACTION_DOWN && event.getKeyCode() == KeyEvent.KEYCODE_ENTER)) {
-                    String msgStr = v.getText().toString();
-                    if (TextUtils.isEmpty(msgStr)) {
-                        return false;
-                    }
-                    sendChannelMsg(msgStr);
-
-                    v.setText("");
-
-                    AgoraMessage msg = new AgoraMessage(AgoraMessage.MSG_TYPE_TEXT,
-                            new AgoraUser(config().mUid, String.valueOf(config().mUid)), msgStr);
-                    notifyMessageChanged(msg);
-
-                    return true;
-                }
-                return false;
-            }
-        });
-
-        openIME(edit);
     }
 
     public void onCustomizedFunctionClicked(View view) {
@@ -594,23 +476,6 @@ public class AgoraChatActivity extends AgoraBaseActivity implements AGEventHandl
 
                 break;
 
-            case AGEventHandler.EVENT_TYPE_ON_DATA_CHANNEL_MSG:
-
-                peerUid = (Integer) data[0];
-                final byte[] content = (byte[]) data[1];
-                notifyMessageChanged(new AgoraMessage(new AgoraUser(peerUid, String.valueOf(peerUid)), new String(content)));
-
-                break;
-
-            case AGEventHandler.EVENT_TYPE_ON_AGORA_MEDIA_ERROR: {
-                int error = (int) data[0];
-                String description = (String) data[1];
-
-                notifyMessageChanged(new AgoraMessage(new AgoraUser(0, null), error + " " + description));
-
-                break;
-            }
-
             case AGEventHandler.EVENT_TYPE_ON_AUDIO_ROUTE_CHANGED:
                 notifyHeadsetPlugged((int) data[0]);
 
@@ -697,10 +562,12 @@ public class AgoraChatActivity extends AgoraBaseActivity implements AGEventHandl
 
         if (mSmallVideoViewAdapter == null) {
             create = true;
-            mSmallVideoViewAdapter = new SmallVideoViewAdapter(this, config().mUid, exceptUid, mUidsList, new VideoViewEventListener() {
+            mSmallVideoViewAdapter = new SmallVideoViewAdapter(this, config().mUid, exceptUid, mUidsList, new View.OnClickListener() {
                 @Override
-                public void onItemDoubleClick(View v, Object item) {
-                    switchToDefaultVideoView();
+                public void onClick(View v) {
+                    //切换view显示
+                    UserStatusData userStatusData = (UserStatusData) v.getTag(R.id.tag_first);
+                    switchToSmallVideoView(userStatusData.mUid);
                 }
             });
             mSmallVideoViewAdapter.setHasStableIds(true);

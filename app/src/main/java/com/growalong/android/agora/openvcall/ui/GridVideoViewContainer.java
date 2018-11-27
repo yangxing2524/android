@@ -9,14 +9,14 @@ import android.support.v7.widget.RecyclerView;
 import android.util.AttributeSet;
 import android.view.SurfaceView;
 
-import java.util.HashMap;
-
 import com.growalong.android.agora.propeller.UserStatusData;
 import com.growalong.android.agora.propeller.VideoInfoData;
 
+import java.util.HashMap;
+
 public class GridVideoViewContainer extends RecyclerView {
     private GridVideoViewContainerAdapter mGridVideoViewContainerAdapter;
-    private VideoViewEventListener mEventListener;
+    private OnClickListener mEventListener;
 
     public GridVideoViewContainer(Context context) {
         super(context);
@@ -30,7 +30,7 @@ public class GridVideoViewContainer extends RecyclerView {
         super(context, attrs, defStyle);
     }
 
-    public void setItemEventHandler(VideoViewEventListener listener) {
+    public void setItemEventHandler(OnClickListener listener) {
         this.mEventListener = listener;
     }
 

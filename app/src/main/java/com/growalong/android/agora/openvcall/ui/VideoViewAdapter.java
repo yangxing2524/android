@@ -11,15 +11,14 @@ import android.view.ViewGroup;
 import android.widget.FrameLayout;
 
 import com.growalong.android.R;
+import com.growalong.android.agora.propeller.UserStatusData;
+import com.growalong.android.agora.propeller.VideoInfoData;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import java.util.ArrayList;
 import java.util.HashMap;
-
-import com.growalong.android.agora.propeller.UserStatusData;
-import com.growalong.android.agora.propeller.VideoInfoData;
 
 public abstract class VideoViewAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
 
@@ -30,11 +29,11 @@ public abstract class VideoViewAdapter extends RecyclerView.Adapter<RecyclerView
 
     protected final ArrayList<UserStatusData> mUsers;
 
-    protected final VideoViewEventListener mListener;
+    protected final View.OnClickListener mListener;
 
     protected int mLocalUid;
 
-    public VideoViewAdapter(Activity activity, int localUid, HashMap<Integer, SurfaceView> uids, VideoViewEventListener listener) {
+    public VideoViewAdapter(Activity activity, int localUid, HashMap<Integer, SurfaceView> uids, View.OnClickListener listener) {
         mInflater = ((Activity) activity).getLayoutInflater();
         mContext = ((Activity) activity).getApplicationContext();
 
@@ -96,18 +95,21 @@ public abstract class VideoViewAdapter extends RecyclerView.Adapter<RecyclerView
 
         log.debug("onBindViewHolder " + position + " " + user + " " + myHolder + " " + myHolder.itemView + " " + mDefaultChildItem);
 
-        FrameLayout holderView = (FrameLayout) myHolder.itemView;
+        final FrameLayout holderView = (FrameLayout) myHolder.itemView;
+
+        holderView.setTag(R.id.tag_first, user);
 
         holderView.setOnTouchListener(new OnDoubleTapListener(mContext) {
             @Override
             public void onDoubleTap(View view, MotionEvent e) {
-                if (mListener != null) {
-                    mListener.onItemDoubleClick(view, user);
-                }
+//                if (mListener != null) {
+//                    mListener.onItemDoubleClick(view, user);
+//                }
             }
 
             @Override
             public void onSingleTapUp() {
+                mListener.onClick(holderView);
             }
         });
 

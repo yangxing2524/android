@@ -5,20 +5,21 @@ import android.content.Context;
 import android.support.v7.widget.RecyclerView;
 import android.util.DisplayMetrics;
 import android.view.SurfaceView;
+import android.view.View;
 import android.view.ViewGroup;
 import android.view.WindowManager;
+
+import com.growalong.android.agora.propeller.UserStatusData;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import java.util.HashMap;
 
-import com.growalong.android.agora.propeller.UserStatusData;
-
 public class GridVideoViewContainerAdapter extends VideoViewAdapter {
     private final static Logger log = LoggerFactory.getLogger(GridVideoViewContainerAdapter.class);
 
-    public GridVideoViewContainerAdapter(Activity activity, int localUid, HashMap<Integer, SurfaceView> uids, VideoViewEventListener listener) {
+    public GridVideoViewContainerAdapter(Activity activity, int localUid, HashMap<Integer, SurfaceView> uids, View.OnClickListener listener) {
         super(activity, localUid, uids, listener);
         log.debug("GridVideoViewContainerAdapter " + (mLocalUid & 0xFFFFFFFFL));
     }

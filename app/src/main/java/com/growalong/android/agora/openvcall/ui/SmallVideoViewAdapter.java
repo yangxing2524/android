@@ -4,6 +4,7 @@ import android.app.Activity;
 import android.content.Context;
 import android.util.DisplayMetrics;
 import android.view.SurfaceView;
+import android.view.View;
 import android.view.WindowManager;
 
 import org.slf4j.Logger;
@@ -16,7 +17,7 @@ public class SmallVideoViewAdapter extends VideoViewAdapter {
 
     private int mExceptedUid;
 
-    public SmallVideoViewAdapter(Activity activity, int localUid, int exceptedUid, HashMap<Integer, SurfaceView> uids, VideoViewEventListener listener) {
+    public SmallVideoViewAdapter(Activity activity, int localUid, int exceptedUid, HashMap<Integer, SurfaceView> uids, View.OnClickListener listener) {
         super(activity, localUid, uids, listener);
         mExceptedUid = exceptedUid;
         log.debug("SmallVideoViewAdapter " + (mLocalUid & 0xFFFFFFFFL) + " " + (mExceptedUid & 0xFFFFFFFFL));
