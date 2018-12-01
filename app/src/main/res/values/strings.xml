@@ -388,4 +388,5 @@
     <string name="location">地址</string>
     <string name="data">yyy年MM月dd日</string>
     <string name="logout_success">退出登录成功</string>
+    <string name="call_request_tip1">邀请你视频..</string>
 </resources>

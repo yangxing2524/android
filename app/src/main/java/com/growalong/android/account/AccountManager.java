@@ -77,6 +77,7 @@ public class AccountManager {
 
     public void logout() {
 //        mCache.put(SESSION_ID, "");
+
 //        mCache.put(USER_ID, "");
 //        mCache.put(USER_NAME, "");
 //        mCache.put(USER_HEAD, "");

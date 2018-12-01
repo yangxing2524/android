@@ -14,6 +14,7 @@ import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.v4.app.ActivityCompat;
 import android.support.v4.content.ContextCompat;
+import android.text.TextUtils;
 import android.view.ContextMenu;
 import android.view.Menu;
 import android.view.MenuItem;
@@ -46,6 +47,7 @@ import com.growalong.android.im.utils.FileUtil;
 import com.growalong.android.im.utils.MediaUtil;
 import com.growalong.android.im.utils.RecorderUtil;
 import com.growalong.android.model.CollectModel;
+import com.growalong.android.present.ChatOtherPresenter;
 import com.growalong.android.present.CommSubscriber;
 import com.growalong.android.present.InitPresenter;
 import com.growalong.android.present.UserPresenter;
@@ -56,6 +58,7 @@ import com.tencent.imsdk.TIMElem;
 import com.tencent.imsdk.TIMElemType;
 import com.tencent.imsdk.TIMMessage;
 import com.tencent.imsdk.TIMMessageStatus;
+import com.tencent.imsdk.TIMTextElem;
 import com.tencent.imsdk.ext.message.TIMMessageDraft;
 import com.tencent.imsdk.ext.message.TIMMessageExt;
 import com.tencent.imsdk.ext.message.TIMMessageLocator;
@@ -73,14 +76,18 @@ public class ChatActivity extends QLActivity implements ChatView {
 
     private static final String TAG = "ChatActivity";
 
-    public static final String VIDEO_CHAT_REQUEST = "[video_chat_request]_";
-    public static final String VIDEO_CHAT_FAILED = "[video_chat_failed]_";
-    public static final String VIDEO_CHAT_OVER = "[video_chat_over]_";
+    public static final String VIDEO_CHAT_REQUEST = "&video_chat_request&";
+    public static final String VIDEO_CHAT_FAILED = "&video_chat_failed&";
+    public static final String VIDEO_CHAT_REFUSE = "&video_chat_refused&";
+    public static final String VIDEO_CHAT_OVER = "&video_chat_over&";
 
     private List<Message> messageList = new ArrayList<>();
     private ChatAdapter adapter;
     private ListView listView;
     private ChatPresenter presenter;
+
+    private ChatOtherPresenter chatOtherPresenter;
+
     private ChatInput input;
     private static final int CAPTURE_IMAGE_ACTIVITY_REQUEST_CODE = CommonPhotoSelectorDialog.PHOTOREQUESTCODE1;
     private static final int IMAGE_STORE = 200;
@@ -206,6 +213,7 @@ public class ChatActivity extends QLActivity implements ChatView {
         identify = getIntent().getStringExtra("identify");
         type = (TIMConversationType) getIntent().getSerializableExtra("type");
         presenter = new ChatPresenter(this, identify, type);
+        chatOtherPresenter = new ChatOtherPresenter(this);
         input = (ChatInput) findViewById(R.id.input_panel);
         input.setChatView(this);
         adapter = new ChatAdapter(this, R.layout.item_message, messageList);
@@ -319,6 +327,18 @@ public class ChatActivity extends QLActivity implements ChatView {
                             break;
                     }
                 } else {
+//                    //
+                    TextMessage textMessage = (TextMessage) mMessage;
+                    String content = textMessage.getContent();
+                    if (TextUtils.equals(content, VIDEO_CHAT_REQUEST)) {
+                        chatOtherPresenter.requestVideoChat(message.getSenderProfile().getFaceUrl(), message.getSenderProfile().getNickName());
+                    } else if (TextUtils.equals(content, VIDEO_CHAT_FAILED)) {
+
+                    } else if (TextUtils.equals(content, VIDEO_CHAT_OVER)) {
+
+                    }
+
+
                     if (messageList.size() == 0) {
                         mMessage.setHasTime(null);
                     } else {
@@ -554,10 +574,19 @@ public class ChatActivity extends QLActivity implements ChatView {
     @Override
     //请求视频
     public void openVideo() {
-//        String id = VIDEO_CHAT_REQUEST + System.currentTimeMillis();
+//        String channel = VIDEO_CHAT_REQUEST + System.currentTimeMillis();
         String channel = VIDEO_CHAT_REQUEST;
-        Message message = new TextMessage(channel);
-        presenter.sendMessage(message.getMessage());
+        TIMMessage message = new TIMMessage();
+        //添加文本内容
+        TIMTextElem elem = new TIMTextElem();
+        elem.setText(channel);
+        //将elem添加到消息
+        if (message.addElement(elem) != 0) {
+            LogUtil.d("addElement failed");
+            return;
+        }
+        presenter.sendMessage(message);
+
 
 //        Intent intent = new Intent(this, AgoraMainActivity.class);
 //        intent.putExtra("id", id);

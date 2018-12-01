@@ -221,4 +221,5 @@ public class ChatPresenter implements Observer {
         }
 
     }
+
 }

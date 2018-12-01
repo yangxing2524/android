@@ -59,7 +59,7 @@
 
         <com.tencent.qcloud.ui.CircleImageView
             android:id="@+id/headview"
-            android:layout_width="@dimen/y100"
+            android:layout_width="49dp"
             android:layout_height="@dimen/y100"
             android:layout_marginLeft="@dimen/y20"
             android:src="@mipmap/head_default" />
