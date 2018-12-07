@@ -12,6 +12,7 @@ import com.growalong.android.model.LoginBean;
 /**
  * Created by gangqing on 2016/7/18.
  */
+@Deprecated
 public class AccountManager {
     private static final String ACCOUNT_KEY = "account_key";
     private static final String SESSION_ID = "session_Id";

@@ -29,6 +29,7 @@ import com.google.gson.JsonElement;
 import com.growalong.android.R;
 import com.growalong.android.agora.openvcall.model.AgoraConstantApp;
 import com.growalong.android.agora.openvcall.ui.AgoraChatActivity;
+import com.growalong.android.app.AppManager;
 import com.growalong.android.app.MyApplication;
 import com.growalong.android.im.adapters.ChatAdapter;
 import com.growalong.android.im.model.CustomMessage;
@@ -46,7 +47,9 @@ import com.growalong.android.im.model.VoiceMessage;
 import com.growalong.android.im.utils.FileUtil;
 import com.growalong.android.im.utils.MediaUtil;
 import com.growalong.android.im.utils.RecorderUtil;
+import com.growalong.android.listener.OkCancelListener;
 import com.growalong.android.model.CollectModel;
+import com.growalong.android.model.UserInfoModel;
 import com.growalong.android.present.ChatOtherPresenter;
 import com.growalong.android.present.CommSubscriber;
 import com.growalong.android.present.InitPresenter;
@@ -54,11 +57,13 @@ import com.growalong.android.present.UserPresenter;
 import com.growalong.android.util.LogUtil;
 import com.growalong.android.util.ToastUtil;
 import com.tencent.imsdk.TIMConversationType;
+import com.tencent.imsdk.TIMCustomElem;
 import com.tencent.imsdk.TIMElem;
 import com.tencent.imsdk.TIMElemType;
 import com.tencent.imsdk.TIMMessage;
 import com.tencent.imsdk.TIMMessageStatus;
 import com.tencent.imsdk.TIMTextElem;
+import com.tencent.imsdk.TIMUserProfile;
 import com.tencent.imsdk.ext.message.TIMMessageDraft;
 import com.tencent.imsdk.ext.message.TIMMessageExt;
 import com.tencent.imsdk.ext.message.TIMMessageLocator;
@@ -77,9 +82,9 @@ public class ChatActivity extends QLActivity implements ChatView {
     private static final String TAG = "ChatActivity";
 
     public static final String VIDEO_CHAT_REQUEST = "&video_chat_request&";
-    public static final String VIDEO_CHAT_FAILED = "&video_chat_failed&";
+    public static final String VIDEO_CHAT_FAILED = "&video_chat_failed&";//通话已结束
     public static final String VIDEO_CHAT_REFUSE = "&video_chat_refused&";
-    public static final String VIDEO_CHAT_OVER = "&video_chat_over&";
+    public static final String VIDEO_CHAT_OVER = "&video_chat_over&";//通话已结束
 
     private List<Message> messageList = new ArrayList<>();
     private ChatAdapter adapter;
@@ -90,6 +95,8 @@ public class ChatActivity extends QLActivity implements ChatView {
 
     private ChatInput input;
     private static final int CAPTURE_IMAGE_ACTIVITY_REQUEST_CODE = CommonPhotoSelectorDialog.PHOTOREQUESTCODE1;
+    public static final int VIDEO_CHAT_REQUEST_CODE_SENDER = 22;//视频发起者
+    public static final int VIDEO_CHAT_REQUEST_CODE_RECEIVER = 21;//视频接收者
     private static final int IMAGE_STORE = 200;
     private static final int FILE_CODE = 300;
     private static final int IMAGE_PREVIEW = 400;
@@ -303,7 +310,7 @@ public class ChatActivity extends QLActivity implements ChatView {
 
 
     /**
-     * 显示消息
+     * 显示消息，收到了新消息
      *
      * @param message
      */
@@ -329,15 +336,39 @@ public class ChatActivity extends QLActivity implements ChatView {
                 } else {
 //                    //
                     TextMessage textMessage = (TextMessage) mMessage;
-                    String content = textMessage.getContent();
-                    if (TextUtils.equals(content, VIDEO_CHAT_REQUEST)) {
-                        chatOtherPresenter.requestVideoChat(message.getSenderProfile().getFaceUrl(), message.getSenderProfile().getNickName());
-                    } else if (TextUtils.equals(content, VIDEO_CHAT_FAILED)) {
+                    final String content = textMessage.getContent();
+                    if (content.startsWith(VIDEO_CHAT_REQUEST)) {
+                        UserInfoModel userInfoModel = AppManager.getInstance().getUserInfoModel();
+                        if (!TextUtils.equals(userInfoModel.getId() + "", textMessage.getSender())) {
+                            //非自己发送的
+                            OkCancelListener okCancelListener = new OkCancelListener() {
+                                @Override
+                                public void clickOk(Object o) {
+                                    AgoraChatActivity.startThis(ChatActivity.this, content, VIDEO_CHAT_REQUEST_CODE_RECEIVER);
+                                }
 
-                    } else if (TextUtils.equals(content, VIDEO_CHAT_OVER)) {
+                                @Override
+                                public void clickCancel(Object o) {
+                                    sendTextMsg(VIDEO_CHAT_REFUSE);
+                                }
+                            };
+                            chatOtherPresenter.requestVideoChat(message.getSenderProfile().getFaceUrl(), message.getSenderProfile().getNickName(), okCancelListener);
 
+                        }
+
+                        mMessage = setVideoSenderTip(message);
+                        if (mMessage == null) {
+                            return;
+                        }
+                    } else if (TextUtils.equals(content, VIDEO_CHAT_FAILED) ||
+                            TextUtils.equals(content, VIDEO_CHAT_OVER)) {
+                        mMessage = setVideoOverTip();
+                        if (mMessage == null) {
+                            return;
+                        }
+                    } else if (TextUtils.equals(content, VIDEO_CHAT_REFUSE)) {
+                        return;
                     }
-
 
                     if (messageList.size() == 0) {
                         mMessage.setHasTime(null);
@@ -355,7 +386,59 @@ public class ChatActivity extends QLActivity implements ChatView {
     }
 
     /**
-     * 显示消息
+     * 构造显示通话结束的msg
+     *
+     * @return
+     */
+    private Message setVideoOverTip() {
+        TIMMessage message1 = new TIMMessage();
+        //添加文本内容
+        TIMCustomElem elem1 = new TIMCustomElem();
+        elem1.setDesc(getResources().getString(R.string.video_chat_over));
+        //将elem添加到消息
+        if (message1.addElement(elem1) != 0) {
+            LogUtil.d("addElement failed");
+            return null;
+        }
+        Message mMessage = MessageFactory.getMessage(message1);
+        ((CustomMessage) mMessage).setType(null);
+        return mMessage;
+    }
+
+    /**
+     * 构造显示谁发起了视频通话的msg
+     *
+     * @param message
+     * @return
+     */
+    private Message setVideoSenderTip(TIMMessage message) {
+        //开始视频请求
+        TIMMessage message1 = new TIMMessage();
+        //添加文本内容
+        TIMCustomElem elem1 = new TIMCustomElem();
+        TIMUserProfile senderProfile = message.getSenderProfile();
+        String name ;
+        if (senderProfile != null) {
+            name = senderProfile.getNickName();
+        } else {
+            name = message.isSelf() ? getResources().getString(R.string.mine) : null;
+        }
+        if (name == null) {
+            return null;
+        }
+        elem1.setDesc(name + getResources().getString(R.string.start_video_chat_request));
+        //将elem添加到消息
+        if (message1.addElement(elem1) != 0) {
+            LogUtil.d("addElement failed");
+            return null;
+        }
+        Message msg = MessageFactory.getMessage(message1);
+        ((CustomMessage) msg).setType(null);
+        return msg;
+    }
+
+    /**
+     * 显示消息,刚进入的时候显示消息
      *
      * @param messages
      */
@@ -364,6 +447,31 @@ public class ChatActivity extends QLActivity implements ChatView {
         int newMsgNum = 0;
         for (int i = 0; i < messages.size(); ++i) {
             Message mMessage = MessageFactory.getMessage(messages.get(i));
+            try {
+                if (mMessage instanceof TextMessage) {
+                    TextMessage textMessage = (TextMessage) mMessage;
+                    if (textMessage.getContent().startsWith("&video_chat_")) {
+                        final String content = textMessage.getContent();
+                        if (content.startsWith(VIDEO_CHAT_REQUEST)) {
+                            mMessage = setVideoSenderTip(messages.get(i));
+                            if (mMessage == null) {
+                                continue;
+                            }
+                        } else if (TextUtils.equals(content, VIDEO_CHAT_FAILED) ||
+                                TextUtils.equals(content, VIDEO_CHAT_OVER)) {
+                            mMessage = setVideoOverTip();
+                            if (mMessage == null) {
+                                continue;
+                            }
+                        } else if (TextUtils.equals(content, VIDEO_CHAT_REFUSE)) {
+                            continue;
+                        }
+                    }
+                }
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
+
             if (mMessage == null || messages.get(i).status() == TIMMessageStatus.HasDeleted)
                 continue;
             if (mMessage instanceof CustomMessage && (((CustomMessage) mMessage).getType() == CustomMessage.Type.TYPING ||
@@ -574,18 +682,9 @@ public class ChatActivity extends QLActivity implements ChatView {
     @Override
     //请求视频
     public void openVideo() {
-//        String channel = VIDEO_CHAT_REQUEST + System.currentTimeMillis();
-        String channel = VIDEO_CHAT_REQUEST;
-        TIMMessage message = new TIMMessage();
-        //添加文本内容
-        TIMTextElem elem = new TIMTextElem();
-        elem.setText(channel);
-        //将elem添加到消息
-        if (message.addElement(elem) != 0) {
-            LogUtil.d("addElement failed");
-            return;
-        }
-        presenter.sendMessage(message);
+        String channel = VIDEO_CHAT_REQUEST + System.currentTimeMillis();
+//        String channel = VIDEO_CHAT_REQUEST;
+        sendTextMsg(channel);
 
 
 //        Intent intent = new Intent(this, AgoraMainActivity.class);
@@ -598,12 +697,20 @@ public class ChatActivity extends QLActivity implements ChatView {
 //        String encryption = v_encryption_key.getText().toString();
 //        vSettings().mEncryptionKey = encryption;
 
-        Intent i = new Intent(this, AgoraChatActivity.class);
-        i.putExtra(AgoraConstantApp.ACTION_KEY_CHANNEL_NAME, channel);
-        i.putExtra(AgoraConstantApp.ACTION_KEY_ENCRYPTION_KEY, "");
-        i.putExtra(AgoraConstantApp.ACTION_KEY_ENCRYPTION_MODE, getResources().getStringArray(R.array.encryption_mode_values)[MyApplication.mVideoSettings.mEncryptionModeIndex]);
+        AgoraChatActivity.startThis(this, channel, VIDEO_CHAT_REQUEST_CODE_SENDER);
+    }
 
-        startActivity(i);
+    private void sendTextMsg(String msg) {
+        TIMMessage message = new TIMMessage();
+        //添加文本内容
+        TIMTextElem elem = new TIMTextElem();
+        elem.setText(msg);
+        //将elem添加到消息
+        if (message.addElement(elem) != 0) {
+            LogUtil.d("addElement failed");
+            return;
+        }
+        presenter.sendMessage(message);
     }
 
 
@@ -695,6 +802,7 @@ public class ChatActivity extends QLActivity implements ChatView {
 
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+
         if (requestCode == CAPTURE_IMAGE_ACTIVITY_REQUEST_CODE) {
             if (resultCode == RESULT_OK) {
                 String stringExtra = data.getStringExtra(CameraProtectActivity.IMAGE_PATH);
@@ -704,6 +812,9 @@ public class ChatActivity extends QLActivity implements ChatView {
                 }
                 showImagePreview(stringExtra);
             }
+        } else if (requestCode == VIDEO_CHAT_REQUEST_CODE_SENDER) {
+            //视频聊天结束
+            sendTextMsg(VIDEO_CHAT_OVER);
         } else if (requestCode == IMAGE_STORE) {
             if (resultCode == RESULT_OK && data != null) {
                 showImagePreview(FileUtil.getFilePath(this, data.getData()));

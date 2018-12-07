@@ -12,6 +12,7 @@ import android.widget.TextView;
 import com.bumptech.glide.Glide;
 import com.growalong.android.R;
 import com.growalong.android.app.AppManager;
+import com.growalong.android.listener.OkCancelListener;
 import com.growalong.android.model.UserInfoModel;
 
 /**
@@ -22,6 +23,7 @@ public class RequestedVideoCallDialog extends DialogFragment implements View.OnC
     private ImageView headview, receive, refuse, background;
     private TextView name;
     private String callerHeadUrl, callerName;
+    private OkCancelListener clickListener;
 
     public void setCallerHeadUrl(String callerHeadUrl) {
         this.callerHeadUrl = callerHeadUrl;
@@ -30,6 +32,7 @@ public class RequestedVideoCallDialog extends DialogFragment implements View.OnC
     public void setCallerName(String callerName) {
         this.callerName = callerName;
     }
+
 
     @Nullable
     @Override
@@ -62,10 +65,26 @@ public class RequestedVideoCallDialog extends DialogFragment implements View.OnC
     public void onClick(View v) {
         switch (v.getId()) {
             case R.id.refuse:
+                if(clickListener != null){
+                    clickListener.clickCancel(null);
+                }
+                dismiss();
                 break;
             case R.id.receive:
+                if(clickListener != null){
+                    clickListener.clickOk(null);
+                }
+                dismiss();
                 break;
 
         }
+    }
+
+    public void setClickListener(OkCancelListener clickListener) {
+        this.clickListener = clickListener;
+    }
+
+    public OkCancelListener getClickListener() {
+        return clickListener;
     }
 }

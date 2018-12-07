@@ -30,6 +30,8 @@ import com.growalong.android.agora.propeller.UserStatusData;
 import com.growalong.android.agora.propeller.VideoInfoData;
 import com.growalong.android.agora.propeller.preprocessing.VideoPreProcessing;
 import com.growalong.android.agora.propeller.ui.RtlLinearLayoutManager;
+import com.growalong.android.app.MyApplication;
+import com.growalong.android.ui.QLActivity;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -58,6 +60,15 @@ public class AgoraChatActivity extends AgoraBaseActivity implements AGEventHandl
     private boolean mIsLandscape = false;
     private VideoPreProcessing mVideoPreProcessing;
     private SmallVideoViewAdapter mSmallVideoViewAdapter;
+
+    public static void startThis(QLActivity activity, String channel, int type) {
+        Intent i = new Intent(activity, AgoraChatActivity.class);
+        i.putExtra(AgoraConstantApp.ACTION_KEY_CHANNEL_NAME, channel);
+        i.putExtra(AgoraConstantApp.ACTION_KEY_ENCRYPTION_KEY, "");
+        i.putExtra(AgoraConstantApp.ACTION_KEY_ENCRYPTION_MODE, activity.getResources().getStringArray(R.array.encryption_mode_values)[MyApplication.mVideoSettings.mEncryptionModeIndex]);
+
+        activity.startActivityForResult(i, type);
+    }
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {

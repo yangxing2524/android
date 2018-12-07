@@ -42,7 +42,7 @@ public class MainActivity extends QLActivity {
     private LayoutInflater layoutInflater;
     private FragmentTabHost mTabHost;
     private final Class fragmentArray[] = {ConversationFragment.class, CourseMainFragment.class, MyFragment.class};
-    private int mTitleArray[] = {R.string.conversation, R.string.course, R.string.mine};
+    private int mTitleArray[] = {R.string.conversation, R.string.course, R.string.my};
     private int mImageViewArray[] = {R.drawable.tab_conversation, R.drawable.tab_contact, R.drawable.tab_setting};
     private String mTextviewArray[] = {"contact", "conversation", "setting"};
     private ImageView msgUnread;

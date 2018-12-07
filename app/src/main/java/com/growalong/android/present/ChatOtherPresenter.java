@@ -1,5 +1,6 @@
 package com.growalong.android.present;
 
+import com.growalong.android.listener.OkCancelListener;
 import com.growalong.android.ui.QLActivity;
 import com.growalong.android.ui.dialog.RequestedVideoCallDialog;
 
@@ -14,10 +15,11 @@ public class ChatOtherPresenter {
         mActivity = chatActivity;
     }
 
-    public void requestVideoChat(String callerHeadUrl, String callerName) {
+    public void requestVideoChat(String callerHeadUrl, String callerName, OkCancelListener listener) {
         RequestedVideoCallDialog dialog = new RequestedVideoCallDialog();
         dialog.setCallerHeadUrl(callerHeadUrl);
         dialog.setCallerName(callerName);
+        dialog.setClickListener(listener);
         dialog.show(mActivity.getFragmentManager(), "");
     }
 }

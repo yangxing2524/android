@@ -30,7 +30,7 @@
             android:layout_height="wrap_content" />
     </LinearLayout>
     <ImageView
-        android:id="@+id/receive"
+        android:id="@+id/refuse"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_alignParentBottom="true"
@@ -38,7 +38,7 @@
         android:src="@drawable/icon_video_over" />
 
     <ImageView
-        android:id="@+id/refuse"
+        android:id="@+id/receive"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_alignParentRight="true"
