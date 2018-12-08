@@ -87,6 +87,7 @@ public class ChatActivity extends QLActivity implements ChatView {
     public static final String VIDEO_CHAT_OVER = "&video_chat_over&";//通话已结束
 
     private List<Message> messageList = new ArrayList<>();
+    private List<Message> sourceList = new ArrayList<>();
     private ChatAdapter adapter;
     private ListView listView;
     private ChatPresenter presenter;
@@ -246,7 +247,7 @@ public class ChatActivity extends QLActivity implements ChatView {
             public void onScrollStateChanged(AbsListView view, int scrollState) {
                 if (scrollState == AbsListView.OnScrollListener.SCROLL_STATE_IDLE && firstItem == 0) {
                     //如果拉到顶端读取更多消息
-                    presenter.getMessage(messageList.size() > 0 ? messageList.get(0).getMessage() : null);
+                    presenter.getMessage(sourceList.size() > 0 ? sourceList.get(0).getMessage() : null);
 
                 }
             }
@@ -447,6 +448,7 @@ public class ChatActivity extends QLActivity implements ChatView {
         int newMsgNum = 0;
         for (int i = 0; i < messages.size(); ++i) {
             Message mMessage = MessageFactory.getMessage(messages.get(i));
+            Message mMessage1 = mMessage;
             try {
                 if (mMessage instanceof TextMessage) {
                     TextMessage textMessage = (TextMessage) mMessage;
@@ -484,6 +486,7 @@ public class ChatActivity extends QLActivity implements ChatView {
                 mMessage.setHasTime(null);
                 messageList.add(0, mMessage);
             }
+            sourceList.add(0, mMessage1);
         }
         adapter.notifyDataSetChanged();
         listView.setSelection(newMsgNum);
