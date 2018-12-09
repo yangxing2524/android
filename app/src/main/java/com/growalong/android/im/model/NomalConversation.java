@@ -34,8 +34,6 @@ public class NomalConversation extends Conversation {
         this.lastMessage = lastMessage;
     }
 
-
-
     @Override
     public int getAvatar() {
         switch (type){

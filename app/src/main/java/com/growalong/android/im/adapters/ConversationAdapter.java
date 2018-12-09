@@ -1,6 +1,7 @@
 package com.growalong.android.im.adapters;
 
 import android.content.Context;
+import android.text.TextUtils;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -9,11 +10,13 @@ import android.widget.TextView;
 
 import com.bumptech.glide.Glide;
 import com.growalong.android.R;
+import com.growalong.android.app.MyApplication;
 import com.growalong.android.im.model.Conversation;
 import com.growalong.android.im.model.FriendProfile;
 import com.growalong.android.im.model.FriendshipInfo;
 import com.growalong.android.im.model.NomalConversation;
 import com.growalong.android.im.utils.TimeUtil;
+import com.growalong.android.ui.ChatActivity;
 import com.tencent.imsdk.TIMConversationType;
 import com.tencent.qcloud.ui.CircleImageView;
 
@@ -65,19 +68,28 @@ public class ConversationAdapter extends ArrayAdapter<Conversation> {
             if (nomalConversation.getType() == TIMConversationType.C2C) {
                 FriendProfile profile = FriendshipInfo.getInstance().getProfile(data.getIdentify());
                 String url = profile.getAvatarUrl();
-                if(url == null){
+                if (url == null) {
                     viewHolder.avatar.setImageResource(data.getAvatar());
-                }else {
+                } else {
                     Glide.with(viewHolder.avatar.getContext()).load(url).asBitmap().into(viewHolder.avatar);
                 }
-            }else{
+            } else {
                 viewHolder.avatar.setImageResource(data.getAvatar());
             }
         } else {
             viewHolder.avatar.setImageResource(data.getAvatar());
         }
+        String lastMessage = data.getLastMessageSummary();
+        if (!TextUtils.isEmpty(lastMessage) && lastMessage.startsWith("&video_chat_")) {
+            if (lastMessage.startsWith(ChatActivity.VIDEO_CHAT_REQUEST)) {
+                lastMessage = MyApplication.getContext().getResources().getString(R.string.start_video_chat_request);
+            } else if (TextUtils.equals(lastMessage, ChatActivity.VIDEO_CHAT_FAILED) ||
+                    TextUtils.equals(lastMessage, ChatActivity.VIDEO_CHAT_OVER)) {
+                lastMessage = MyApplication.getContext().getResources().getString(R.string.video_chat_over);
+            }
+        }
+        viewHolder.lastMessage.setText(lastMessage);
 
-        viewHolder.lastMessage.setText(data.getLastMessageSummary());
         viewHolder.time.setText(TimeUtil.getTimeStr(data.getLastMessageTime()));
         long unRead = data.getUnreadNum();
         if (unRead <= 0) {

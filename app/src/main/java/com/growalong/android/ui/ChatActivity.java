@@ -15,6 +15,7 @@ import android.support.annotation.Nullable;
 import android.support.v4.app.ActivityCompat;
 import android.support.v4.content.ContextCompat;
 import android.text.TextUtils;
+import android.util.Log;
 import android.view.ContextMenu;
 import android.view.Menu;
 import android.view.MenuItem;
@@ -56,6 +57,7 @@ import com.growalong.android.present.InitPresenter;
 import com.growalong.android.present.UserPresenter;
 import com.growalong.android.util.LogUtil;
 import com.growalong.android.util.ToastUtil;
+import com.growalong.android.util.TranslateHelper;
 import com.tencent.imsdk.TIMConversationType;
 import com.tencent.imsdk.TIMCustomElem;
 import com.tencent.imsdk.TIMElem;
@@ -73,13 +75,24 @@ import com.tencent.qcloud.ui.ChatInput;
 import com.tencent.qcloud.ui.TemplateTitle;
 import com.tencent.qcloud.ui.VoiceSendingView;
 
+import org.json.JSONArray;
+import org.json.JSONException;
+import org.json.JSONObject;
+
 import java.io.File;
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
+
+import okhttp3.Call;
+import okhttp3.Callback;
+import okhttp3.Response;
 
 public class ChatActivity extends QLActivity implements ChatView {
 
     private static final String TAG = "ChatActivity";
+
+    private int mFamillyType = 0;//0代表的是中方家庭, 1代表英方
 
     public static final String VIDEO_CHAT_REQUEST = "&video_chat_request&";
     public static final String VIDEO_CHAT_FAILED = "&video_chat_failed&";//通话已结束
@@ -217,6 +230,12 @@ public class ChatActivity extends QLActivity implements ChatView {
     protected void onCreateBaseView(@Nullable Bundle savedInstanceState) {
         checkSelfPermissions();
         initVideo();
+        int nation = AppManager.getInstance().getUserInfoModel().getNation();
+        if (nation == 1) {
+            mFamillyType = 0;
+        } else if (nation == 2) {
+            mFamillyType = 1;
+        }
         userPresenter = new UserPresenter();
         identify = getIntent().getStringExtra("identify");
         type = (TIMConversationType) getIntent().getSerializableExtra("type");
@@ -418,7 +437,7 @@ public class ChatActivity extends QLActivity implements ChatView {
         //添加文本内容
         TIMCustomElem elem1 = new TIMCustomElem();
         TIMUserProfile senderProfile = message.getSenderProfile();
-        String name ;
+        String name;
         if (senderProfile != null) {
             name = senderProfile.getNickName();
         } else {
@@ -452,8 +471,8 @@ public class ChatActivity extends QLActivity implements ChatView {
             try {
                 if (mMessage instanceof TextMessage) {
                     TextMessage textMessage = (TextMessage) mMessage;
-                    if (textMessage.getContent().startsWith("&video_chat_")) {
-                        final String content = textMessage.getContent();
+                    final String content = textMessage.getContent();
+                    if (content.startsWith("&video_chat_")) {
                         if (content.startsWith(VIDEO_CHAT_REQUEST)) {
                             mMessage = setVideoSenderTip(messages.get(i));
                             if (mMessage == null) {
@@ -587,9 +606,63 @@ public class ChatActivity extends QLActivity implements ChatView {
      */
     @Override
     public void sendText() {
-        Message message = new TextMessage(input.getText());
-        presenter.sendMessage(message.getMessage());
-        input.setText("");
+        final String text = input.getText().toString();
+        new Thread(new Runnable() {
+            @Override
+            public void run() {
+                Callback callback = new Callback() {
+                    @Override
+                    public void onFailure(Call call, final IOException e) {
+                        MyApplication.runOnUIThread(new Runnable() {
+                            @Override
+                            public void run() {
+                                Message message = new TextMessage(text);
+                                presenter.sendMessage(message.getMessage());
+                                input.setText("");
+                                LogUtil.e(e.getMessage());
+                            }
+                        });
+                    }
+
+                    @Override
+                    public void onResponse(Call call, Response response) throws IOException {
+                        String response1 = response.body().string();
+                        String content = text;
+                        try {
+                            JSONObject srcJson = new JSONObject(response1);
+                            JSONArray jsonArray = srcJson.getJSONArray("trans_result");
+                            JSONObject jsonObject = (JSONObject) jsonArray.get(0);
+                            String dst = jsonObject.getString("dst");
+                            String src = jsonObject.getString("src");
+                            if (mFamillyType == 0) {
+                                content = mFamillyType + src + "&transpate&" + dst;
+                            } else {
+                                content = mFamillyType + dst + "&transpate&" + src;
+                            }
+                        } catch (JSONException e) {
+                            e.printStackTrace();
+                        }
+
+                        final String content1 = content;
+                        MyApplication.runOnUIThread(new Runnable() {
+                            @Override
+                            public void run() {
+                                Message message = new TextMessage(content1);
+                                presenter.sendMessage(message.getMessage());
+                                input.setText("");
+                            }
+                        });
+
+                        Log.e("response ", "onResponse(): " + response1);
+                    }
+                };
+                String from = mFamillyType == 0 ? TranslateHelper.TrLanguage.zh.toString() : TranslateHelper.TrLanguage.en.toString();
+                String to = mFamillyType == 0 ? TranslateHelper.TrLanguage.en.toString() : TranslateHelper.TrLanguage.zh.toString();
+                TranslateHelper.getTransResult(text, from, to, callback);
+
+            }
+        }).start();
+
     }
 
     /**
