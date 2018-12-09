@@ -13,9 +13,11 @@ import android.util.TypedValue;
 import android.widget.TextView;
 
 import com.growalong.android.R;
+import com.growalong.android.app.AppManager;
 import com.growalong.android.app.MyApplication;
 import com.growalong.android.im.adapters.ChatAdapter;
 import com.growalong.android.im.utils.EmoticonUtil;
+import com.growalong.android.ui.ChatActivity;
 import com.tencent.imsdk.TIMElem;
 import com.tencent.imsdk.TIMElemType;
 import com.tencent.imsdk.TIMFaceElem;
@@ -36,27 +38,27 @@ import java.util.List;
  */
 public class TextMessage extends Message {
 
-    public TextMessage(TIMMessage message){
+    public TextMessage(TIMMessage message) {
         this.message = message;
     }
 
-    public TextMessage(String s){
+    public TextMessage(String s) {
         message = new TIMMessage();
         TIMTextElem elem = new TIMTextElem();
         elem.setText(s);
         message.addElement(elem);
     }
 
-    public TextMessage(TIMMessageDraft draft){
+    public TextMessage(TIMMessageDraft draft) {
         message = new TIMMessage();
-        for (TIMElem elem : draft.getElems()){
+        for (TIMElem elem : draft.getElems()) {
             message.addElement(elem);
         }
     }
 
-    private List<ImageSpan> sortByIndex(final Editable editInput, ImageSpan []array){
+    private List<ImageSpan> sortByIndex(final Editable editInput, ImageSpan[] array) {
         ArrayList<ImageSpan> sortList = new ArrayList<>();
-        for (ImageSpan span : array){
+        for (ImageSpan span : array) {
             sortList.add(span);
         }
         Collections.sort(sortList, new Comparator<ImageSpan>() {
@@ -69,15 +71,15 @@ public class TextMessage extends Message {
         return sortList;
     }
 
-    public TextMessage(Editable s){
+    public TextMessage(Editable s) {
         message = new TIMMessage();
         ImageSpan[] spans = s.getSpans(0, s.length(), ImageSpan.class);
         List<ImageSpan> listSpans = sortByIndex(s, spans);
         int currentIndex = 0;
-        for (ImageSpan span : listSpans){
+        for (ImageSpan span : listSpans) {
             int startIndex = s.getSpanStart(span);
             int endIndex = s.getSpanEnd(span);
-            if (currentIndex < startIndex){
+            if (currentIndex < startIndex) {
                 TIMTextElem textElem = new TIMTextElem();
                 textElem.setText(s.subSequence(currentIndex, startIndex).toString());
                 message.addElement(textElem);
@@ -85,13 +87,13 @@ public class TextMessage extends Message {
             TIMFaceElem faceElem = new TIMFaceElem();
             int index = Integer.parseInt(s.subSequence(startIndex, endIndex).toString());
             faceElem.setIndex(index);
-            if (index < EmoticonUtil.emoticonData.length){
+            if (index < EmoticonUtil.emoticonData.length) {
                 faceElem.setData(EmoticonUtil.emoticonData[index].getBytes(Charset.forName("UTF-8")));
             }
             message.addElement(faceElem);
             currentIndex = endIndex;
         }
-        if (currentIndex < s.length()){
+        if (currentIndex < s.length()) {
             TIMTextElem textElem = new TIMTextElem();
             textElem.setText(s.subSequence(currentIndex, s.length()).toString());
             message.addElement(textElem);
@@ -104,15 +106,15 @@ public class TextMessage extends Message {
     public String getContent() {
         List<TIMElem> elems = new ArrayList<>();
         boolean hasText = false;
-        for (int i = 0; i < message.getElementCount(); ++i){
+        for (int i = 0; i < message.getElementCount(); ++i) {
             elems.add(message.getElement(i));
-            if (message.getElement(i).getType() == TIMElemType.Text){
+            if (message.getElement(i).getType() == TIMElemType.Text) {
                 hasText = true;
             }
         }
         SpannableStringBuilder stringBuilder = getString(elems, MyApplication.getInstance().context);
-        if (!hasText){
-            stringBuilder.insert(0," ");
+        if (!hasText) {
+            stringBuilder.insert(0, " ");
         }
         return stringBuilder.toString();
     }
@@ -121,7 +123,7 @@ public class TextMessage extends Message {
      * 在聊天界面显示消息
      *
      * @param viewHolder 界面样式
-     * @param context 显示消息的上下文
+     * @param context    显示消息的上下文
      */
     @Override
     public void showMessage(ChatAdapter.ViewHolder viewHolder, Context context) {
@@ -132,17 +134,55 @@ public class TextMessage extends Message {
         tv.setTextSize(TypedValue.COMPLEX_UNIT_SP, 18);
         tv.setTextColor(MyApplication.getContext().getResources().getColor(isSelf() ? R.color.white : R.color.black));
         List<TIMElem> elems = new ArrayList<>();
-        for (int i = 0; i < message.getElementCount(); ++i){
+        for (int i = 0; i < message.getElementCount(); ++i) {
             elems.add(message.getElement(i));
-            if (message.getElement(i).getType() == TIMElemType.Text){
+            if (message.getElement(i).getType() == TIMElemType.Text) {
                 hasText = true;
             }
         }
         SpannableStringBuilder stringBuilder = getString(elems, context);
-        if (!hasText){
-            stringBuilder.insert(0," ");
+        if (!hasText) {
+            stringBuilder.insert(0, " ");
         }
-        tv.setText(stringBuilder);
+        String string = stringBuilder.toString();
+        try {
+            int nation = AppManager.getInstance().getUserInfoModel().getNation();
+            if (string.contains(ChatActivity.TRANSLATE_TAG)) {
+                final String[] split = string.split(ChatActivity.TRANSLATE_TAG);
+                String ch, en;
+                ch = split[0].substring(1);
+                en = split[1];
+                if (ChatActivity.showMessageType == 3) {
+                    //中英文都显示
+                    if (nation == 1) {
+                        //中国人
+                        string = ch + "\n------------\n" + en;
+                    } else {
+                        string = en + "\n------------\n" + ch;
+                    }
+                } else if (ChatActivity.showMessageType == 1) {
+                    //显示中文
+                    string = ch;
+                } else if (ChatActivity.showMessageType == 2) {
+                    //显示英文
+                    string = en;
+                } else if (ChatActivity.showMessageType == 0) {
+                    //显示原文
+                    String type = split[0].substring(0, 1);
+                    if ("0".equals(type)) {
+                        string = en;
+                    } else {
+                        string = ch;
+                    }
+                }
+
+
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+
+        tv.setText(string);
         getBubbleView(viewHolder).addView(tv);
         showStatus(viewHolder);
     }
@@ -155,12 +195,12 @@ public class TextMessage extends Message {
         String str = getRevokeSummary();
         if (str != null) return str;
         StringBuilder result = new StringBuilder();
-        for (int i = 0; i<message.getElementCount(); ++i){
-            switch (message.getElement(i).getType()){
+        for (int i = 0; i < message.getElementCount(); ++i) {
+            switch (message.getElement(i).getType()) {
                 case Face:
                     TIMFaceElem faceElem = (TIMFaceElem) message.getElement(i);
                     byte[] data = faceElem.getData();
-                    if (data != null){
+                    if (data != null) {
                         result.append(new String(data, Charset.forName("UTF-8")));
                     }
                     break;
@@ -182,19 +222,19 @@ public class TextMessage extends Message {
 
     }
 
-    private static int getNumLength(int n){
+    private static int getNumLength(int n) {
         return String.valueOf(n).length();
     }
 
 
-    public static SpannableStringBuilder getString(List<TIMElem> elems, Context context){
+    public static SpannableStringBuilder getString(List<TIMElem> elems, Context context) {
         SpannableStringBuilder stringBuilder = new SpannableStringBuilder();
-        for (int i = 0; i<elems.size(); ++i){
-            switch (elems.get(i).getType()){
+        for (int i = 0; i < elems.size(); ++i) {
+            switch (elems.get(i).getType()) {
                 case Face:
                     TIMFaceElem faceElem = (TIMFaceElem) elems.get(i);
                     int startIndex = stringBuilder.length();
-                    try{
+                    try {
                         AssetManager am = context.getAssets();
                         InputStream is = am.open(String.format("emoticon/%d.gif", faceElem.getIndex()));
                         if (is == null) continue;
@@ -209,7 +249,7 @@ public class TextMessage extends Message {
                         stringBuilder.append(String.valueOf(faceElem.getIndex()));
                         stringBuilder.setSpan(span, startIndex, startIndex + getNumLength(faceElem.getIndex()), Spannable.SPAN_EXCLUSIVE_EXCLUSIVE);
                         is.close();
-                    }catch (IOException e){
+                    } catch (IOException e) {
 
                     }
                     break;

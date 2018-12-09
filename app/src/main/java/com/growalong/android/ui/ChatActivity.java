@@ -35,9 +35,6 @@ import com.growalong.android.app.MyApplication;
 import com.growalong.android.im.adapters.ChatAdapter;
 import com.growalong.android.im.model.CustomMessage;
 import com.growalong.android.im.model.FileMessage;
-import com.growalong.android.im.model.FriendProfile;
-import com.growalong.android.im.model.FriendshipInfo;
-import com.growalong.android.im.model.GroupInfo;
 import com.growalong.android.im.model.ImageMessage;
 import com.growalong.android.im.model.Message;
 import com.growalong.android.im.model.MessageFactory;
@@ -91,6 +88,9 @@ import okhttp3.Response;
 public class ChatActivity extends QLActivity implements ChatView {
 
     private static final String TAG = "ChatActivity";
+    public static final String TRANSLATE_TAG = "&transpate&";
+
+    public static int showMessageType = 3;//0 不翻译，1中文，2英文，3中英文都显示
 
     private int mFamillyType = 0;//0代表的是中方家庭, 1代表英方
 
@@ -278,47 +278,48 @@ public class ChatActivity extends QLActivity implements ChatView {
         });
         registerForContextMenu(listView);
         TemplateTitle title = (TemplateTitle) findViewById(R.id.chat_title);
-        switch (type) {
-            case C2C:
-                title.setMoreImg(R.drawable.btn_person);
-                if (FriendshipInfo.getInstance().isFriend(identify)) {
-                    title.setMoreImgAction(new View.OnClickListener() {
-                        @Override
-                        public void onClick(View v) {
-                            Intent intent = new Intent(ChatActivity.this, ProfileActivity.class);
-                            intent.putExtra("identify", identify);
-                            startActivity(intent);
-                        }
-                    });
-                    FriendProfile profile = FriendshipInfo.getInstance().getProfile(identify);
-                    title.setTitleText(titleStr = profile == null ? identify : profile.getName());
-                } else {
-                    title.setMoreImgAction(new View.OnClickListener() {
-                        @Override
-                        public void onClick(View v) {
-                            Intent person = new Intent(ChatActivity.this, AddFriendActivity.class);
-                            person.putExtra("id", identify);
-                            person.putExtra("name", identify);
-                            startActivity(person);
-                        }
-                    });
-                    title.setTitleText(titleStr = identify);
-                }
-                break;
-            case Group:
-                title.setMoreImg(R.drawable.btn_group);
-                title.setMoreImgAction(new View.OnClickListener() {
-                    @Override
-                    public void onClick(View v) {
-                        Intent intent = new Intent(ChatActivity.this, GroupProfileActivity.class);
-                        intent.putExtra("identify", identify);
-                        startActivity(intent);
-                    }
-                });
-                title.setTitleText(GroupInfo.getInstance().getGroupName(identify));
-                break;
 
-        }
+//        switch (type) {
+//            case C2C:
+//                title.setMoreImg(R.drawable.btn_person);
+//                if (FriendshipInfo.getInstance().isFriend(identify)) {
+//                    title.setMoreImgAction(new View.OnClickListener() {
+//                        @Override
+//                        public void onClick(View v) {
+//                            Intent intent = new Intent(ChatActivity.this, ProfileActivity.class);
+//                            intent.putExtra("identify", identify);
+//                            startActivity(intent);
+//                        }
+//                    });
+//                    FriendProfile profile = FriendshipInfo.getInstance().getProfile(identify);
+//                    title.setTitleText(titleStr = profile == null ? identify : profile.getName());
+//                } else {
+//                    title.setMoreImgAction(new View.OnClickListener() {
+//                        @Override
+//                        public void onClick(View v) {
+//                            Intent person = new Intent(ChatActivity.this, AddFriendActivity.class);
+//                            person.putExtra("id", identify);
+//                            person.putExtra("name", identify);
+//                            startActivity(person);
+//                        }
+//                    });
+//                    title.setTitleText(titleStr = identify);
+//                }
+//                break;
+//            case Group:
+//                title.setMoreImg(R.drawable.btn_group);
+//                title.setMoreImgAction(new View.OnClickListener() {
+//                    @Override
+//                    public void onClick(View v) {
+//                        Intent intent = new Intent(ChatActivity.this, GroupProfileActivity.class);
+//                        intent.putExtra("identify", identify);
+//                        startActivity(intent);
+//                    }
+//                });
+//                title.setTitleText(GroupInfo.getInstance().getGroupName(identify));
+//                break;
+//
+//        }
         voiceSendingView = (VoiceSendingView) findViewById(R.id.voice_sending);
         presenter.start();
     }
@@ -635,9 +636,9 @@ public class ChatActivity extends QLActivity implements ChatView {
                             String dst = jsonObject.getString("dst");
                             String src = jsonObject.getString("src");
                             if (mFamillyType == 0) {
-                                content = mFamillyType + src + "&transpate&" + dst;
+                                content = mFamillyType + src + TRANSLATE_TAG + dst;
                             } else {
-                                content = mFamillyType + dst + "&transpate&" + src;
+                                content = mFamillyType + dst + TRANSLATE_TAG + src;
                             }
                         } catch (JSONException e) {
                             e.printStackTrace();
