@@ -109,6 +109,9 @@ public class TemplateTitle extends RelativeLayout {
         tvMore.setOnClickListener(listener);
     }
 
+    public TextView getTvMore() {
+        return tvMore;
+    }
 
     /**
      * 设置更多文字内容

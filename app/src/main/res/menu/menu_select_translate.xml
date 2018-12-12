@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android" >
+
+    <item
+        android:id="@+id/showChinese"
+        android:title="@string/showChinese"/>
+    <item
+        android:id="@+id/showEnglish"
+        android:title="@string/showEnglish"/>
+    <item
+        android:id="@+id/showChinaAndEnglish"
+        android:title="@string/showChinaAndEnglish"/>
+    <item
+        android:id="@+id/showNormal"
+        android:title="@string/showNormal"/>
+</menu>

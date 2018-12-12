@@ -152,7 +152,7 @@ public class TextMessage extends Message {
                 String ch, en;
                 ch = split[0].substring(1);
                 en = split[1];
-                if (ChatActivity.showMessageType == 3) {
+                if (ChatActivity.showTranslate == ChatActivity.ShowTranslate.ChineseAndEnglish) {
                     //中英文都显示
                     if (nation == 1) {
                         //中国人
@@ -160,13 +160,13 @@ public class TextMessage extends Message {
                     } else {
                         string = en + "\n------------\n" + ch;
                     }
-                } else if (ChatActivity.showMessageType == 1) {
+                } else if (ChatActivity.showTranslate == ChatActivity.ShowTranslate.Chinese) {
                     //显示中文
                     string = ch;
-                } else if (ChatActivity.showMessageType == 2) {
+                } else if (ChatActivity.showTranslate == ChatActivity.ShowTranslate.English) {
                     //显示英文
                     string = en;
-                } else if (ChatActivity.showMessageType == 0) {
+                } else if (ChatActivity.showTranslate == ChatActivity.ShowTranslate.Normal) {
                     //显示原文
                     String type = split[0].substring(0, 1);
                     if ("0".equals(type)) {

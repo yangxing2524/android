@@ -4,6 +4,7 @@ import android.Manifest;
 import android.content.Context;
 import android.content.Intent;
 import android.content.pm.PackageManager;
+import android.content.res.Resources;
 import android.graphics.BitmapFactory;
 import android.net.Uri;
 import android.os.Build;
@@ -24,6 +25,7 @@ import android.view.View;
 import android.widget.AbsListView;
 import android.widget.AdapterView;
 import android.widget.ListView;
+import android.widget.PopupMenu;
 import android.widget.Toast;
 
 import com.google.gson.JsonElement;
@@ -88,9 +90,7 @@ import okhttp3.Response;
 public class ChatActivity extends QLActivity implements ChatView {
 
     private static final String TAG = "ChatActivity";
-    public static final String TRANSLATE_TAG = "&transpate&";
-
-    public static int showMessageType = 3;//0 不翻译，1中文，2英文，3中英文都显示
+    public static final String TRANSLATE_TAG = "&translate&";
 
     private int mFamillyType = 0;//0代表的是中方家庭, 1代表英方
 
@@ -124,6 +124,15 @@ public class ChatActivity extends QLActivity implements ChatView {
     private Handler handler = new Handler();
 
     private UserPresenter userPresenter;
+
+    public static ShowTranslate showTranslate = ShowTranslate.Normal;
+
+    public enum ShowTranslate {
+        Chinese,
+        English,
+        ChineseAndEnglish,
+        Normal
+    }
 
     public static void navToChat(Context context, String identify, TIMConversationType type) {
         Intent intent = new Intent(context, ChatActivity.class);
@@ -277,8 +286,39 @@ public class ChatActivity extends QLActivity implements ChatView {
             }
         });
         registerForContextMenu(listView);
-        TemplateTitle title = (TemplateTitle) findViewById(R.id.chat_title);
 
+        //选择显示语言
+        final TemplateTitle title = findViewById(R.id.chat_title);
+        title.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                //Creating the instance of PopupMenu
+                PopupMenu popup = new PopupMenu(ChatActivity.this, title.getTvMore());
+                //Inflating the Popup using xml file
+                popup.getMenuInflater()
+                        .inflate(R.menu.menu_select_translate, popup.getMenu());
+
+                //registering popup with OnMenuItemClickListener
+                popup.setOnMenuItemClickListener(new PopupMenu.OnMenuItemClickListener() {
+                    public boolean onMenuItemClick(MenuItem item) {
+                        Resources resources = getResources();
+                        if (resources.getString(R.string.showChinese).equals(item.getTitle())) {
+                            showTranslate = ShowTranslate.Chinese;
+                        } else if (resources.getString(R.string.showEnglish).equals(item.getTitle())) {
+                            showTranslate = ShowTranslate.English;
+                        } else if (resources.getString(R.string.showChinaAndEnglish).equals(item.getTitle())) {
+                            showTranslate = ShowTranslate.ChineseAndEnglish;
+                        } else {
+                            showTranslate = ShowTranslate.Normal;
+                        }
+                        adapter.notifyDataSetChanged();
+                        return true;
+                    }
+                });
+
+                popup.show(); //showing popup menu
+            }
+        }); //closing the setOnClickListener method
 //        switch (type) {
 //            case C2C:
 //                title.setMoreImg(R.drawable.btn_person);
