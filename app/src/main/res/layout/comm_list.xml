@@ -4,7 +4,6 @@
     android:id="@+id/recyclerview"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="@color/main_gray"
     app:layout_empty="@layout/error_layout"
     app:layout_moreProgress="@layout/layout_more_progress"
     app:mainLayoutId="@layout/layout_recyclerview_verticalscroll"

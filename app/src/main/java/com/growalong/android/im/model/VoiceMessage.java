@@ -54,6 +54,11 @@ public class VoiceMessage extends Message {
                 ((TIMSoundElem) message.getElement(0)).getDuration();
     }
 
+    @Override
+    public String[] getInfo() {
+        return new String[0];
+    }
+
     /**
      * 显示消息
      *

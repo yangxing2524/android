@@ -1,5 +1,8 @@
 package com.growalong.android.util;
 
+import com.growalong.android.app.AppManager;
+import com.growalong.android.ui.ChatActivity;
+
 import java.math.BigDecimal;
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
@@ -41,11 +44,11 @@ public class Utils {
         }
         return b1.divide(b2, scale, BigDecimal.ROUND_HALF_UP).doubleValue();
     }
-    public static int getAge(Date birthDay) throws Exception{
+
+    public static int getAge(Date birthDay) throws Exception {
         Calendar cal = Calendar.getInstance();
 
-        if (cal.before(birthDay))
-        {
+        if (cal.before(birthDay)) {
             throw new IllegalArgumentException(
                     "The birthDay is before Now.It's unbelievable!");
         }
@@ -60,18 +63,54 @@ public class Utils {
 
         int age = yearNow - yearBirth;
 
-        if (monthNow <= monthBirth)
-        {
-            if (monthNow == monthBirth)
-            {
+        if (monthNow <= monthBirth) {
+            if (monthNow == monthBirth) {
                 if (dayOfMonthNow < dayOfMonthBirth)
                     age--;
-            }
-            else
-            {
+            } else {
                 age--;
             }
         }
         return age;
+    }
+
+    public static String getIMTextString(String string) {
+        try {
+            int nation = AppManager.getInstance().getUserInfoModel().getNation();
+            if (string.contains(ChatActivity.TRANSLATE_TAG)) {
+                final String[] split = string.split(ChatActivity.TRANSLATE_TAG);
+                String ch, en;
+                ch = split[0].substring(1);
+                en = split[1];
+                if (ChatActivity.showTranslate == ChatActivity.ShowTranslate.ChineseAndEnglish) {
+                    //中英文都显示
+                    if (nation == 1) {
+                        //中国人
+                        string = ch + "\n------------\n" + en;
+                    } else {
+                        string = en + "\n------------\n" + ch;
+                    }
+                } else if (ChatActivity.showTranslate == ChatActivity.ShowTranslate.Chinese) {
+                    //显示中文
+                    string = ch;
+                } else if (ChatActivity.showTranslate == ChatActivity.ShowTranslate.English) {
+                    //显示英文
+                    string = en;
+                } else if (ChatActivity.showTranslate == ChatActivity.ShowTranslate.Normal) {
+                    //显示原文
+                    String type = split[0].substring(0, 1);
+                    if ("0".equals(type)) {
+                        string = ch;
+                    } else {
+                        string = en;
+                    }
+                }
+
+
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        return string;
     }
 }

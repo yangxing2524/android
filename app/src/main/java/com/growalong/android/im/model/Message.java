@@ -36,6 +36,8 @@ public abstract class Message {
 
     public abstract String getContent();
 
+    public abstract String[] getInfo();
+
     /**
      * 显示消息
      *

@@ -38,6 +38,11 @@ public class FileMessage extends Message {
         return ((TIMFileElem)message.getElement(0)).getPath();
     }
 
+    @Override
+    public String[] getInfo() {
+        return new String[0];
+    }
+
     /**
      * 显示消息
      *

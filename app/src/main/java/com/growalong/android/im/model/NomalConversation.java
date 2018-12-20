@@ -52,7 +52,7 @@ public class NomalConversation extends Conversation {
      */
     @Override
     public void navToDetail(Context context) {
-        ChatActivity.navToChat(context,identify,type);
+        ChatActivity.navToChat(context,identify,type, name);
     }
 
     /**

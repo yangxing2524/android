@@ -396,4 +396,6 @@
     <string name="showNormal">不翻译</string>
     <string name="showEnglish">显示英文</string>
     <string name="showChinaAndEnglish">显示中英文</string>
+    <string name="courseWeek">本周课程</string>
+    <string name="collect_added">已加入收藏</string>
 </resources>

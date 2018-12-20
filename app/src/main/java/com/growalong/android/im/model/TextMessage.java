@@ -13,11 +13,10 @@ import android.util.TypedValue;
 import android.widget.TextView;
 
 import com.growalong.android.R;
-import com.growalong.android.app.AppManager;
 import com.growalong.android.app.MyApplication;
 import com.growalong.android.im.adapters.ChatAdapter;
 import com.growalong.android.im.utils.EmoticonUtil;
-import com.growalong.android.ui.ChatActivity;
+import com.growalong.android.util.Utils;
 import com.tencent.imsdk.TIMElem;
 import com.tencent.imsdk.TIMElemType;
 import com.tencent.imsdk.TIMFaceElem;
@@ -101,6 +100,10 @@ public class TextMessage extends Message {
 
     }
 
+    @Override
+    public String[] getInfo() {
+        return new String[0];
+    }
 
     @Override
     public String getContent() {
@@ -144,44 +147,7 @@ public class TextMessage extends Message {
         if (!hasText) {
             stringBuilder.insert(0, " ");
         }
-        String string = stringBuilder.toString();
-        try {
-            int nation = AppManager.getInstance().getUserInfoModel().getNation();
-            if (string.contains(ChatActivity.TRANSLATE_TAG)) {
-                final String[] split = string.split(ChatActivity.TRANSLATE_TAG);
-                String ch, en;
-                ch = split[0].substring(1);
-                en = split[1];
-                if (ChatActivity.showTranslate == ChatActivity.ShowTranslate.ChineseAndEnglish) {
-                    //中英文都显示
-                    if (nation == 1) {
-                        //中国人
-                        string = ch + "\n------------\n" + en;
-                    } else {
-                        string = en + "\n------------\n" + ch;
-                    }
-                } else if (ChatActivity.showTranslate == ChatActivity.ShowTranslate.Chinese) {
-                    //显示中文
-                    string = ch;
-                } else if (ChatActivity.showTranslate == ChatActivity.ShowTranslate.English) {
-                    //显示英文
-                    string = en;
-                } else if (ChatActivity.showTranslate == ChatActivity.ShowTranslate.Normal) {
-                    //显示原文
-                    String type = split[0].substring(0, 1);
-                    if ("0".equals(type)) {
-                        string = en;
-                    } else {
-                        string = ch;
-                    }
-                }
-
-
-            }
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
-
+        String string = Utils.getIMTextString(stringBuilder.toString());
         tv.setText(string);
         getBubbleView(viewHolder).addView(tv);
         showStatus(viewHolder);

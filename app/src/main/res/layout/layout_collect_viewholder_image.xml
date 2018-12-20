@@ -2,33 +2,23 @@
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
-    android:layout_height="match_parent"
+    android:layout_height="wrap_content"
+    android:layout_marginTop="7dp"
+    android:layout_marginBottom="7dp"
     android:background="@drawable/background_f2_10_rect"
     android:orientation="vertical"
     android:padding="@dimen/y30">
 
-    <LinearLayout
-        android:layout_width="match_parent"
-        android:layout_height="@dimen/y90">
-
-        <ImageView
-            android:layout_width="@dimen/y90"
-            android:layout_height="@dimen/y90"
-            android:src="@mipmap/icon_more_file" />
-
-        <TextView
-            android:id="@+id/title"
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:gravity="center_vertical"
-            android:maxLines="2"
-            android:paddingLeft="@dimen/y26"
-            android:text="收藏的文件" />
-    </LinearLayout>
+    <ImageView
+        android:id="@+id/imageView"
+        android:layout_width="@dimen/y180"
+        android:layout_height="@dimen/y180"
+        android:src="@mipmap/icon_default_square" />
 
     <LinearLayout
         android:layout_width="match_parent"
-        android:layout_height="wrap_content">
+        android:layout_height="wrap_content"
+        android:layout_marginTop="@dimen/y24">
 
         <TextView
             android:id="@+id/frome"

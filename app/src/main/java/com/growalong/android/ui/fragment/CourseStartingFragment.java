@@ -22,7 +22,8 @@ import butterknife.BindView;
  */
 public class CourseStartingFragment extends NewBaseListFragment {
 
-    private static final int STARTING_COURSE = 1;
+    public static final int STARTING_COURSE = 1;
+
     @BindView(R.id.recyclerview)
     public SuperRecyclerView mRecyclerView;
 

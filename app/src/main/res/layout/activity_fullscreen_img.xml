@@ -1,7 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
-    xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:background="@color/white"
@@ -10,12 +9,11 @@
     <com.tencent.qcloud.ui.TemplateTitle
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        app:canBack="true"
-        app:titleText="@string/myCollect" />
+        app:canBack="true" />
 
-    <fragment
-        android:id="@+id/fragment"
-        android:name="com.growalong.android.ui.fragment.MyCollectFragment"
+    <ImageView
+        android:id="@+id/img"
+        android:src="@mipmap/icon_default_square"
         android:layout_width="match_parent"
         android:layout_height="match_parent" />
 </LinearLayout>

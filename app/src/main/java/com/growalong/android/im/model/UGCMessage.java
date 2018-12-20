@@ -11,8 +11,8 @@ import android.widget.ImageView;
 import com.growalong.android.R;
 import com.growalong.android.app.MyApplication;
 import com.growalong.android.im.adapters.ChatAdapter;
-import com.growalong.android.ui.VideoActivity;
 import com.growalong.android.im.utils.FileUtil;
+import com.growalong.android.ui.VideoActivity;
 import com.tencent.imsdk.TIMCallBack;
 import com.tencent.imsdk.TIMMessage;
 import com.tencent.imsdk.ext.ugc.TIMUGCCover;
@@ -66,9 +66,17 @@ public class UGCMessage extends Message{
 
     @Override
     public String getContent() {
-        return null;
+        TIMUGCElem elem = (TIMUGCElem)message.getElement(0);
+        return elem.getVideoPath();
     }
 
+    @Override
+    public String[] getInfo() {
+        TIMUGCElem elem = (TIMUGCElem)message.getElement(0);
+        String[] strings = new String[1];
+        strings[0] = elem.getCoverPath();
+        return strings;
+    }
     /**
      * 显示消息
      *

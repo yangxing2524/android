@@ -14,6 +14,7 @@ import android.widget.TextView;
 
 import com.growalong.android.R;
 import com.growalong.android.account.AccountManager;
+import com.growalong.android.app.AppManager;
 import com.growalong.android.app.MyApplication;
 import com.growalong.android.im.model.ImUserInfo;
 import com.growalong.android.model.ApiException;
@@ -24,8 +25,11 @@ import com.growalong.android.model.NetLoginBean;
 import com.growalong.android.model.NetLoginIMBean;
 import com.growalong.android.model.NoDataParams;
 import com.growalong.android.model.PasswordLoginParams;
+import com.growalong.android.model.UserInfoModel;
 import com.growalong.android.net.retrofit.BaseRetrofitClient;
 import com.growalong.android.net.retrofit.service.ILoginApis;
+import com.growalong.android.present.CommSubscriber;
+import com.growalong.android.present.UserPresenter;
 import com.growalong.android.rxevent.NotificationEvent;
 import com.growalong.android.ui.MainActivity;
 import com.growalong.android.util.LogUtil;
@@ -140,6 +144,7 @@ public class PasswordLoginFragment extends NewBaseFragment implements View.OnCli
             showError(MyApplication.getInstance().context.getString(R.string.login_checkout_password_hint));
             return;
         }
+
         PasswordLoginParams dataBean = new PasswordLoginParams(phoneNumber, password);
         BaseParams<PasswordLoginParams> baseParams = new BaseParams<>(dataBean);
         Observable<BaseGenericModel<NetLoginBean>> observable = mILoginApis.loginForPassword(baseParams);
@@ -169,6 +174,7 @@ public class PasswordLoginFragment extends NewBaseFragment implements View.OnCli
     }
 
     private void getIMInfo(final LoginBean user) {
+
         BaseParams<NoDataParams> baseParams = new BaseParams<>(new NoDataParams());
         Observable<BaseGenericModel<NetLoginIMBean>> observable = mILoginApis.loginForIM(baseParams);
         Subscription subscribe = observable.compose(RxUtil.<NetLoginIMBean>handleResult())
@@ -198,7 +204,22 @@ public class PasswordLoginFragment extends NewBaseFragment implements View.OnCli
                                 hideLoadingDialog();
                                 MainActivity.startThis(getActivity());
                                 ToastUtil.shortShow(getResources().getString(R.string.login_succ));
-                                getActivity().finish();
+
+                                UserPresenter userPresenter = new UserPresenter();
+                                userPresenter.getUserInfo(AccountManager.getInstance().getAccountInfo().getUserId(), "c").subscribe(new CommSubscriber<UserInfoModel>() {
+                                    @Override
+                                    public void onSuccess(UserInfoModel userInfoModel) {
+                                        AppManager.getInstance().setUserInfoModel(userInfoModel);
+                                        getActivity().finish();
+                                    }
+
+                                    @Override
+                                    public void onFailure(Throwable e) {
+                                        super.onFailure(e);
+                                        getActivity().finish();
+                                    }
+                                });
+
                             }
                         });
 

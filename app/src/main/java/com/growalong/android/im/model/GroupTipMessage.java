@@ -29,6 +29,10 @@ public class GroupTipMessage extends Message {
         return null;
     }
 
+    @Override
+    public String[] getInfo() {
+        return new String[0];
+    }
     /**
      * 显示消息
      *

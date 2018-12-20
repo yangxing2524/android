@@ -44,25 +44,25 @@ public class MyFragment extends NewBaseFragment implements View.OnClickListener 
 
     private UserInfoModel mUserInfoModel;
     private UserPresenter userPresenter = new UserPresenter();
+
     @Override
     protected void initEventAndData(Bundle savedInstanceState, View view) {
         initData();
     }
 
     private void initData() {
+        study_level.setOnClickListener(MyFragment.this);
+        interest.setOnClickListener(MyFragment.this);
+        collect.setOnClickListener(MyFragment.this);
 
         mUserInfoModel = AppManager.getInstance().getUserInfoModel();
-        if(mUserInfoModel == null) {
+        if (mUserInfoModel == null) {
             userPresenter.getUserInfo(AccountManager.getInstance().getAccountInfo().getUserId(), "c").subscribe(new CommSubscriber<UserInfoModel>() {
                 @Override
                 public void onSuccess(UserInfoModel userInfoModel) {
                     mUserInfoModel = userInfoModel;
                     updateInfo();
 
-                    //获取到的个人信息之后才添加点击事件
-                    study_level.setOnClickListener(MyFragment.this);
-                    interest.setOnClickListener(MyFragment.this);
-                    collect.setOnClickListener(MyFragment.this);
                 }
 
                 @Override
@@ -84,7 +84,7 @@ public class MyFragment extends NewBaseFragment implements View.OnClickListener 
     }
 
     private void updateInfo() {
-        if(getView() == null || mUserInfoModel == null){
+        if (getView() == null || mUserInfoModel == null) {
             return;
         }
         AppManager.getInstance().setUserInfoModel(mUserInfoModel);
@@ -116,7 +116,10 @@ public class MyFragment extends NewBaseFragment implements View.OnClickListener 
 
     @Override
     public void onClick(View v) {
-        switch (v.getId()){
+        if (mUserInfoModel == null) {
+            return;
+        }
+        switch (v.getId()) {
             case R.id.top:
                 SettingActivity.startThisForResult(activity, mUserInfoModel);
                 break;

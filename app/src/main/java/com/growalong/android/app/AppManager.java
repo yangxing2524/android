@@ -194,5 +194,7 @@ public class AppManager {
     }
 
 
-
+    public void logout() {
+        userInfoModel = null;
+    }
 }

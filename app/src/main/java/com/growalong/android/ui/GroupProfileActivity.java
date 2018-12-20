@@ -146,7 +146,7 @@ public class GroupProfileActivity extends FragmentActivity implements GroupInfoV
     public void onClick(View v) {
         switch (v.getId()){
             case R.id.btnChat:
-                ChatActivity.navToChat(this,identify, TIMConversationType.Group);
+                ChatActivity.navToChat(this,identify, TIMConversationType.Group, info.getGroupName());
                 break;
             case R.id.btnDel:
                 if (isGroupOwner && !type.equals("Private")){

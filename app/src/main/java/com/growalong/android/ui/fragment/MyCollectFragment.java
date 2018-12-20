@@ -11,7 +11,9 @@ import com.growalong.android.present.UserPresenter;
 import com.growalong.android.ui.adapter.CollectAdapter;
 import com.growalong.android.ui.recyclerview.ISuperRefreshView;
 import com.growalong.android.ui.recyclerview.SuperRecyclerView;
+import com.growalong.android.util.DensityUtil;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import butterknife.BindView;
@@ -27,11 +29,15 @@ public class MyCollectFragment extends NewBaseListFragment {
 
     private int mPage = 1;
 
-    private List<CollectModel> mData;
+    private List<CollectModel> mData = new ArrayList<>();
+
     @Override
     public void setupView(Bundle savedInstanceState, View view) {
         loadData(false);
+        int padding = DensityUtil.dip2px(activity, 15);
+        view.setPadding(padding, padding / 2, padding, padding / 2);
     }
+
 
     public void loadData(final boolean isMore) {
         int page = 1;

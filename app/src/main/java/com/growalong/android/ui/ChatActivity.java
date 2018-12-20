@@ -6,7 +6,6 @@ import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.content.res.Resources;
 import android.graphics.BitmapFactory;
-import android.net.Uri;
 import android.os.Build;
 import android.os.Bundle;
 import android.os.Environment;
@@ -18,6 +17,7 @@ import android.support.v4.content.ContextCompat;
 import android.text.TextUtils;
 import android.util.Log;
 import android.view.ContextMenu;
+import android.view.KeyEvent;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.MotionEvent;
@@ -26,9 +26,9 @@ import android.widget.AbsListView;
 import android.widget.AdapterView;
 import android.widget.ListView;
 import android.widget.PopupMenu;
+import android.widget.TextView;
 import android.widget.Toast;
 
-import com.google.gson.JsonElement;
 import com.growalong.android.R;
 import com.growalong.android.agora.openvcall.model.AgoraConstantApp;
 import com.growalong.android.agora.openvcall.ui.AgoraChatActivity;
@@ -48,19 +48,18 @@ import com.growalong.android.im.utils.FileUtil;
 import com.growalong.android.im.utils.MediaUtil;
 import com.growalong.android.im.utils.RecorderUtil;
 import com.growalong.android.listener.OkCancelListener;
-import com.growalong.android.model.CollectModel;
+import com.growalong.android.model.CourseListItemModel;
 import com.growalong.android.model.UserInfoModel;
 import com.growalong.android.present.ChatOtherPresenter;
 import com.growalong.android.present.CommSubscriber;
+import com.growalong.android.present.CoursePresenter;
 import com.growalong.android.present.InitPresenter;
-import com.growalong.android.present.UserPresenter;
+import com.growalong.android.ui.fragment.CourseStartingFragment;
 import com.growalong.android.util.LogUtil;
 import com.growalong.android.util.ToastUtil;
 import com.growalong.android.util.TranslateHelper;
 import com.tencent.imsdk.TIMConversationType;
 import com.tencent.imsdk.TIMCustomElem;
-import com.tencent.imsdk.TIMElem;
-import com.tencent.imsdk.TIMElemType;
 import com.tencent.imsdk.TIMMessage;
 import com.tencent.imsdk.TIMMessageStatus;
 import com.tencent.imsdk.TIMTextElem;
@@ -83,11 +82,15 @@ import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 
+import butterknife.BindView;
 import okhttp3.Call;
 import okhttp3.Callback;
 import okhttp3.Response;
 
 public class ChatActivity extends QLActivity implements ChatView {
+
+    @BindView(R.id.courseLayout)
+    public View courseLayout;
 
     private static final String TAG = "ChatActivity";
     public static final String TRANSLATE_TAG = "&translate&";
@@ -107,6 +110,7 @@ public class ChatActivity extends QLActivity implements ChatView {
 
     private ChatOtherPresenter chatOtherPresenter;
 
+    private String mGroupName;
     private ChatInput input;
     private static final int CAPTURE_IMAGE_ACTIVITY_REQUEST_CODE = CommonPhotoSelectorDialog.PHOTOREQUESTCODE1;
     public static final int VIDEO_CHAT_REQUEST_CODE_SENDER = 22;//视频发起者
@@ -115,15 +119,11 @@ public class ChatActivity extends QLActivity implements ChatView {
     private static final int FILE_CODE = 300;
     private static final int IMAGE_PREVIEW = 400;
     private static final int VIDEO_RECORD = 500;
-    private Uri fileUri;
     private VoiceSendingView voiceSendingView;
     private String identify;
     private RecorderUtil recorder = new RecorderUtil();
     private TIMConversationType type;
-    private String titleStr;
     private Handler handler = new Handler();
-
-    private UserPresenter userPresenter;
 
     public static ShowTranslate showTranslate = ShowTranslate.Normal;
 
@@ -134,10 +134,11 @@ public class ChatActivity extends QLActivity implements ChatView {
         Normal
     }
 
-    public static void navToChat(Context context, String identify, TIMConversationType type) {
+    public static void navToChat(Context context, String identify, TIMConversationType type, String name) {
         Intent intent = new Intent(context, ChatActivity.class);
         intent.putExtra("identify", identify);
         intent.putExtra("type", type);
+        intent.putExtra("name", name);
         context.startActivity(intent);
     }
 
@@ -245,8 +246,8 @@ public class ChatActivity extends QLActivity implements ChatView {
         } else if (nation == 2) {
             mFamillyType = 1;
         }
-        userPresenter = new UserPresenter();
         identify = getIntent().getStringExtra("identify");
+        mGroupName = getIntent().getStringExtra("name");
         type = (TIMConversationType) getIntent().getSerializableExtra("type");
         presenter = new ChatPresenter(this, identify, type);
         chatOtherPresenter = new ChatOtherPresenter(this);
@@ -289,6 +290,7 @@ public class ChatActivity extends QLActivity implements ChatView {
 
         //选择显示语言
         final TemplateTitle title = findViewById(R.id.chat_title);
+        title.setTitleText(mGroupName);
         title.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -312,6 +314,7 @@ public class ChatActivity extends QLActivity implements ChatView {
                             showTranslate = ShowTranslate.Normal;
                         }
                         adapter.notifyDataSetChanged();
+                        adapter.notifyDataSetInvalidated();
                         return true;
                     }
                 });
@@ -319,8 +322,8 @@ public class ChatActivity extends QLActivity implements ChatView {
                 popup.show(); //showing popup menu
             }
         }); //closing the setOnClickListener method
-//        switch (type) {
-//            case C2C:
+        switch (type) {
+            case C2C:
 //                title.setMoreImg(R.drawable.btn_person);
 //                if (FriendshipInfo.getInstance().isFriend(identify)) {
 //                    title.setMoreImgAction(new View.OnClickListener() {
@@ -345,8 +348,20 @@ public class ChatActivity extends QLActivity implements ChatView {
 //                    });
 //                    title.setTitleText(titleStr = identify);
 //                }
-//                break;
-//            case Group:
+                break;
+            case Group:
+                CoursePresenter coursePresenter = new CoursePresenter();
+                coursePresenter.getCourList(CourseStartingFragment.STARTING_COURSE, 1).subscribe(new CommSubscriber<List<CourseListItemModel>>() {
+                    @Override
+                    public void onSuccess(List<CourseListItemModel> courseListItemModels) {
+                        if (courseListItemModels == null || courseListItemModels.size() == 0) {
+                            courseLayout.setVisibility(View.GONE);
+                        } else {
+                            courseLayout.setVisibility(View.VISIBLE);
+                            ((TextView) courseLayout.findViewById(R.id.courseTitle)).setText(courseListItemModels.get(0).getTitle());
+                        }
+                    }
+                });
 //                title.setMoreImg(R.drawable.btn_group);
 //                title.setMoreImgAction(new View.OnClickListener() {
 //                    @Override
@@ -357,9 +372,9 @@ public class ChatActivity extends QLActivity implements ChatView {
 //                    }
 //                });
 //                title.setTitleText(GroupInfo.getInstance().getGroupName(identify));
-//                break;
-//
-//        }
+                break;
+
+        }
         voiceSendingView = (VoiceSendingView) findViewById(R.id.voice_sending);
         presenter.start();
     }
@@ -369,6 +384,17 @@ public class ChatActivity extends QLActivity implements ChatView {
         return R.layout.activity_chat;
     }
 
+
+    @Override
+    public boolean onKeyDown(int keyCode, KeyEvent event) {
+        if ((keyCode == KeyEvent.KEYCODE_BACK)) {
+            if (input.isMorePanelVisiable()) {
+                input.hidMorePanel();
+                return true;
+            }
+        }
+        return super.onKeyDown(keyCode, event);
+    }
 
     /**
      * 显示消息，收到了新消息
@@ -394,8 +420,7 @@ public class ChatActivity extends QLActivity implements ChatView {
                         default:
                             break;
                     }
-                } else {
-//                    //
+                } else if (mMessage instanceof TextMessage) {
                     TextMessage textMessage = (TextMessage) mMessage;
                     final String content = textMessage.getContent();
                     if (content.startsWith(VIDEO_CHAT_REQUEST)) {
@@ -431,6 +456,15 @@ public class ChatActivity extends QLActivity implements ChatView {
                         return;
                     }
 
+                    if (messageList.size() == 0) {
+                        mMessage.setHasTime(null);
+                    } else {
+                        mMessage.setHasTime(messageList.get(messageList.size() - 1).getMessage());
+                    }
+                    messageList.add(mMessage);
+                    adapter.notifyDataSetChanged();
+                    listView.setSelection(adapter.getCount() - 1);
+                } else {
                     if (messageList.size() == 0) {
                         mMessage.setHasTime(null);
                     } else {
@@ -691,6 +725,7 @@ public class ChatActivity extends QLActivity implements ChatView {
                                 Message message = new TextMessage(content1);
                                 presenter.sendMessage(message.getMessage());
                                 input.setText("");
+                                listView.setSelection(messageList.size() - 1);
                             }
                         });
 
@@ -705,6 +740,7 @@ public class ChatActivity extends QLActivity implements ChatView {
         }).start();
 
     }
+
 
     /**
      * 发送文件
@@ -839,15 +875,16 @@ public class ChatActivity extends QLActivity implements ChatView {
         menu.add(0, 1, Menu.NONE, getString(R.string.chat_del));
         if (message.isSendFail()) {
             menu.add(0, 2, Menu.NONE, getString(R.string.chat_resend));
-        } else if (message.getMessage().isSelf()) {
-            menu.add(0, 4, Menu.NONE, getString(R.string.chat_pullback));
         }
+//        else if (message.getMessage().isSelf()) {
+//            menu.add(0, 4, Menu.NONE, getString(R.string.chat_pullback));
+//        }
         if (message instanceof ImageMessage || message instanceof FileMessage) {
             menu.add(0, 3, Menu.NONE, getString(R.string.chat_save));
         }
-        if (message instanceof ImageMessage || message instanceof FileMessage) {
-            menu.add(0, 5, Menu.NONE, getString(R.string.chat_collect));
-        }
+//        if (message instanceof ImageMessage || message instanceof FileMessage) {
+//        }
+        menu.add(0, 4, Menu.NONE, getString(R.string.chat_collect));
     }
 
 
@@ -869,53 +906,16 @@ public class ChatActivity extends QLActivity implements ChatView {
                 message.save();
                 break;
             case 4:
-                presenter.revokeMessage(message.getMessage());
-                break;
+//                presenter.revokeMessage(message.getMessage());
+//                break;
             case 5:
-                collect(message.getMessage(), titleStr, message.getContent());
+                chatOtherPresenter.collect(message.getMessage(), mGroupName, message.getContent(), mGroupName, "");
                 break;
             default:
                 break;
         }
         return super.onContextItemSelected(item);
     }
-
-    public void collect(TIMMessage msg, String titleStr, String content) {
-        String id = msg.getMsgId();
-        for (int i = 0; i < msg.getElementCount(); ++i) {
-            TIMElem elem = msg.getElement(i);
-
-            //获取当前元素的类型
-            TIMElemType elemType = elem.getType();
-            if (elemType == TIMElemType.Text) {
-                //处理文本消息
-            } else if (elemType == TIMElemType.Image) {
-                //处理图片消息
-            } else if (elemType == TIMElemType.Sound) {
-
-            } else if (elemType == TIMElemType.File) {
-
-            } else if (elemType == TIMElemType.Video) {
-
-            }
-        }
-        CollectModel collectItem = new CollectModel();
-        collectItem.setContent(content);
-
-        userPresenter.addCollect(collectItem).subscribe(new CommSubscriber<JsonElement>() {
-            @Override
-            public void onSuccess(JsonElement jsonElement) {
-                ToastUtil.shortShow(getResources().getString(R.string.collect_success));
-            }
-
-            @Override
-            public void onFailure(Throwable e) {
-                super.onFailure(e);
-                ToastUtil.shortShow(getResources().getString(R.string.collect_failed));
-            }
-        });
-    }
-
 
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
@@ -1007,7 +1007,7 @@ public class ChatActivity extends QLActivity implements ChatView {
         @Override
         public void run() {
             TemplateTitle title = (TemplateTitle) findViewById(R.id.chat_title);
-            title.setTitleText(titleStr);
+            title.setTitleText(mGroupName);
         }
     };
 

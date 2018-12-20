@@ -82,18 +82,20 @@ public class MainActivity extends QLActivity {
             mTabHost.getTabWidget().setDividerDrawable(null);
         }
 
-        UserPresenter userPresenter = new UserPresenter();
-        userPresenter.getUserInfo(AccountManager.getInstance().getAccountInfo().getUserId(), "c").subscribe(new CommSubscriber<UserInfoModel>() {
-            @Override
-            public void onSuccess(UserInfoModel userInfoModel) {
-                AppManager.getInstance().setUserInfoModel(userInfoModel);
-            }
+        if (AppManager.getInstance().getUserInfoModel() == null) {
+            UserPresenter userPresenter = new UserPresenter();
+            userPresenter.getUserInfo(AccountManager.getInstance().getAccountInfo().getUserId(), "c").subscribe(new CommSubscriber<UserInfoModel>() {
+                @Override
+                public void onSuccess(UserInfoModel userInfoModel) {
+                    AppManager.getInstance().setUserInfoModel(userInfoModel);
+                }
 
-            @Override
-            public void onFailure(Throwable e) {
-                super.onFailure(e);
-            }
-        });
+                @Override
+                public void onFailure(Throwable e) {
+                    super.onFailure(e);
+                }
+            });
+        }
 
         MyApplication.getInstance().initWorkerThread();
     }

@@ -7,41 +7,42 @@ public class CollectModel {
     private String title;//	string	素材标题
     private String type;//	string	素材类型：’file’,’audio’,’video’,’image’,’text’
     private String content;//	string	素材内容	url or 文本
-    private String time;
-    private String name;
-    private String msgId;
-    private String other;
+    private String groupName;
+    private String chatId;
+    private String otherInfo;
 
-    public String getOther() {
-        return other;
+    private long createTime;
+
+    public long getCreateTime() {
+        return createTime;
     }
 
-    public void setOther(String other) {
-        this.other = other;
+    public void setCreateTime(long createTime) {
+        this.createTime = createTime;
     }
 
-    public String getTime() {
-        return time;
+    public String getGroupName() {
+        return groupName;
     }
 
-    public void setTime(String time) {
-        this.time = time;
+    public void setGroupName(String groupName) {
+        this.groupName = groupName;
     }
 
-    public String getName() {
-        return name;
+    public String getChatId() {
+        return chatId;
     }
 
-    public void setName(String name) {
-        this.name = name;
+    public void setChatId(String chatId) {
+        this.chatId = chatId;
     }
 
-    public String getMsgId() {
-        return msgId;
+    public String getOtherInfo() {
+        return otherInfo;
     }
 
-    public void setMsgId(String msgId) {
-        this.msgId = msgId;
+    public void setOtherInfo(String otherInfo) {
+        this.otherInfo = otherInfo;
     }
 
     public long getCourseId() {

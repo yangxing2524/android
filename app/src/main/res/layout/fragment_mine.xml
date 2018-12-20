@@ -70,6 +70,7 @@
         android:layout_width="match_parent"
         android:layout_height="@dimen/y100"
         android:layout_below="@+id/top"
+        android:visibility="gone"
         android:layout_marginLeft="@dimen/y30"
         android:layout_marginTop="@dimen/y30"
         android:layout_marginRight="@dimen/y30">
@@ -123,7 +124,7 @@
             android:layout_width="match_parent"
             android:layout_height="1px"
             android:layout_alignParentBottom="true"
-            android:background="@color/color_f0f0f0" />
+            android:background="@color/color_e0e0e0" />
     </RelativeLayout>
 
     <RelativeLayout
@@ -153,6 +154,6 @@
             android:layout_width="match_parent"
             android:layout_height="1px"
             android:layout_alignParentBottom="true"
-            android:background="@color/color_f0f0f0" />
+            android:background="@color/color_e0e0e0" />
     </RelativeLayout>
 </RelativeLayout>

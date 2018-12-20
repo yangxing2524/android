@@ -177,6 +177,7 @@ public class SettingFragment extends NewBaseFragment implements FriendInfoView {
                             @Override
                             public void onSuccess(JsonElement jsonElement) {
                                 AccountManager.getInstance().logout();
+                                AppManager.getInstance().logout();
                                 LoginMainActivity.startThis(activity);
                                 ToastUtil.shortShow(getResources().getString(R.string.logout_success));
                             }

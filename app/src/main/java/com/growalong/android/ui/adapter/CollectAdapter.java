@@ -1,16 +1,22 @@
 package com.growalong.android.ui.adapter;
 
-import android.content.Context;
 import android.support.annotation.NonNull;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ImageView;
 import android.widget.TextView;
 
+import com.bumptech.glide.Glide;
 import com.growalong.android.R;
 import com.growalong.android.model.CollectModel;
+import com.growalong.android.ui.FullImageActivity;
+import com.growalong.android.ui.QLActivity;
+import com.growalong.android.util.LogUtil;
+import com.growalong.android.util.Utils;
 
+import java.text.SimpleDateFormat;
 import java.util.List;
 
 /**
@@ -26,9 +32,9 @@ public class CollectAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder
 
     private List<CollectModel> mData;
 
-    private Context context;
+    private QLActivity context;
 
-    public CollectAdapter(List<CollectModel> mData, Context context) {
+    public CollectAdapter(List<CollectModel> mData, QLActivity context) {
         this.mData = mData;
         this.context = context;
     }
@@ -44,15 +50,17 @@ public class CollectAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder
         } else if (viewType == VIDEO) {
             return new FileCollectItemViewHolder(layoutInflater.inflate(R.layout.layout_collect_viewholder_file, parent, false));
         } else if (viewType == IMAGE) {
-            return new FileCollectItemViewHolder(layoutInflater.inflate(R.layout.layout_collect_viewholder_file, parent, false));
+            return new ImageCollectItemViewHolder(layoutInflater.inflate(R.layout.layout_collect_viewholder_image, parent, false));
         } else {
-            return new FileCollectItemViewHolder(layoutInflater.inflate(R.layout.layout_collect_viewholder_file, parent, false));
+            return new TextCollectItemViewHolder(layoutInflater.inflate(R.layout.layout_collect_viewholder_text, parent, false));
         }
     }
 
     @Override
     public void onBindViewHolder(@NonNull RecyclerView.ViewHolder holder, int position) {
-
+        CollectModel collectModel = mData.get(position);
+        BaseCollectItemViewHolder baseCollectItemViewHolder = (BaseCollectItemViewHolder) holder;
+        baseCollectItemViewHolder.setData(collectModel);
     }
 
 
@@ -76,30 +84,77 @@ public class CollectAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder
         return mData != null ? mData.size() : 0;
     }
 
-    private class BaseCollectItemViewHolder extends RecyclerView.ViewHolder {
+    private abstract class BaseCollectItemViewHolder extends RecyclerView.ViewHolder {
         TextView from, time;
+
         public BaseCollectItemViewHolder(View view) {
             super(view);
             from = view.findViewById(R.id.frome);
             time = view.findViewById(R.id.time);
         }
 
-        public void setData(String fromStr, String timeStr){
+        public abstract void setData(CollectModel collectModel);
+
+        public void setTimeAndFrom(String fromStr, String timeStr) {
             from.setText(fromStr);
             time.setText(timeStr);
         }
     }
 
-    private class FileCollectItemViewHolder extends BaseCollectItemViewHolder{
-        TextView title;
+    private class FileCollectItemViewHolder extends BaseCollectItemViewHolder {
+        TextView titleTv;
+
         public FileCollectItemViewHolder(View view) {
             super(view);
+            titleTv = view.findViewById(R.id.title);
         }
 
-        public void setData(CollectModel collectModel){
-            setData(collectModel.getContent(), collectModel.getContent());
-            title.setText(collectModel.getTitle());
+        public void setData(CollectModel collectModel) {
+            setTimeAndFrom(collectModel.getContent(), collectModel.getContent());
+            titleTv.setText(collectModel.getTitle());
         }
 
+    }
+
+    private class TextCollectItemViewHolder extends BaseCollectItemViewHolder {
+        TextView contentTv;
+
+        public TextCollectItemViewHolder(View view) {
+            super(view);
+            contentTv = view.findViewById(R.id.content);
+        }
+
+        public void setData(CollectModel collectModel) {
+
+            setTimeAndFrom(collectModel.getGroupName(), (new SimpleDateFormat("yyyy-MM-dd")).format(collectModel.getCreateTime()));
+            String content = Utils.getIMTextString(collectModel.getContent());
+            if (content != null) {
+                contentTv.setText(content);
+            } else {
+                LogUtil.e("collect text content is wrong");
+            }
+        }
+    }
+
+    private class ImageCollectItemViewHolder extends BaseCollectItemViewHolder {
+        ImageView imageView;
+
+        public ImageCollectItemViewHolder(View view) {
+            super(view);
+            imageView = view.findViewById(R.id.imageView);
+            imageView.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    String url = (String) imageView.getTag(R.id.tag_first);
+                    FullImageActivity.startThis(context, url);
+                }
+            });
+        }
+
+        public void setData(CollectModel collectModel) {
+            Glide.with(context).load(collectModel.getContent()).asBitmap().into(imageView);
+            setTimeAndFrom(collectModel.getGroupName(), (new SimpleDateFormat("yyyy-MM-dd")).format(collectModel.getCreateTime()));
+            imageView.setTag(R.id.tag_first, collectModel.getContent());
+        }
     }
 }
