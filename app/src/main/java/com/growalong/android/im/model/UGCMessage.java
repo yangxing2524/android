@@ -67,14 +67,14 @@ public class UGCMessage extends Message{
     @Override
     public String getContent() {
         TIMUGCElem elem = (TIMUGCElem)message.getElement(0);
-        return elem.getVideoPath();
+        return elem.getVideo().getUrl();
     }
 
     @Override
     public String[] getInfo() {
         TIMUGCElem elem = (TIMUGCElem)message.getElement(0);
         String[] strings = new String[1];
-        strings[0] = elem.getCoverPath();
+        strings[0] = elem.getCover().getUrl();
         return strings;
     }
     /**
@@ -148,7 +148,6 @@ public class UGCMessage extends Message{
     public void save() {
 
     }
-
 
     /**
      * 显示缩略图

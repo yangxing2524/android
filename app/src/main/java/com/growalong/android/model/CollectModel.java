@@ -9,9 +9,18 @@ public class CollectModel {
     private String content;//	string	素材内容	url or 文本
     private String groupName;
     private String chatId;
+    private long id;
     private String otherInfo;
 
     private long createTime;
+
+    public long getId() {
+        return id;
+    }
+
+    public void setId(long id) {
+        this.id = id;
+    }
 
     public long getCreateTime() {
         return createTime;

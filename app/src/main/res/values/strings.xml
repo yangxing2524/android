@@ -398,4 +398,8 @@
     <string name="showChinaAndEnglish">显示中英文</string>
     <string name="courseWeek">本周课程</string>
     <string name="collect_added">已加入收藏</string>
+    <string name="unknow_type">位置的类型</string>
+    <string name="collect_del">删除收藏</string>
+    <string name="remove_collect_failed">取消收藏失败</string>
+    <string name="remove_collect_success">取消收藏成功</string>
 </resources>

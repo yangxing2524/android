@@ -50,13 +50,15 @@ public class VoiceMessage extends Message {
 
     @Override
     public String getContent() {
-        return ((TIMSoundElem) message.getElement(0)).getPath() + "*" +
-                ((TIMSoundElem) message.getElement(0)).getDuration();
+        TIMSoundElem timSoundElem = (TIMSoundElem) message.getElement(0);
+        return timSoundElem.getPath();
     }
 
     @Override
     public String[] getInfo() {
-        return new String[0];
+        String[] strings = new String[1];
+        strings[0] = ((TIMSoundElem) message.getElement(0)).getDuration() + "";
+        return strings;
     }
 
     /**

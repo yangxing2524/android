@@ -17,6 +17,7 @@ import android.widget.Toast;
 
 import com.growalong.android.R;
 import com.growalong.android.account.AccountManager;
+import com.growalong.android.app.AppManager;
 import com.growalong.android.im.model.ImUserInfo;
 import com.growalong.android.im.utils.PushUtil;
 import com.growalong.android.model.BaseGenericModel;
@@ -26,7 +27,6 @@ import com.growalong.android.model.NoDataParams;
 import com.growalong.android.net.retrofit.BaseRetrofitClient;
 import com.growalong.android.net.retrofit.service.ILoginApis;
 import com.growalong.android.util.RxUtil;
-import com.growalong.android.util.ToastUtil;
 import com.huawei.android.pushagent.PushManager;
 import com.meizu.cloud.pushsdk.util.MzSystemUtils;
 import com.tencent.imsdk.TIMCallBack;
@@ -73,7 +73,8 @@ public class SplashActivity extends QLActivity implements SplashView, TIMCallBac
             @Override
             public void onForceOffline() {
                 Log.d(TAG, "receive force offline message");
-                ToastUtil.shortShow("receive force offline message");
+                AppManager.getInstance().logout();
+                LoginMainActivity.startThis(SplashActivity.this);
             }
 
             @Override
@@ -179,7 +180,8 @@ public class SplashActivity extends QLActivity implements SplashView, TIMCallBac
 
                                         ImUserInfo.getInstance().setUserSig(netLoginIMBean.getUserSig());
                                         ImUserInfo.getInstance().setId(userId);
-                                        LoginMainActivity.startThis(SplashActivity.this);
+//                                        LoginMainActivity.startThis(SplashActivity.this);
+                                        MainActivity.startThis(SplashActivity.this);
                                         finish();
                                     }
                                 });

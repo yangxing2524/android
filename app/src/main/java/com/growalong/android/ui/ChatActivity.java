@@ -67,6 +67,7 @@ import com.tencent.imsdk.TIMUserProfile;
 import com.tencent.imsdk.ext.message.TIMMessageDraft;
 import com.tencent.imsdk.ext.message.TIMMessageExt;
 import com.tencent.imsdk.ext.message.TIMMessageLocator;
+import com.tencent.imsdk.ext.ugc.TIMUGCElem;
 import com.tencent.qcloud.presentation.presenter.ChatPresenter;
 import com.tencent.qcloud.presentation.viewfeatures.ChatView;
 import com.tencent.qcloud.ui.ChatInput;
@@ -882,9 +883,9 @@ public class ChatActivity extends QLActivity implements ChatView {
         if (message instanceof ImageMessage || message instanceof FileMessage) {
             menu.add(0, 3, Menu.NONE, getString(R.string.chat_save));
         }
-//        if (message instanceof ImageMessage || message instanceof FileMessage) {
-//        }
-        menu.add(0, 4, Menu.NONE, getString(R.string.chat_collect));
+        if (message instanceof ImageMessage || message instanceof TextMessage || message instanceof VideoMessage) {
+            menu.add(0, 4, Menu.NONE, getString(R.string.chat_collect));
+        }
     }
 
 
@@ -909,7 +910,16 @@ public class ChatActivity extends QLActivity implements ChatView {
 //                presenter.revokeMessage(message.getMessage());
 //                break;
             case 5:
-                chatOtherPresenter.collect(message.getMessage(), mGroupName, message.getContent(), mGroupName, "");
+                TIMMessage timMessage = message.getMessage();
+                if (timMessage.getElement(0) instanceof TIMUGCElem) {
+                    final TIMUGCElem e = (TIMUGCElem) message.getMessage().getElement(0);
+                    final String fileName = e.getFileId() + "_video";
+                    chatOtherPresenter.collect(message.getMessage(), fileName, message.getContent(), mGroupName, message.getInfo()[0]);
+                } else if (message instanceof TextMessage || message instanceof ImageMessage) {
+                    chatOtherPresenter.collect(message.getMessage(), mGroupName, message.getContent(), mGroupName, "");
+                } else if (message instanceof VoiceMessage) {
+                    chatOtherPresenter.collect(message.getMessage(), mGroupName, message.getContent(), mGroupName, message.getInfo()[0]);
+                }
                 break;
             default:
                 break;

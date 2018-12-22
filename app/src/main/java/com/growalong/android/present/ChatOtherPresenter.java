@@ -58,9 +58,9 @@ public class ChatOtherPresenter {
             } else if (elemType == TIMElemType.File) {
                 collectItem.setType("file");
                 collectItem.setTitle(titleStr);
-            } else if (elemType == TIMElemType.Video) {
+            } else if (elemType == TIMElemType.UGC) {
                 collectItem.setType("video");
-                collectItem.setTitle("video");
+                collectItem.setTitle(titleStr);
             }
 
             collectItem.setGroupName(groupName);

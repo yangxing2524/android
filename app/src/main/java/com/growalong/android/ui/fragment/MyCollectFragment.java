@@ -2,8 +2,10 @@ package com.growalong.android.ui.fragment;
 
 import android.os.Bundle;
 import android.support.v7.widget.RecyclerView;
+import android.view.MenuItem;
 import android.view.View;
 
+import com.google.gson.JsonElement;
 import com.growalong.android.R;
 import com.growalong.android.model.CollectModel;
 import com.growalong.android.present.CommSubscriber;
@@ -12,11 +14,13 @@ import com.growalong.android.ui.adapter.CollectAdapter;
 import com.growalong.android.ui.recyclerview.ISuperRefreshView;
 import com.growalong.android.ui.recyclerview.SuperRecyclerView;
 import com.growalong.android.util.DensityUtil;
+import com.growalong.android.util.ToastUtil;
 
 import java.util.ArrayList;
 import java.util.List;
 
 import butterknife.BindView;
+import rx.Subscription;
 
 /**
  * Created by yangxing on 2018/11/17.
@@ -36,6 +40,7 @@ public class MyCollectFragment extends NewBaseListFragment {
         loadData(false);
         int padding = DensityUtil.dip2px(activity, 15);
         view.setPadding(padding, padding / 2, padding, padding / 2);
+//        registerForContextMenu(mRecyclerView);
     }
 
 
@@ -45,7 +50,7 @@ public class MyCollectFragment extends NewBaseListFragment {
         if (isMore) {
             page = mPage;
         }
-        userPresenter.getMyCollect(page).subscribe(new CommSubscriber<List<CollectModel>>() {
+        Subscription subscribe = userPresenter.getMyCollect(page, activity.doOnSubscribe, activity.doOnTerminate).subscribe(new CommSubscriber<List<CollectModel>>() {
             @Override
             public void onSuccess(List<CollectModel> collectModels) {
                 if (!isMore) {
@@ -67,6 +72,37 @@ public class MyCollectFragment extends NewBaseListFragment {
                 super.onFailure(e);
             }
         });
+        addSubscribe(subscribe);
+    }
+
+    @Override
+    public boolean onContextItemSelected(MenuItem item) {
+        CollectModel message = null;
+        for (CollectModel model : mData) {
+            if (model.getId() == item.getGroupId()) {
+                message = model;
+            }
+        }
+        if (message == null) {
+            return super.onContextItemSelected(item);
+        }
+        final CollectModel finalMessage = message;
+        Subscription subscribe = userPresenter.removeCollect(message.getId()).subscribe(new CommSubscriber<JsonElement>() {
+            @Override
+            public void onSuccess(JsonElement jsonElement) {
+                mData.remove(finalMessage);
+                mAdapter.notifyDataSetChanged();
+                ToastUtil.shortShow(getResources().getString(R.string.remove_collect_success));
+            }
+
+            @Override
+            public void onFailure(Throwable e) {
+                super.onFailure(e);
+                ToastUtil.shortShow(getResources().getString(R.string.remove_collect_failed));
+            }
+        });
+        addSubscribe(subscribe);
+        return super.onContextItemSelected(item);
     }
 
     @Override

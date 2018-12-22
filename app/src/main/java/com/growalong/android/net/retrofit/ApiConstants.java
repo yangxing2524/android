@@ -15,6 +15,7 @@ public class ApiConstants {
     public static final String updateUserInfo = "/v1/user/update.do"; //更新用户信息
     public static final String getMyCollect = "/v1/user/getCollection.do"; //获取我的收藏
     public static final String addCollect = "/v1/user/collect.do"; //添加收藏
+    public static final String removeCollect = "/v1/user/cancelCollect.do"; //取消收藏
     public static final String getRoom = "/v1/user/getRoom.do"; //获取房间号
     public static final String logout = "/v1/common/logout.do"; //退出登录
 

@@ -17,6 +17,7 @@ import com.growalong.android.im.model.FriendshipInfo;
 import com.growalong.android.im.model.NomalConversation;
 import com.growalong.android.im.utils.TimeUtil;
 import com.growalong.android.ui.ChatActivity;
+import com.growalong.android.util.Utils;
 import com.tencent.imsdk.TIMConversationType;
 import com.tencent.qcloud.ui.CircleImageView;
 
@@ -87,6 +88,8 @@ public class ConversationAdapter extends ArrayAdapter<Conversation> {
                     TextUtils.equals(lastMessage, ChatActivity.VIDEO_CHAT_OVER)) {
                 lastMessage = MyApplication.getContext().getResources().getString(R.string.video_chat_over);
             }
+        } else {
+            lastMessage = Utils.getIMTextString(lastMessage);
         }
         viewHolder.lastMessage.setText(lastMessage);
 
