@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical">
+
+    <include
+        layout="@layout/comm_list"
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:layout_weight="1" />
+
+    <TextView
+        android:id="@+id/download"
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/y98"
+        android:background="@color/color_4fca19"
+        android:gravity="center"
+        android:visibility="gone"
+        android:text="@string/download"
+        android:textColor="@color/white"
+        android:textSize="17sp" />
+
+</LinearLayout>

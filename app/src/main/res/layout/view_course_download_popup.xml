@@ -1,0 +1,43 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/color_88000000"
+    android:orientation="vertical">
+
+    <TextView
+        android:id="@+id/tv_coupons_hint"
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/y100"
+        android:layout_above="@+id/coupon_recycler_view"
+        android:gravity="center"
+        android:text="课程资料包"
+        android:background="@color/white"
+        android:textColor="@color/color_999090"
+        android:textSize="@dimen/y32" />
+
+    <ImageView
+        android:id="@+id/ivClose"
+        android:background="@color/white"
+        android:layout_width="@dimen/y100"
+        android:layout_height="@dimen/y100"
+        android:visibility="gone"
+        android:layout_above="@+id/coupon_recycler_view"
+        android:layout_alignRight="@+id/tv_coupons_hint"
+        android:padding="@dimen/y30"
+        android:src="@mipmap/icon_close" />
+
+    <View
+        android:layout_below="@+id/tv_coupons_hint"
+        android:layout_width="match_parent"
+        android:background="@color/color_f5f5f5"
+        android:layout_height="1px"/>
+    <android.support.v7.widget.RecyclerView
+        android:id="@+id/coupon_recycler_view"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:maxHeight="@dimen/y500"
+        android:background="@color/white"
+        android:layout_alignParentBottom="true"
+        android:scrollbars="none" />
+</RelativeLayout>

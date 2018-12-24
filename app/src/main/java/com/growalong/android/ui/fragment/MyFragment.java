@@ -16,6 +16,7 @@ import com.growalong.android.present.CommSubscriber;
 import com.growalong.android.present.UserPresenter;
 import com.growalong.android.ui.LoginMainActivity;
 import com.growalong.android.ui.MyCollectActivity;
+import com.growalong.android.ui.MyDownloadActivity;
 import com.growalong.android.ui.SettingActivity;
 
 import butterknife.BindView;
@@ -54,7 +55,7 @@ public class MyFragment extends NewBaseFragment implements View.OnClickListener 
         study_level.setOnClickListener(MyFragment.this);
         interest.setOnClickListener(MyFragment.this);
         collect.setOnClickListener(MyFragment.this);
-
+        my_download.setOnClickListener(MyFragment.this);
         mUserInfoModel = AppManager.getInstance().getUserInfoModel();
         if (mUserInfoModel == null) {
             userPresenter.getUserInfo(AccountManager.getInstance().getAccountInfo().getUserId(), "c").subscribe(new CommSubscriber<UserInfoModel>() {
@@ -124,7 +125,7 @@ public class MyFragment extends NewBaseFragment implements View.OnClickListener 
                 SettingActivity.startThisForResult(activity, mUserInfoModel);
                 break;
             case R.id.my_download:
-
+                MyDownloadActivity.startThis(activity);
                 break;
             case R.id.study_level:
                 //跳转到对应的webview

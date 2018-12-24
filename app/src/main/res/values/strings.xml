@@ -50,7 +50,8 @@
     <string name="need_permission">您需要开启权限,并重启应用</string>
     <string name="save_succ">保存成功</string>
     <string name="download_fail">下载失败</string>
-    <string name="downloading">正在下载，请稍候</string>
+    <string name="downloading">下载中</string>
+    <string name="my_download">我的下载</string>
     <string name="save_fail">保存失败</string>
     <string name="save_exist">文件已存在</string>
     <string name="tls_expire">账号登录已过期，请重新登录</string>
@@ -402,4 +403,9 @@
     <string name="collect_del">删除收藏</string>
     <string name="remove_collect_failed">取消收藏失败</string>
     <string name="remove_collect_success">取消收藏成功</string>
+    <string name="copy">复制</string>
+    <string name="download">下载</string>
+    <string name="has_download">已下载</string>
+    <string name="cant_open_file">找不到打开此文件的应用！</string>
+    <string name="download_del">删除下载</string>
 </resources>

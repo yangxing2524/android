@@ -4,6 +4,7 @@ import com.growalong.android.app.AppManager;
 import com.growalong.android.ui.ChatActivity;
 
 import java.math.BigDecimal;
+import java.text.DecimalFormat;
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
 import java.util.Date;
@@ -19,6 +20,41 @@ public class Utils {
      */
     public static String compressQualityOSSImageUrl(String url) {
         return url;
+    }
+
+    /**
+     * 转换文件大小
+     *
+     * @param fileS
+     * @return
+     */
+    public static String FormetFileSize(long fileS) {
+        try {
+            new DecimalFormat("#.00");
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        try {
+            DecimalFormat df = new DecimalFormat("#.00");
+            String fileSizeString = "";
+            String wrongSize = "0B";
+            if (fileS == 0) {
+                return wrongSize;
+            }
+            if (fileS < 1024) {
+                fileSizeString = df.format((double) fileS) + "B";
+            } else if (fileS < 1048576) {
+                fileSizeString = df.format((double) fileS / 1024) + "KB";
+            } else if (fileS < 1073741824) {
+                fileSizeString = df.format((double) fileS / 1048576) + "MB";
+            } else {
+                fileSizeString = df.format((double) fileS / 1073741824) + "GB";
+            }
+            return fileSizeString;
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        return "";
     }
 
     public static String stampToDate(long s, String format) {
@@ -107,6 +143,27 @@ public class Utils {
                 }
 
 
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        return string;
+    }
+
+    public static String getIMTextNormal(String string) {
+        try {
+            if (string.contains(ChatActivity.TRANSLATE_TAG)) {
+                final String[] split = string.split(ChatActivity.TRANSLATE_TAG);
+                String ch, en;
+                ch = split[0].substring(1);
+                en = split[1];
+                //显示原文
+                String type = split[0].substring(0, 1);
+                if ("0".equals(type)) {
+                    string = ch;
+                } else {
+                    string = en;
+                }
             }
         } catch (Exception e) {
             e.printStackTrace();

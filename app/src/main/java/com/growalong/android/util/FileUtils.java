@@ -71,6 +71,48 @@ public class FileUtils {
         }
     }
 
+
+    /**
+     * 删除目录（不包括目录本身）下的文件及目录
+     *
+     * @param path
+     */
+    public static void deleteSubFile(String path) {
+        if (path == null)
+            return;
+        File file = new File(path);
+        if ((file == null) || (!file.exists())) {
+            return;
+        }
+
+        if (file.isDirectory()) {
+            File[] arrayOfFile = file.listFiles();
+            for (int i = 0; i < arrayOfFile.length; i++) {
+                delete(arrayOfFile[i].toString());
+            }
+        }
+    }
+
+    /**
+     * @param path can be file or dir
+     */
+    public static void delete(String path) {
+        if (path == null)
+            return;
+        File file = new File(path);
+        if ((file == null) || (!file.exists())) {
+            return;
+        }
+
+        if (file.isDirectory()) {
+            File[] arrayOfFile = file.listFiles();
+            for (int i = 0; i < arrayOfFile.length; i++) {
+                delete(arrayOfFile[i].toString());
+            }
+        }
+        file.delete();
+    }
+
     /**
      * 转换文件大小
      *

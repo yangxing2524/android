@@ -23,4 +23,5 @@ public class CourseDetailModel {
     public void setMaterialModelList(List<CourseMaterialModel> materialModelList) {
         this.materialModelList = materialModelList;
     }
+
 }

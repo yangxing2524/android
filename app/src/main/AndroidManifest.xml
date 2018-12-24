@@ -250,6 +250,9 @@
             android:name=".ui.MyCollectActivity"
             android:configChanges="orientation|keyboardHidden|screenSize" />
         <activity
+            android:name=".ui.MyDownloadActivity"
+            android:configChanges="orientation|keyboardHidden|screenSize" />
+        <activity
             android:name=".ui.CameraProtectActivity"
             android:configChanges="orientation|keyboardHidden|screenSize" />
         <activity

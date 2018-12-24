@@ -1,6 +1,7 @@
 package com.growalong.android.ui;
 
 import android.Manifest;
+import android.content.ClipboardManager;
 import android.content.Context;
 import android.content.Intent;
 import android.content.pm.PackageManager;
@@ -58,6 +59,7 @@ import com.growalong.android.ui.fragment.CourseStartingFragment;
 import com.growalong.android.util.LogUtil;
 import com.growalong.android.util.ToastUtil;
 import com.growalong.android.util.TranslateHelper;
+import com.growalong.android.util.Utils;
 import com.tencent.imsdk.TIMConversationType;
 import com.tencent.imsdk.TIMCustomElem;
 import com.tencent.imsdk.TIMMessage;
@@ -867,25 +869,31 @@ public class ChatActivity extends QLActivity implements ChatView {
         presenter.sendMessage(message);
     }
 
+    final int COPY = 1, DELETE = 2, RESEND = 3, SAVE = 4, COLLECT = 5;
+
 
     @Override
     public void onCreateContextMenu(ContextMenu menu, View v,
                                     ContextMenu.ContextMenuInfo menuInfo) {
         AdapterView.AdapterContextMenuInfo info = (AdapterView.AdapterContextMenuInfo) menuInfo;
         Message message = messageList.get(info.position);
-        menu.add(0, 1, Menu.NONE, getString(R.string.chat_del));
+        menu.add(0, DELETE, Menu.NONE, getString(R.string.chat_del));
         if (message.isSendFail()) {
-            menu.add(0, 2, Menu.NONE, getString(R.string.chat_resend));
+            menu.add(0, RESEND, Menu.NONE, getString(R.string.chat_resend));
         }
 //        else if (message.getMessage().isSelf()) {
 //            menu.add(0, 4, Menu.NONE, getString(R.string.chat_pullback));
 //        }
         if (message instanceof ImageMessage || message instanceof FileMessage) {
-            menu.add(0, 3, Menu.NONE, getString(R.string.chat_save));
+            menu.add(0, SAVE, Menu.NONE, getString(R.string.chat_save));
+        }
+        if (message instanceof TextMessage) {
+            menu.add(0, COPY, Menu.NONE, getString(R.string.copy));
         }
         if (message instanceof ImageMessage || message instanceof TextMessage || message instanceof VideoMessage) {
-            menu.add(0, 4, Menu.NONE, getString(R.string.chat_collect));
+            menu.add(0, COLLECT, Menu.NONE, getString(R.string.chat_collect));
         }
+
     }
 
 
@@ -894,22 +902,24 @@ public class ChatActivity extends QLActivity implements ChatView {
         AdapterView.AdapterContextMenuInfo info = (AdapterView.AdapterContextMenuInfo) item.getMenuInfo();
         Message message = messageList.get(info.position);
         switch (item.getItemId()) {
-            case 1:
+            case DELETE:
                 message.remove();
                 messageList.remove(info.position);
                 adapter.notifyDataSetChanged();
                 break;
-            case 2:
+            case RESEND:
                 messageList.remove(message);
                 presenter.sendMessage(message.getMessage());
                 break;
-            case 3:
+            case SAVE:
                 message.save();
                 break;
-            case 4:
-//                presenter.revokeMessage(message.getMessage());
-//                break;
-            case 5:
+            case COPY:
+                ClipboardManager cmb = (ClipboardManager) getSystemService(Context.CLIPBOARD_SERVICE);
+                TextMessage textMessage = (TextMessage) message;
+                cmb.setText(Utils.getIMTextNormal(textMessage.getContent()));
+                break;
+            case COLLECT:
                 TIMMessage timMessage = message.getMessage();
                 if (timMessage.getElement(0) instanceof TIMUGCElem) {
                     final TIMUGCElem e = (TIMUGCElem) message.getMessage().getElement(0);
@@ -921,6 +931,8 @@ public class ChatActivity extends QLActivity implements ChatView {
                     chatOtherPresenter.collect(message.getMessage(), mGroupName, message.getContent(), mGroupName, message.getInfo()[0]);
                 }
                 break;
+//            presenter.revokeMessage(message.getMessage());
+//                break;
             default:
                 break;
         }

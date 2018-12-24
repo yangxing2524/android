@@ -11,7 +11,7 @@
     <color name="background_gray2">#E6E6E6</color>
     <color name="background_gray3">#D4D4D4</color>
     <color name="background_gray4">#EFEFF4</color>
-    <color name="line">#DDDDDD</color>
+    <color name="line">#f0f0f0</color>
     <color name="line_btn">#BBBBBB</color>
     <color name="text_gray1">#777777</color>
     <color name="text_gray2">#767676</color>
@@ -145,6 +145,7 @@
     <color name="color_fafafa">#fafafa</color>
     <color name="color_45494c">#45494c</color>
     <color name="color_f2f4f5">#f2f4f5</color>
+    <color name="color_4fca19">#4fca19</color>
     <color name="color_71b5fb">#71b5fb</color>
     <color name="gray_text">#999999</color>
     <color name="title_blue">#0096ff</color>

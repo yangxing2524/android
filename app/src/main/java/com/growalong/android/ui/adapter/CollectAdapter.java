@@ -263,7 +263,7 @@ public class CollectAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder
 //
 //        public void setData(CollectModel collectModel) {
 //            Glide.with(context).load(collectModel.getContent()).asBitmap().into(mSound);
-//            setTimeAndFrom(collectModel.getGroupName(), (new SimpleDateFormat("yyyy-MM-dd")).format(collectModel.getCreateTime()));
+//            setSizeAndTime(collectModel.getGroupName(), (new SimpleDateFormat("yyyy-MM-dd")).format(collectModel.getCreateTime()));
 //            mSound.setTag(R.id.tag_first, collectModel);
 //        }
 //
