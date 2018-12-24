@@ -354,9 +354,15 @@ public class ChatActivity extends QLActivity implements ChatView {
                 break;
             case Group:
                 CoursePresenter coursePresenter = new CoursePresenter();
-                coursePresenter.getCourList(CourseStartingFragment.STARTING_COURSE, 1).subscribe(new CommSubscriber<List<CourseListItemModel>>() {
+                coursePresenter.getCourList(CourseStartingFragment.STARTING_COURSE, 1, null, null).subscribe(new CommSubscriber<List<CourseListItemModel>>() {
                     @Override
-                    public void onSuccess(List<CourseListItemModel> courseListItemModels) {
+                    public void onSuccess(final List<CourseListItemModel> courseListItemModels) {
+                        courseLayout.setOnClickListener(new View.OnClickListener() {
+                            @Override
+                            public void onClick(View v) {
+                                CourseDetailActivity.startThis(courseListItemModels.get(0).getId(), ChatActivity.this);
+                            }
+                        });
                         if (courseListItemModels == null || courseListItemModels.size() == 0) {
                             courseLayout.setVisibility(View.GONE);
                         } else {

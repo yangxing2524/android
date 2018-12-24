@@ -65,7 +65,8 @@ public abstract class QLActivity extends AppCompatActivity {
         }
     };
 
-    public final Action0 doOnSubscribe = new Action0() {
+    public final Action0
+            doOnSubscribe = new Action0() {
         @Override
         public void call() {
             showLoadingDialog("加载中...");

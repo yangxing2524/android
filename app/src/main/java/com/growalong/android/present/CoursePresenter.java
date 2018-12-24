@@ -16,6 +16,7 @@ import com.growalong.android.util.RxUtil;
 import java.util.List;
 
 import rx.Observable;
+import rx.functions.Action0;
 import rx.functions.Func1;
 
 /**
@@ -27,7 +28,7 @@ public class CoursePresenter {
         iCourseApis = BaseRetrofitClient.getInstance().create(ICourseApis.class);
     }
 
-    public Observable<List<CourseListItemModel>> getCourList(int status, int page) {
+    public Observable<List<CourseListItemModel>> getCourList(int status, int page, Action0 showWaiting, Action0 hideWaiting) {
         BaseParams<RequestCourseItemList> baseParams = new BaseParams<>(new RequestCourseItemList(status, page));
         return iCourseApis.getCourseList(baseParams).compose(RxUtil.<NetCourseModel>handleResult())
                 .map(new Func1<NetCourseModel, List<CourseListItemModel>>() {
@@ -36,6 +37,7 @@ public class CoursePresenter {
                         return tabListModel.getDataList();
                     }
                 })
+                .compose(NewBasePresenter.<List<CourseListItemModel>>showWaitingTransformer(showWaiting, hideWaiting))//显示loading转圈圈
                 .compose(NewBasePresenter.<List<CourseListItemModel>>asyAndMainResponseTransformer());//网络操作在异步线程，观察者在主线程;
     }
 

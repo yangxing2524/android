@@ -34,6 +34,7 @@ public class MyDownloadFragment extends NewBaseListFragment {
     public void setupView(Bundle savedInstanceState, View view) {
         int padding = DensityUtil.dip2px(activity, 15);
         view.setPadding(padding, padding / 2, padding, padding / 2);
+        mRecyclerView.setRefreshEnable(false);
 //        registerForContextMenu(mRecyclerView);
     }
 

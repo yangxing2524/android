@@ -48,7 +48,7 @@ public class CourseStartingFragment extends NewBaseListFragment {
         if (isMore) {
             page = mPage;
         }
-        presenter.getCourList(STARTING_COURSE, page).subscribe(new CommSubscriber<List<CourseListItemModel>>() {
+        presenter.getCourList(STARTING_COURSE, page, null, null).subscribe(new CommSubscriber<List<CourseListItemModel>>() {
             @Override
             public void onSuccess(List<CourseListItemModel> courseListItemModels) {
                 if (courseListItemModels.size() >= PAGE_SIZE) {
