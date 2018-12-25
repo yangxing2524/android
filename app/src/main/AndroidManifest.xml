@@ -241,6 +241,9 @@
             android:name=".ui.LoginMainActivity"
             android:configChanges="orientation|keyboardHidden|screenSize" />
         <activity
+            android:name=".ui.LoginPasswordActivity"
+            android:configChanges="orientation|keyboardHidden|screenSize" />
+        <activity
             android:name=".ui.CourseDetailActivity"
             android:configChanges="orientation|keyboardHidden|screenSize" />
         <activity

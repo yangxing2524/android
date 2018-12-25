@@ -54,10 +54,9 @@ public class ConversationFragment extends Fragment implements ConversationView, 
     private ConversationPresenter presenter;
     private FriendshipManagerPresenter friendshipManagerPresenter;
     private GroupManagerPresenter groupManagerPresenter;
-    private List<String> groupList;
+//    private List<String> groupList;
     private FriendshipConversation friendshipConversation;
     private GroupManageConversation groupManageConversation;
-
 
     public ConversationFragment() {
         // Required empty public constructor
@@ -109,13 +108,13 @@ public class ConversationFragment extends Fragment implements ConversationView, 
     @Override
     public void initView(List<TIMConversation> conversationList) {
         this.conversationList.clear();
-        groupList = new ArrayList<>();
+//        groupList = new ArrayList<>();
         for (TIMConversation item : conversationList) {
             switch (item.getType()) {
                 case C2C:
                 case Group:
                     this.conversationList.add(new NomalConversation(item));
-                    groupList.add(item.getPeer());
+//                    groupList.add(item.getPeer());
                     break;
             }
         }

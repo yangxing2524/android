@@ -1,0 +1,44 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@mipmap/login_main_bg"
+    android:orientation="vertical">
+
+    <View
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:alpha="0.8"
+        android:background="#5bc92a" />
+
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_above="@+id/loginBtn"
+        android:layout_marginBottom="@dimen/y92"
+        android:gravity="center"
+        android:text="@string/login_main_tip"
+        android:textColor="#feffff"
+        android:textSize="30sp" />
+
+    <TextView
+        android:id="@+id/loginBtn"
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/y80"
+        android:layout_alignParentBottom="true"
+        android:layout_marginLeft="@dimen/y50"
+        android:layout_marginRight="@dimen/y50"
+        android:layout_marginBottom="@dimen/y76"
+        android:background="@drawable/background_view_white_circle"
+        android:gravity="center"
+        android:text="@string/login_btn"
+        android:textColor="#50cb1a"
+        android:textSize="17sp" />
+
+    <ImageView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_centerHorizontal="true"
+        android:layout_marginTop="@dimen/y258"
+        android:src="@mipmap/login_main_logo" />
+</RelativeLayout>

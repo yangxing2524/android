@@ -179,6 +179,8 @@ public class SettingFragment extends NewBaseFragment implements FriendInfoView {
                                 AccountManager.getInstance().logout();
                                 AppManager.getInstance().logout();
                                 LoginMainActivity.startThis(activity);
+                                activity.finish();
+                                AppManager.getInstance().finishActivity(MainActivity.class);
                                 ToastUtil.shortShow(getResources().getString(R.string.logout_success));
                             }
 

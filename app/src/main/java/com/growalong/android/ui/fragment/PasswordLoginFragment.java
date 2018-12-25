@@ -6,7 +6,6 @@ import android.text.TextUtils;
 import android.text.TextWatcher;
 import android.text.method.HideReturnsTransformationMethod;
 import android.text.method.PasswordTransformationMethod;
-import android.util.Log;
 import android.view.View;
 import android.widget.EditText;
 import android.widget.ImageView;
@@ -14,29 +13,20 @@ import android.widget.TextView;
 
 import com.growalong.android.R;
 import com.growalong.android.account.AccountManager;
-import com.growalong.android.app.AppManager;
 import com.growalong.android.app.MyApplication;
-import com.growalong.android.im.model.ImUserInfo;
 import com.growalong.android.model.ApiException;
 import com.growalong.android.model.BaseGenericModel;
 import com.growalong.android.model.BaseParams;
 import com.growalong.android.model.LoginBean;
 import com.growalong.android.model.NetLoginBean;
-import com.growalong.android.model.NetLoginIMBean;
-import com.growalong.android.model.NoDataParams;
 import com.growalong.android.model.PasswordLoginParams;
-import com.growalong.android.model.UserInfoModel;
 import com.growalong.android.net.retrofit.BaseRetrofitClient;
 import com.growalong.android.net.retrofit.service.ILoginApis;
-import com.growalong.android.present.CommSubscriber;
-import com.growalong.android.present.UserPresenter;
+import com.growalong.android.present.SplashPresenter;
 import com.growalong.android.rxevent.NotificationEvent;
-import com.growalong.android.ui.MainActivity;
 import com.growalong.android.util.LogUtil;
 import com.growalong.android.util.RxUtil;
 import com.growalong.android.util.ToastUtil;
-import com.tencent.imsdk.TIMCallBack;
-import com.tencent.imsdk.TIMManager;
 
 import org.greenrobot.eventbus.EventBus;
 
@@ -91,7 +81,6 @@ public class PasswordLoginFragment extends NewBaseFragment implements View.OnCli
 
     public void setLoginBtnView(boolean clickable, int drawableRes) {
         mLogin.setClickable(clickable);
-        mLogin.setBackgroundResource(drawableRes);
     }
 
     public void onAfterTextChanged() {
@@ -175,68 +164,91 @@ public class PasswordLoginFragment extends NewBaseFragment implements View.OnCli
 
     private void getIMInfo(final LoginBean user) {
 
-        BaseParams<NoDataParams> baseParams = new BaseParams<>(new NoDataParams());
-        Observable<BaseGenericModel<NetLoginIMBean>> observable = mILoginApis.loginForIM(baseParams);
-        Subscription subscribe = observable.compose(RxUtil.<NetLoginIMBean>handleResult())
-                .subscribe(new Action1<NetLoginIMBean>() {
-                    @Override
-                    public void call(final NetLoginIMBean netLoginIMBean) {
-
-                        TIMManager.getInstance().login(user.getUserId(), netLoginIMBean.getUserSig(), new TIMCallBack() {
-                            @Override
-                            public void onError(int code, String desc) {
-                                //错误码 code 和错误描述 desc，可用于定位请求失败原因
-                                //错误码 code 列表请参见错误码表
-                                Log.d("im", "login failed. code: " + code + " errmsg: " + desc);
-                            }
-
-                            @Override
-                            public void onSuccess() {
-                                Log.d("im", "login succ");
-
-                                AccountManager.getInstance().setIMUserSig(netLoginIMBean.getUserSig());
-
-                                ImUserInfo.getInstance().setUserSig(netLoginIMBean.getUserSig());
-                                ImUserInfo.getInstance().setId(user.getUserId());
-
-                                EventBus.getDefault().post(NotificationEvent.LOGIN_SUCCESS);
-
-                                hideLoadingDialog();
-                                MainActivity.startThis(getActivity());
-                                ToastUtil.shortShow(getResources().getString(R.string.login_succ));
-
-                                UserPresenter userPresenter = new UserPresenter();
-                                userPresenter.getUserInfo(AccountManager.getInstance().getAccountInfo().getUserId(), "c").subscribe(new CommSubscriber<UserInfoModel>() {
-                                    @Override
-                                    public void onSuccess(UserInfoModel userInfoModel) {
-                                        AppManager.getInstance().setUserInfoModel(userInfoModel);
-                                        getActivity().finish();
-                                    }
-
-                                    @Override
-                                    public void onFailure(Throwable e) {
-                                        super.onFailure(e);
-                                        getActivity().finish();
-                                    }
-                                });
-
-                            }
-                        });
-
-                    }
-                }, new Action1<Throwable>() {
-                    @Override
-                    public void call(Throwable throwable) {
-                        EventBus.getDefault().post(NotificationEvent.LOGIN_FAIL);
-                        if (throwable instanceof ApiException) {
-                            showError(throwable.getMessage());
-                        } else {
-                            LogUtil.e("", throwable.getMessage());
-                            showError("登录失败");
-                        }
-                    }
-                });
-        addSubscribe(subscribe);
+        SplashPresenter splashPresenter = new SplashPresenter(activity);
+        splashPresenter.initIMInfo();
+//
+//        BaseParams<NoDataParams> baseParams = new BaseParams<>(new NoDataParams());
+//        Observable<BaseGenericModel<NetLoginIMBean>> observable = mILoginApis.loginForIM(baseParams);
+//        Subscription subscribe = observable.compose(RxUtil.<NetLoginIMBean>handleResult())
+//                .subscribe(new Action1<NetLoginIMBean>() {
+//                    @Override
+//                    public void call(final NetLoginIMBean netLoginIMBean) {
+//
+//                        TIMManager.getInstance().login(user.getUserId(), netLoginIMBean.getUserSig(), new TIMCallBack() {
+//                            @Override
+//                            public void onError(int code, String desc) {
+//                                //错误码 code 和错误描述 desc，可用于定位请求失败原因
+//                                //错误码 code 列表请参见错误码表
+//                                Log.d("im", "login failed. code: " + code + " errmsg: " + desc);
+//                            }
+//
+//                            @Override
+//                            public void onSuccess() {
+//                                Log.d("im", "login succ");
+//
+//                                SplashActivity.initIMInfo(activity, new TIMCallBack() {
+//                                    @Override
+//                                    public void onError(int i, String s) {
+//
+//                                    }
+//
+//                                    @Override
+//                                    public void onSuccess() {
+//                                        LogUtil.d("success");
+//                                    }
+//                                });
+//                                AccountManager.getInstance().setIMUserSig(netLoginIMBean.getUserSig());
+//
+//                                ImUserInfo.getInstance().setUserSig(netLoginIMBean.getUserSig());
+//                                ImUserInfo.getInstance().setId(user.getUserId());
+//
+//                                EventBus.getDefault().post(NotificationEvent.LOGIN_SUCCESS);
+//
+//                                hideLoadingDialog();
+//
+//
+//
+//                                ToastUtil.shortShow(getResources().getString(R.string.login_succ));
+//
+//                                UserPresenter userPresenter = new UserPresenter();
+//                                userPresenter.getUserInfo(AccountManager.getInstance().getAccountInfo().getUserId(), "c").subscribe(new CommSubscriber<UserInfoModel>() {
+//                                    @Override
+//                                    public void onSuccess(UserInfoModel userInfoModel) {
+//                                        AppManager.getInstance().setUserInfoModel(userInfoModel);
+////                                        MainActivity.startThis(getActivity());
+//                                        Intent intent = new Intent(activity, SplashActivity.class);
+//                                        activity.startActivity(intent);
+//                                        getActivity().finish();
+//                                        AppManager.getInstance().finishActivity(LoginMainActivity.class);
+//                                    }
+//
+//                                    @Override
+//                                    public void onFailure(Throwable e) {
+//                                        super.onFailure(e);
+////                                        MainActivity.startThis(getActivity());
+//                                        Intent intent = new Intent(activity, SplashActivity.class);
+//                                        activity.startActivity(intent);
+//                                        getActivity().finish();
+//                                    }
+//                                });
+//
+//                            }
+//                        });
+//
+//                    }
+//                }, new Action1<Throwable>() {
+//                    @Override
+//                    public void call(Throwable throwable) {
+//                        EventBus.getDefault().post(NotificationEvent.LOGIN_FAIL);
+//                        if (throwable instanceof ApiException) {
+//                            showError(throwable.getMessage());
+//                        } else {
+//                            LogUtil.e("", throwable.getMessage());
+//                            showError("登录失败");
+//                        }
+//                    }
+//                });
+//        addSubscribe(subscribe);
     }
 
 

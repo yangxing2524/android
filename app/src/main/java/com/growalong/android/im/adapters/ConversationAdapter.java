@@ -17,6 +17,7 @@ import com.growalong.android.im.model.FriendshipInfo;
 import com.growalong.android.im.model.NomalConversation;
 import com.growalong.android.im.utils.TimeUtil;
 import com.growalong.android.ui.ChatActivity;
+import com.growalong.android.util.LogUtil;
 import com.growalong.android.util.Utils;
 import com.tencent.imsdk.TIMConversationType;
 import com.tencent.qcloud.ui.CircleImageView;
@@ -68,11 +69,15 @@ public class ConversationAdapter extends ArrayAdapter<Conversation> {
             NomalConversation nomalConversation = (NomalConversation) data;
             if (nomalConversation.getType() == TIMConversationType.C2C) {
                 FriendProfile profile = FriendshipInfo.getInstance().getProfile(data.getIdentify());
-                String url = profile.getAvatarUrl();
-                if (url == null) {
-                    viewHolder.avatar.setImageResource(data.getAvatar());
+                if (profile != null) {
+                    String url = profile.getAvatarUrl();
+                    if (url == null) {
+                        viewHolder.avatar.setImageResource(data.getAvatar());
+                    } else {
+                        Glide.with(viewHolder.avatar.getContext()).load(url).asBitmap().into(viewHolder.avatar);
+                    }
                 } else {
-                    Glide.with(viewHolder.avatar.getContext()).load(url).asBitmap().into(viewHolder.avatar);
+                    LogUtil.e("profile is null");
                 }
             } else {
                 viewHolder.avatar.setImageResource(data.getAvatar());
@@ -89,7 +94,7 @@ public class ConversationAdapter extends ArrayAdapter<Conversation> {
                 lastMessage = MyApplication.getContext().getResources().getString(R.string.video_chat_over);
             }
         } else {
-            lastMessage = Utils.getIMTextString(lastMessage);
+            lastMessage = Utils.getIMTextNormal(lastMessage);
         }
         viewHolder.lastMessage.setText(lastMessage);
 

@@ -7,11 +7,11 @@ import com.tencent.qcloud.presentation.viewfeatures.SplashView;
 /**
  * 闪屏界面逻辑
  */
-public class SplashPresenter {
+public class IMSplashPresenter {
     SplashView view;
-    private static final String TAG = SplashPresenter.class.getSimpleName();
+    private static final String TAG = IMSplashPresenter.class.getSimpleName();
 
-    public SplashPresenter(SplashView view) {
+    public IMSplashPresenter(SplashView view) {
         this.view = view;
     }
 

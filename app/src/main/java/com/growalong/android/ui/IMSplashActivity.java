@@ -32,7 +32,7 @@ import com.tencent.qcloud.presentation.event.FriendshipEvent;
 import com.tencent.qcloud.presentation.event.GroupEvent;
 import com.tencent.qcloud.presentation.event.MessageEvent;
 import com.tencent.qcloud.presentation.event.RefreshEvent;
-import com.tencent.qcloud.presentation.presenter.SplashPresenter;
+import com.tencent.qcloud.presentation.presenter.IMSplashPresenter;
 import com.tencent.qcloud.presentation.viewfeatures.SplashView;
 import com.tencent.qcloud.tlslibrary.service.TLSService;
 import com.tencent.qcloud.tlslibrary.service.TlsBusiness;
@@ -44,7 +44,7 @@ import java.util.List;
 
 public class IMSplashActivity extends FragmentActivity implements SplashView,TIMCallBack {
 
-    SplashPresenter presenter;
+    IMSplashPresenter presenter;
     private int LOGIN_RESULT_CODE = 100;
     private int GOOGLE_PLAY_RESULT_CODE = 200;
     private final int REQUEST_PHONE_PERMISSIONS = 0;
@@ -261,7 +261,7 @@ public class IMSplashActivity extends FragmentActivity implements SplashView,TIM
         String id =  TLSService.getInstance().getLastUserIdentifier();
         ImUserInfo.getInstance().setId(id);
         ImUserInfo.getInstance().setUserSig(TLSService.getInstance().getUserSig(id));
-        presenter = new SplashPresenter(this);
+        presenter = new IMSplashPresenter(this);
         presenter.start();
     }
 
