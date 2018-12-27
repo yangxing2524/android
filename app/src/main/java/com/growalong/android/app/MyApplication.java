@@ -74,6 +74,7 @@ public class MyApplication extends DefaultApplicationLike {
     public static HashMap<String, Object> map = new HashMap<>();
 
     public static String TYPE = "c";
+
     public MyApplication(Application application, int tinkerFlags, boolean tinkerLoadVerifyFlag,
                          long applicationStartElapsedTime, long applicationStartMillisTime, Intent tinkerResultIntent) {
         super(application, tinkerFlags, tinkerLoadVerifyFlag, applicationStartElapsedTime, applicationStartMillisTime, tinkerResultIntent);
@@ -113,6 +114,7 @@ public class MyApplication extends DefaultApplicationLike {
     }
 
     public static final AgoraCurrentUserSettings mVideoSettings = new AgoraCurrentUserSettings();
+
     /**
      * install multiDex before install tinker
      * so we don't need to put the tinker lib classes in the main dex
@@ -236,7 +238,6 @@ public class MyApplication extends DefaultApplicationLike {
         Logger.init(instance.context.getPackageName()).isShowThreadInfo();
 
     }
-
 
 
     public int getScreenHeight() {

@@ -16,6 +16,7 @@ import com.growalong.android.R;
 import com.growalong.android.app.MyApplication;
 import com.growalong.android.im.adapters.ChatAdapter;
 import com.growalong.android.im.utils.EmoticonUtil;
+import com.growalong.android.util.DensityUtil;
 import com.growalong.android.util.Utils;
 import com.tencent.imsdk.TIMElem;
 import com.tencent.imsdk.TIMElemType;
@@ -134,8 +135,9 @@ public class TextMessage extends Message {
         if (checkRevoke(viewHolder)) return;
         boolean hasText = false;
         TextView tv = new TextView(MyApplication.getContext());
-        tv.setTextSize(TypedValue.COMPLEX_UNIT_SP, 18);
-        tv.setTextColor(MyApplication.getContext().getResources().getColor(isSelf() ? R.color.white : R.color.black));
+        tv.setTextSize(TypedValue.COMPLEX_UNIT_SP, 16);
+        tv.setTextColor(MyApplication.getContext().getResources().getColor(isSelf() ? R.color.white : R.color.text));
+        tv.setPadding(DensityUtil.dip2px(context, 10), DensityUtil.dip2px(context, 8), DensityUtil.dip2px(context, 10), DensityUtil.dip2px(context, 8));
         List<TIMElem> elems = new ArrayList<>();
         for (int i = 0; i < message.getElementCount(); ++i) {
             elems.add(message.getElement(i));

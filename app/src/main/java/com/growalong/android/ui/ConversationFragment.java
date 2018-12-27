@@ -54,7 +54,7 @@ public class ConversationFragment extends Fragment implements ConversationView, 
     private ConversationPresenter presenter;
     private FriendshipManagerPresenter friendshipManagerPresenter;
     private GroupManagerPresenter groupManagerPresenter;
-//    private List<String> groupList;
+    //    private List<String> groupList;
     private FriendshipConversation friendshipConversation;
     private GroupManageConversation groupManageConversation;
 

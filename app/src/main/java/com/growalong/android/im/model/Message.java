@@ -1,16 +1,19 @@
 package com.growalong.android.im.model;
 
 import android.content.Context;
+import android.text.TextUtils;
 import android.view.View;
 import android.widget.RelativeLayout;
 
 import com.bumptech.glide.Glide;
+import com.growalong.android.R;
 import com.growalong.android.app.AppManager;
 import com.growalong.android.im.adapters.ChatAdapter;
 import com.growalong.android.im.utils.TimeUtil;
 import com.tencent.imsdk.TIMConversationType;
 import com.tencent.imsdk.TIMMessage;
 import com.tencent.imsdk.TIMMessageStatus;
+import com.tencent.imsdk.TIMUserProfile;
 import com.tencent.imsdk.ext.message.TIMMessageExt;
 
 /**
@@ -66,7 +69,12 @@ public abstract class Message {
         } else {
             viewHolder.leftPanel.setVisibility(View.VISIBLE);
             viewHolder.rightPanel.setVisibility(View.GONE);
-            Glide.with(viewHolder.leftPanel.getContext()).load(message.getSenderProfile().getFaceUrl()).into(viewHolder.leftAvatar);
+            TIMUserProfile senderProfile = message.getSenderProfile();
+            if(TextUtils.isEmpty(senderProfile.getFaceUrl())) {
+                viewHolder.leftAvatar.setImageResource(R.mipmap.head_default);
+            }else {
+                Glide.with(viewHolder.leftPanel.getContext()).load(message.getSenderProfile().getFaceUrl()).into(viewHolder.leftAvatar);
+            }
             //群聊显示名称，群名片>个人昵称>identify
             if (message.getConversation().getType() == TIMConversationType.Group) {
                 viewHolder.sender.setVisibility(View.VISIBLE);

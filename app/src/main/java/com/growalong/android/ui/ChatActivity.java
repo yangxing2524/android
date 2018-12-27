@@ -96,7 +96,7 @@ public class ChatActivity extends QLActivity implements ChatView {
     public View courseLayout;
 
     private static final String TAG = "ChatActivity";
-    public static final String TRANSLATE_TAG = "&translate&";
+    public static final String TRANSLATE_TAG = " &translate& ";
 
     private int mFamillyType = 0;//0代表的是中方家庭, 1代表英方
 

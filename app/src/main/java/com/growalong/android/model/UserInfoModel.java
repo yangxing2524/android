@@ -3,6 +3,8 @@ package com.growalong.android.model;
 import android.os.Parcel;
 import android.os.Parcelable;
 
+import com.growalong.android.app.MyApplication;
+
 /**
  * Created by yangxing on 2018/11/14.
  */
@@ -22,7 +24,7 @@ public class UserInfoModel implements Parcelable {
     private String familyInfo;  //家庭介绍
     private int grade;          //用户级别 1,2,3
     private int nation;         //国籍身份 1,中国家庭 2，英国家庭
-    private String type = "c";
+    private String type = MyApplication.TYPE;
 
     public String getType() {
         return type;

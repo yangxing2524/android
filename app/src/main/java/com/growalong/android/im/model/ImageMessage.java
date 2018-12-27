@@ -7,6 +7,7 @@ import android.graphics.BitmapFactory;
 import android.graphics.Matrix;
 import android.media.ExifInterface;
 import android.util.Log;
+import android.view.LayoutInflater;
 import android.view.View;
 import android.widget.ImageView;
 import android.widget.Toast;
@@ -14,8 +15,9 @@ import android.widget.Toast;
 import com.growalong.android.R;
 import com.growalong.android.app.MyApplication;
 import com.growalong.android.im.adapters.ChatAdapter;
-import com.growalong.android.ui.ImageViewActivity;
 import com.growalong.android.im.utils.FileUtil;
+import com.growalong.android.ui.ImageViewActivity;
+import com.growalong.android.ui.customview.RoundImageView;
 import com.tencent.imsdk.TIMCallBack;
 import com.tencent.imsdk.TIMImage;
 import com.tencent.imsdk.TIMImageElem;
@@ -217,9 +219,11 @@ public class ImageMessage extends Message {
 
     private void showThumb(final ChatAdapter.ViewHolder viewHolder, String filename) {
         Bitmap bitmap = BitmapFactory.decodeFile(FileUtil.getCacheFilePath(filename));
-        ImageView imageView = new ImageView(MyApplication.getContext());
+        View view = LayoutInflater.from(MyApplication.getContext()).inflate(R.layout.layout_im_imageview,
+                null, false);
+        RoundImageView imageView = view.findViewById(R.id.imageView);
         imageView.setImageBitmap(bitmap);
-        getBubbleView(viewHolder).addView(imageView);
+        getBubbleView(viewHolder).addView(view);
     }
 
     private void setImageEvent(final ChatAdapter.ViewHolder viewHolder, final String fileName, final Context context) {
