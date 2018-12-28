@@ -12,6 +12,7 @@ import android.widget.Toast;
 
 import com.growalong.android.R;
 import com.growalong.android.app.MyApplication;
+import com.growalong.android.ui.ImageViewActivity;
 
 import java.io.File;
 
@@ -48,6 +49,10 @@ public class OpenFileUtil {
 
         //获取文件file的MIME类型
         String type = getMIMEType(file);
+        if (type.startsWith("image")) {
+            ImageViewActivity.startThis(context, file.getPath());
+            return;
+        }
         //设置intent的data和Type属性。
         intent.setDataAndType(uri, type);
         //跳转

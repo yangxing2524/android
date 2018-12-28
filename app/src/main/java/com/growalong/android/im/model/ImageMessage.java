@@ -230,9 +230,7 @@ public class ImageMessage extends Message {
         getBubbleView(viewHolder).setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Intent intent = new Intent(context, ImageViewActivity.class);
-                intent.putExtra("filename", fileName);
-                context.startActivity(intent);
+                ImageViewActivity.startThis(context, fileName);
             }
         });
     }
@@ -245,9 +243,7 @@ public class ImageMessage extends Message {
                 Toast.makeText(context, MyApplication.getContext().getString(R.string.downloading), Toast.LENGTH_SHORT).show();
                 return;
             }
-            Intent intent = new Intent(context, ImageViewActivity.class);
-            intent.putExtra("filename", image.getUuid());
-            context.startActivity(intent);
+            ImageViewActivity.startThisUuid(context, image.getUuid());
         } else {
             if (!isDownloading) {
                 isDownloading = true;

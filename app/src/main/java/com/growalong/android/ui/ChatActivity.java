@@ -120,7 +120,7 @@ public class ChatActivity extends QLActivity implements ChatView {
     public static final int VIDEO_CHAT_REQUEST_CODE_RECEIVER = 21;//视频接收者
     private static final int IMAGE_STORE = 200;
     private static final int FILE_CODE = 300;
-    private static final int IMAGE_PREVIEW = 400;
+    public static final int IMAGE_PREVIEW = 400;
     private static final int VIDEO_RECORD = 500;
     private VoiceSendingView voiceSendingView;
     private String identify;
@@ -1020,10 +1020,9 @@ public class ChatActivity extends QLActivity implements ChatView {
 
 
     private void showImagePreview(String path) {
-        if (path == null) return;
-        Intent intent = new Intent(this, ImagePreviewActivity.class);
-        intent.putExtra("path", path);
-        startActivityForResult(intent, IMAGE_PREVIEW);
+        if (path == null)
+            return;
+        ImagePreviewActivity.startThis(this, path);
     }
 
     private void sendFile(String path) {

@@ -89,7 +89,23 @@ public class MyFragment extends NewBaseFragment implements View.OnClickListener 
             return;
         }
         AppManager.getInstance().setUserInfoModel(mUserInfoModel);
-        name.setText(mUserInfoModel.getName());
+        String nameStr, cnName, enName;
+        if (mUserInfoModel.getEnName() == null) {
+            enName = "";
+        } else {
+            enName = mUserInfoModel.getEnName();
+        }
+        if (mUserInfoModel.getCnName() == null) {
+            cnName = "";
+        } else {
+            cnName = mUserInfoModel.getCnName();
+        }
+        if (mUserInfoModel.getNation() == 1) {
+            nameStr = cnName + enName;
+        } else {
+            nameStr = mUserInfoModel.getEnName() + mUserInfoModel.getCnName();
+        }
+        name.setText(nameStr);
         interest.setText(mUserInfoModel.getHobby());
         location.setText(mUserInfoModel.getAddress());
         Glide.with(activity).load(mUserInfoModel.getHeadImgUrl()).asBitmap().into(headView);

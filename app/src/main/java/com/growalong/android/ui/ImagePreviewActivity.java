@@ -23,6 +23,12 @@ public class ImagePreviewActivity extends Activity {
     private String path;
     private CheckBox isOri;
 
+    public static void startThis(Activity ac, String path) {
+        Intent intent = new Intent(ac, ImagePreviewActivity.class);
+        intent.putExtra("path", path);
+        ac.startActivityForResult(intent, ChatActivity.IMAGE_PREVIEW);
+    }
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -44,10 +50,10 @@ public class ImagePreviewActivity extends Activity {
 
     }
 
-    private void showImage(){
+    private void showImage() {
         if (path.equals("")) return;
         File file = new File(path);
-        if (file.exists()){
+        if (file.exists()) {
             final BitmapFactory.Options options = new BitmapFactory.Options();
             options.inJustDecodeBounds = true;
             BitmapFactory.decodeFile(path, options);
@@ -57,15 +63,15 @@ public class ImagePreviewActivity extends Activity {
             }
             long fileLength = file.length();
             if (fileLength == 0) {
-                fileLength = options.outWidth*options.outHeight/3;
+                fileLength = options.outWidth * options.outHeight / 3;
             }
-            int reqWidth, reqHeight, width=options.outWidth, height=options.outHeight;
-            if (width > height){
+            int reqWidth, reqHeight, width = options.outWidth, height = options.outHeight;
+            if (width > height) {
                 reqWidth = getWindowManager().getDefaultDisplay().getWidth();
-                reqHeight = (reqWidth * height)/width;
-            }else{
+                reqHeight = (reqWidth * height) / width;
+            } else {
                 reqHeight = getWindowManager().getDefaultDisplay().getHeight();
-                reqWidth = (width * reqHeight)/height;
+                reqWidth = (width * reqHeight) / height;
             }
             int inSampleSize = 1;
             if (height > reqHeight || width > reqWidth) {
@@ -77,17 +83,17 @@ public class ImagePreviewActivity extends Activity {
                 }
             }
             isOri.setText(getString(R.string.chat_image_preview_ori) + "(" + getFileSize(fileLength) + ")");
-            try{
+            try {
                 options.inSampleSize = inSampleSize;
                 options.inJustDecodeBounds = false;
-                float scaleX = (float) reqWidth / (float) (width/inSampleSize);
-                float scaleY = (float) reqHeight / (float) (height/inSampleSize);
+                float scaleX = (float) reqWidth / (float) (width / inSampleSize);
+                float scaleY = (float) reqHeight / (float) (height / inSampleSize);
                 Matrix mat = new Matrix();
                 mat.postScale(scaleX, scaleY);
                 Bitmap bitmap = BitmapFactory.decodeFile(path, options);
-                ExifInterface ei =  new ExifInterface(path);
+                ExifInterface ei = new ExifInterface(path);
                 int orientation = ei.getAttributeInt(ExifInterface.TAG_ORIENTATION, ExifInterface.ORIENTATION_NORMAL);
-                switch(orientation) {
+                switch (orientation) {
                     case ExifInterface.ORIENTATION_ROTATE_90:
                         mat.postRotate(90);
                         break;
@@ -97,22 +103,22 @@ public class ImagePreviewActivity extends Activity {
                 }
                 ImageView imageView = (ImageView) findViewById(R.id.image);
                 imageView.setImageBitmap(Bitmap.createBitmap(bitmap, 0, 0, bitmap.getWidth(), bitmap.getHeight(), mat, true));
-            }catch (IOException e){
+            } catch (IOException e) {
                 Toast.makeText(this, getString(R.string.chat_image_preview_load_err), Toast.LENGTH_SHORT).show();
             }
-        }else{
+        } else {
             finish();
         }
     }
 
-    private String getFileSize(long size){
+    private String getFileSize(long size) {
         StringBuilder strSize = new StringBuilder();
-        if (size < 1024){
+        if (size < 1024) {
             strSize.append(size).append("B");
-        }else if (size < 1024*1024){
-            strSize.append(size/1024).append("K");
-        }else{
-            strSize.append(size/1024/1024).append("M");
+        } else if (size < 1024 * 1024) {
+            strSize.append(size / 1024).append("K");
+        } else {
+            strSize.append(size / 1024 / 1024).append("M");
         }
         return strSize.toString();
     }

@@ -35,7 +35,10 @@
         <item name="android:gravity">center_horizontal</item>
         <item name="android:orientation">vertical</item>
     </style>
-
+    <style name="MyEditText" parent="Theme.AppCompat.Light">
+        <item name="colorControlNormal">@color/line</item>
+        <item name="colorControlActivated">@color/line</item>
+    </style>
     <style name="video_publish_share_checkbox">
         <item name="android:layout_width">wrap_content</item>
         <item name="android:layout_height">40dp</item>

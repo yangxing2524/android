@@ -2,16 +2,15 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:orientation="vertical"
-    android:paddingLeft="@dimen/y10"
-    android:paddingRight="@dimen/y10">
+    android:orientation="vertical">
 
     <TextView
         android:layout_width="match_parent"
         android:layout_height="48dp"
         android:gravity="center_vertical"
-        android:paddingLeft="@dimen/y20"
         android:text="@string/home_conversation_tab"
+        android:paddingLeft="@dimen/y30"
+        android:paddingRight="@dimen/y10"
         android:textColor="@color/black"
         android:textSize="22sp"
         android:textStyle="bold" />
@@ -26,8 +25,7 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:divider="@color/line"
-        android:dividerHeight="1px"
-        android:paddingLeft="@dimen/y10" />
+        android:dividerHeight="1px" />
 
 
 </LinearLayout>

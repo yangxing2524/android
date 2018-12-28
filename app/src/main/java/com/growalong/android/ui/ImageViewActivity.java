@@ -1,6 +1,8 @@
 package com.growalong.android.ui;
 
 import android.app.Activity;
+import android.content.Context;
+import android.content.Intent;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.graphics.Matrix;
@@ -19,6 +21,18 @@ import java.io.IOException;
 
 public class ImageViewActivity extends Activity {
 
+    public static void startThis(Context context, String fileName) {
+        Intent intent = new Intent(context, ImageViewActivity.class);
+        intent.putExtra("filename", fileName);
+        context.startActivity(intent);
+    }
+
+    public static void startThisUuid(Context context, String uuid) {
+        Intent intent = new Intent(context, ImageViewActivity.class);
+        intent.putExtra("uuid", uuid);
+        context.startActivity(intent);
+    }
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -31,25 +45,30 @@ public class ImageViewActivity extends Activity {
                 finish();
             }
         });
-        String file = getIntent().getStringExtra("filename");
+        String file;
+        if (getIntent().hasExtra("filename")) {
+            file = getIntent().getStringExtra("filename");
+        } else {
+            file = FileUtil.getCacheFilePath(getIntent().getStringExtra("uuid"));
+        }
         ImageView imageView = (ImageView) findViewById(R.id.image);
-        Bitmap bitmap = getImage(FileUtil.getCacheFilePath(file));
-        if (bitmap != null){
+        Bitmap bitmap = getImage(file);
+        if (bitmap != null) {
             imageView.setImageBitmap(bitmap);
         }
     }
 
-    private Bitmap getImage(String path){
+    private Bitmap getImage(String path) {
         final BitmapFactory.Options options = new BitmapFactory.Options();
         options.inJustDecodeBounds = true;
         BitmapFactory.decodeFile(path, options);
-        int reqWidth, reqHeight, width=options.outWidth, height=options.outHeight;
-        if (width > height){
-            reqWidth = getWindowManager().getDefaultDisplay().getWidth()/2;
-            reqHeight = (reqWidth * height)/width;
-        }else{
-            reqHeight = getWindowManager().getDefaultDisplay().getHeight()/2;
-            reqWidth = (width * reqHeight)/height;
+        int reqWidth, reqHeight, width = options.outWidth, height = options.outHeight;
+        if (width > height) {
+            reqWidth = getWindowManager().getDefaultDisplay().getWidth() / 2;
+            reqHeight = (reqWidth * height) / width;
+        } else {
+            reqHeight = getWindowManager().getDefaultDisplay().getHeight() / 2;
+            reqWidth = (width * reqHeight) / height;
         }
         int inSampleSize = 1;
         if (height > reqHeight || width > reqWidth) {
@@ -60,7 +79,7 @@ public class ImageViewActivity extends Activity {
                 inSampleSize *= 2;
             }
         }
-        try{
+        try {
             options.inSampleSize = inSampleSize;
             options.inJustDecodeBounds = false;
             Matrix mat = new Matrix();
@@ -69,9 +88,9 @@ public class ImageViewActivity extends Activity {
                 Toast.makeText(this, getString(R.string.file_not_found), Toast.LENGTH_SHORT).show();
                 return null;
             }
-            ExifInterface ei =  new ExifInterface(path);
+            ExifInterface ei = new ExifInterface(path);
             int orientation = ei.getAttributeInt(ExifInterface.TAG_ORIENTATION, ExifInterface.ORIENTATION_NORMAL);
-            switch(orientation) {
+            switch (orientation) {
                 case ExifInterface.ORIENTATION_ROTATE_90:
                     mat.postRotate(90);
                     break;
@@ -80,7 +99,7 @@ public class ImageViewActivity extends Activity {
                     break;
             }
             return Bitmap.createBitmap(bitmap, 0, 0, bitmap.getWidth(), bitmap.getHeight(), mat, true);
-        }catch (IOException e){
+        } catch (IOException e) {
             return null;
         }
     }
