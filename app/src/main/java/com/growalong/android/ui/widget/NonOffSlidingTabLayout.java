@@ -117,6 +117,9 @@ public class NonOffSlidingTabLayout extends HorizontalScrollView {
         mTabStrip.setDividerColors(colors);
     }
 
+    public void setIsDrawStrip(boolean b){
+        mTabStrip.setIsDrawStrip(b);
+    }
     /**
      * Set the {@link ViewPager.OnPageChangeListener}. When using {@link SlidingTabLayout} you are
      * required to set any {@link ViewPager.OnPageChangeListener} through this method. This is so
@@ -209,6 +212,9 @@ public class NonOffSlidingTabLayout extends HorizontalScrollView {
             tabTitleView.setText(adapter.getPageTitle(i));
             tabView.setOnClickListener(tabClickListener);
 
+            if(i ==0){
+                tabTitleView.setSelected(true);
+            }
             mTabStrip.addView(tabView);
         }
     }

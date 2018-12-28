@@ -20,7 +20,7 @@ import butterknife.BindView;
 
 /**
  */
-public class CourseStartingFragment extends NewBaseListFragment {
+public class CourseRuningFragment extends NewBaseListFragment {
 
     public static final int STARTING_COURSE = 1;
 
@@ -33,12 +33,11 @@ public class CourseStartingFragment extends NewBaseListFragment {
     private List<CourseListItemModel> mData = new ArrayList<>();
 
     public static Fragment newInstance() {
-        return new CourseStartingFragment();
+        return new CourseRuningFragment();
     }
 
     @Override
     public void setupView(Bundle savedInstanceState, View view) {
-        mRecyclerView.setRefreshEnable(false);
         loadData(false, false);
     }
 
@@ -84,7 +83,7 @@ public class CourseStartingFragment extends NewBaseListFragment {
 
     @Override
     public void onRefresh() {
-
+        loadData(false, false);
     }
 
     @Override

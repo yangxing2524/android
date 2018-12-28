@@ -8,6 +8,5 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:maxWidth="@dimen/y260"
-        android:maxHeight="@dimen/y420"
-        android:scaleType="centerCrop" />
+        android:maxHeight="@dimen/y420" />
 </RelativeLayout>

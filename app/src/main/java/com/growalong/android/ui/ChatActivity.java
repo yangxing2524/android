@@ -55,7 +55,7 @@ import com.growalong.android.present.ChatOtherPresenter;
 import com.growalong.android.present.CommSubscriber;
 import com.growalong.android.present.CoursePresenter;
 import com.growalong.android.present.InitPresenter;
-import com.growalong.android.ui.fragment.CourseStartingFragment;
+import com.growalong.android.ui.fragment.CourseRuningFragment;
 import com.growalong.android.util.LogUtil;
 import com.growalong.android.util.ToastUtil;
 import com.growalong.android.util.TranslateHelper;
@@ -354,7 +354,7 @@ public class ChatActivity extends QLActivity implements ChatView {
                 break;
             case Group:
                 CoursePresenter coursePresenter = new CoursePresenter();
-                coursePresenter.getCourList(CourseStartingFragment.STARTING_COURSE, 1, null, null).subscribe(new CommSubscriber<List<CourseListItemModel>>() {
+                coursePresenter.getCourList(CourseRuningFragment.STARTING_COURSE, 1, null, null).subscribe(new CommSubscriber<List<CourseListItemModel>>() {
                     @Override
                     public void onSuccess(final List<CourseListItemModel> courseListItemModels) {
                         courseLayout.setOnClickListener(new View.OnClickListener() {
@@ -399,6 +399,9 @@ public class ChatActivity extends QLActivity implements ChatView {
         if ((keyCode == KeyEvent.KEYCODE_BACK)) {
             if (input.isMorePanelVisiable()) {
                 input.hidMorePanel();
+                return true;
+            } else if (input.isEmotionVisiable()) {
+                input.hidEmoticonPanel();
                 return true;
             }
         }
@@ -472,7 +475,7 @@ public class ChatActivity extends QLActivity implements ChatView {
                     }
                     messageList.add(mMessage);
                     adapter.notifyDataSetChanged();
-                    listView.setSelection(adapter.getCount() - 1);
+                    scorllToBottom(0);
                 } else {
                     if (messageList.size() == 0) {
                         mMessage.setHasTime(null);
@@ -481,7 +484,7 @@ public class ChatActivity extends QLActivity implements ChatView {
                     }
                     messageList.add(mMessage);
                     adapter.notifyDataSetChanged();
-                    listView.setSelection(adapter.getCount() - 1);
+                    scorllToBottom(0);
                 }
 
             }
@@ -734,7 +737,7 @@ public class ChatActivity extends QLActivity implements ChatView {
                                 Message message = new TextMessage(content1);
                                 presenter.sendMessage(message.getMessage());
                                 input.setText("");
-                                listView.setSelection(messageList.size() - 1);
+                                scorllToBottom(0);
                             }
                         });
 
@@ -783,7 +786,7 @@ public class ChatActivity extends QLActivity implements ChatView {
         recorder.stopRecording();
         if (recorder.getTimeInterval() < 1) {
             Toast.makeText(this, getResources().getString(R.string.chat_audio_too_short), Toast.LENGTH_SHORT).show();
-        } else if (recorder.getTimeInterval() > 60) {
+        } else if (recorder.getTimeInterval() > 180) {
             Toast.makeText(this, getResources().getString(R.string.chat_audio_too_long), Toast.LENGTH_SHORT).show();
         } else {
             Message message = new VoiceMessage(recorder.getTimeInterval(), recorder.getFilePath());
@@ -860,6 +863,17 @@ public class ChatActivity extends QLActivity implements ChatView {
 //        vSettings().mEncryptionKey = encryption;
 
         AgoraChatActivity.startThis(this, channel, VIDEO_CHAT_REQUEST_CODE_SENDER);
+    }
+
+    @Override
+    public void scorllToBottom(int delay) {
+        MyApplication.runOnUIThread(new Runnable() {
+            @Override
+            public void run() {
+                listView.setSelection(adapter.getCount() - 1);
+            }
+        }, delay);
+
     }
 
     private void sendTextMsg(String msg) {

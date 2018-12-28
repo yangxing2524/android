@@ -30,13 +30,12 @@
 
         <TextView
             android:id="@+id/download"
-            android:layout_width="wrap_content"
+            android:layout_width="100dp"
             android:layout_height="wrap_content"
             android:layout_marginRight="@dimen/y28"
+            android:gravity="center"
             android:background="@drawable/background_f0_circle"
-            android:paddingLeft="@dimen/y50"
             android:paddingTop="@dimen/y16"
-            android:paddingRight="@dimen/y50"
             android:paddingBottom="@dimen/y16"
             android:text="@string/download"
             android:textColor="@color/color_4fca19"

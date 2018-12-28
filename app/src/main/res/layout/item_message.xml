@@ -47,6 +47,7 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:clickable="true"
+                    android:padding="1px"
                     android:longClickable="true"
                     android:gravity="center"
                     android:background="@drawable/bg_bubble_gray"/>
@@ -74,6 +75,7 @@
                 android:layout_height="wrap_content"
                 android:gravity="center"
                 android:clickable="true"
+                android:padding="1px"
                 android:longClickable="true"
                 android:layout_marginRight="@dimen/y16"
                 android:layout_toLeftOf="@id/rightAvatar"

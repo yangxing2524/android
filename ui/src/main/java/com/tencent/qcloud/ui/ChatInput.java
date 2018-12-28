@@ -119,10 +119,18 @@ public class ChatInput extends RelativeLayout implements TextWatcher, View.OnCli
     public boolean isMorePanelVisiable() {
         return morePanel != null ? morePanel.getVisibility() == View.VISIBLE : false;
     }
+    public boolean isEmotionVisiable() {
+        return emoticonPanel != null ? emoticonPanel.getVisibility() == View.VISIBLE : false;
+    }
 
     public void hidMorePanel() {
         if (morePanel != null) {
             morePanel.setVisibility(View.GONE);
+        }
+    }
+    public void hidEmoticonPanel() {
+        if (emoticonPanel != null) {
+            emoticonPanel.setVisibility(View.GONE);
         }
     }
 
@@ -322,6 +330,9 @@ public class ChatInput extends RelativeLayout implements TextWatcher, View.OnCli
             chatView.sendText();
         }
         if (id == R.id.btn_add) {
+            if(inputMode != InputMode.MORE){
+                chatView.scorllToBottom(50);
+            }
             updateView(inputMode == InputMode.MORE ? InputMode.TEXT : InputMode.MORE);
         }
         if (id == R.id.btn_photo) {

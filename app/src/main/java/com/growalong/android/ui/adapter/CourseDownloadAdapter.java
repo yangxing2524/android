@@ -15,6 +15,7 @@ import com.growalong.android.model.CourseMaterialModel;
 import com.growalong.android.net.retrofit.BaseRetrofitClient;
 import com.growalong.android.net.retrofit.download.ProgressHelper;
 import com.growalong.android.net.retrofit.service.IDownloadApis;
+import com.growalong.android.util.OpenFileUtil;
 import com.growalong.android.util.ToastUtil;
 
 import java.io.BufferedInputStream;
@@ -73,6 +74,8 @@ public class CourseDownloadAdapter extends RecyclerView.Adapter<RecyclerView.Vie
     }
 
     public class ViewHolder extends RecyclerView.ViewHolder {
+        private static final int DOWNLOADING = 1;
+        private static final int DOWNLOADED = 2;
         public TextView titleTv;
         public TextView downloadTv;
 
@@ -83,10 +86,16 @@ public class CourseDownloadAdapter extends RecyclerView.Adapter<RecyclerView.Vie
             downloadTv.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
+                    if (downloadTv.getTag(R.id.tag_second) != null &&
+                            ((int) downloadTv.getTag(R.id.tag_second)) == DOWNLOADING) {
+                        return;
+                    }
                     final CourseMaterialModel courseMaterialModel = (CourseMaterialModel) v.getTag(R.id.tag_first);
                     final String url = courseMaterialModel.getContent();
-                    downloadTv.setText(mContext.getResources().getString(R.string.downloading));
-                    downloadTv.setTag(R.id.tag_first, "");
+                    if (!FileUtil.isDownloadFileFromUrlExist(courseMaterialModel.getContent(), courseMaterialModel.getTitle())) {
+                        downloadTv.setText(mContext.getResources().getString(R.string.downloading));
+                    }
+                    downloadTv.setTag(R.id.tag_second, DOWNLOADING);
                     final File file = new File(FileUtil.getDownloadFileFromUrl(url, courseMaterialModel.getTitle()));
                     if (!TextUtils.isEmpty(url)) {
                         Call<ResponseBody> call = updateApis.downloadFile(url);
@@ -94,6 +103,12 @@ public class CourseDownloadAdapter extends RecyclerView.Adapter<RecyclerView.Vie
                             @Override
                             public void onResponse(Call<ResponseBody> call, Response<ResponseBody> response) {
                                 try {
+                                    if (FileUtil.isDownloadFileFromUrlExist(courseMaterialModel.getContent(), courseMaterialModel.getTitle())) {
+                                        //已下载
+                                        String path = FileUtil.getDownloadFileFromUrl(courseMaterialModel.getContent(), courseMaterialModel.getTitle());
+                                        OpenFileUtil.openFile(mContext, new File(path));
+                                        return;
+                                    }
                                     InputStream is = response.body().byteStream();
                                     file.getParentFile().mkdirs();
                                     file.createNewFile();
@@ -109,11 +124,11 @@ public class CourseDownloadAdapter extends RecyclerView.Adapter<RecyclerView.Vie
                                     bis.close();
                                     is.close();
 
+                                    downloadTv.setTag(R.id.tag_second, DOWNLOADED);
                                     MyApplication.runOnUIThread(new Runnable() {
                                         @Override
                                         public void run() {
-                                            downloadTv.setText(mContext.getResources().getString(R.string.has_download));
-                                            downloadTv.setTag(R.id.tag_first, "");
+                                            downloadTv.setText(mContext.getResources().getString(R.string.open));
                                         }
                                     });
                                 } catch (IOException e) {
@@ -141,6 +156,7 @@ public class CourseDownloadAdapter extends RecyclerView.Adapter<RecyclerView.Vie
                                         downloadTv.setText(mContext.getResources().getString(R.string.download));
                                     }
                                 });
+                                downloadTv.setTag(R.id.tag_second, 0);
                             }
                         });
                     }
@@ -151,12 +167,11 @@ public class CourseDownloadAdapter extends RecyclerView.Adapter<RecyclerView.Vie
         public void setData(CourseMaterialModel courseMaterialModel) {
             titleTv.setText(courseMaterialModel.getTitle());
             if (FileUtil.isDownloadFileFromUrlExist(courseMaterialModel.getContent(), courseMaterialModel.getTitle())) {
-                downloadTv.setText(mContext.getResources().getString(R.string.has_download));
-                downloadTv.setTag(R.id.tag_first, "");
+                downloadTv.setText(mContext.getResources().getString(R.string.open));
             } else {
                 downloadTv.setText(mContext.getResources().getString(R.string.download));
-                downloadTv.setTag(R.id.tag_first, courseMaterialModel);
             }
+            downloadTv.setTag(R.id.tag_first, courseMaterialModel);
         }
     }
 

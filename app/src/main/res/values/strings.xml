@@ -406,6 +406,7 @@
     <string name="copy">复制</string>
     <string name="download">下载</string>
     <string name="has_download">已下载</string>
+    <string name="open">打开</string>
     <string name="cant_open_file">找不到打开此文件的应用！</string>
     <string name="download_del">删除下载</string>
     <string name="login_main_tip">一对一匹配中外家庭\n让两个家庭在互动中学习</string>

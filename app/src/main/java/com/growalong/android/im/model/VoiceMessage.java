@@ -3,9 +3,8 @@ package com.growalong.android.im.model;
 import android.content.Context;
 import android.graphics.drawable.AnimationDrawable;
 import android.util.TypedValue;
-import android.view.Gravity;
+import android.view.LayoutInflater;
 import android.view.View;
-import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
@@ -15,6 +14,7 @@ import com.growalong.android.app.MyApplication;
 import com.growalong.android.im.adapters.ChatAdapter;
 import com.growalong.android.im.utils.FileUtil;
 import com.growalong.android.im.utils.MediaUtil;
+import com.growalong.android.util.DensityUtil;
 import com.tencent.imsdk.TIMCallBack;
 import com.tencent.imsdk.TIMMessage;
 import com.tencent.imsdk.TIMSoundElem;
@@ -28,6 +28,7 @@ import java.io.FileInputStream;
 public class VoiceMessage extends Message {
 
     private static final String TAG = "VoiceMessage";
+    private boolean isPlaying = false;
 
     public VoiceMessage(TIMMessage message) {
         this.message = message;
@@ -70,41 +71,39 @@ public class VoiceMessage extends Message {
     @Override
     public void showMessage(ChatAdapter.ViewHolder viewHolder, Context context) {
         if (checkRevoke(viewHolder)) return;
-        LinearLayout linearLayout = new LinearLayout(MyApplication.getContext());
-        linearLayout.setOrientation(LinearLayout.HORIZONTAL);
-        linearLayout.setGravity(Gravity.CENTER);
-        ImageView voiceIcon = new ImageView(MyApplication.getContext());
+        LinearLayout linearLayout = (LinearLayout) LayoutInflater.from(context).inflate(R.layout.layout_im_voice, null, false);
+        ImageView voiceIcon = linearLayout.findViewById(R.id.image);
         voiceIcon.setBackgroundResource(message.isSelf() ? R.drawable.right_voice : R.drawable.left_voice);
         final AnimationDrawable frameAnimatio = (AnimationDrawable) voiceIcon.getBackground();
 
-        TextView tv = new TextView(MyApplication.getContext());
+        TextView tv = linearLayout.findViewById(R.id.text);
         tv.setTextSize(TypedValue.COMPLEX_UNIT_SP, 18);
         tv.setTextColor(MyApplication.getContext().getResources().getColor(isSelf() ? R.color.white : R.color.black));
-        tv.setText(String.valueOf(((TIMSoundElem) message.getElement(0)).getDuration()) + "’");
-        int height = (int) TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_DIP, 18, context.getResources().getDisplayMetrics());
-        int width = (int) TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_DIP, 14, context.getResources().getDisplayMetrics());
-        LinearLayout.LayoutParams lp = new LinearLayout.LayoutParams(ViewGroup.LayoutParams.WRAP_CONTENT, ViewGroup.LayoutParams.WRAP_CONTENT);
-        LinearLayout.LayoutParams imageLp = new LinearLayout.LayoutParams(width, height);
-        if (message.isSelf()) {
-            linearLayout.addView(tv);
-            imageLp.setMargins(10, 0, 0, 0);
-            voiceIcon.setLayoutParams(imageLp);
-            linearLayout.addView(voiceIcon);
+        int duration = (int) ((TIMSoundElem) message.getElement(0)).getDuration();
+        String time;
+        if (duration > 60) {
+            int min = duration / 60;
+            int seconde = duration % 60;
+            time = min + "''" + seconde + "'";
         } else {
-            voiceIcon.setLayoutParams(imageLp);
-            linearLayout.addView(voiceIcon);
-            lp.setMargins(10, 0, 0, 0);
-            tv.setLayoutParams(lp);
-            linearLayout.addView(tv);
+            time = duration + "'";
         }
+        if (duration > 17) {
+            tv.getLayoutParams().width = DensityUtil.dip2px(context, 100);
+        } else {
+            tv.getLayoutParams().width = DensityUtil.dip2px(context, 40);
+        }
+        tv.setText(time);
         clearView(viewHolder);
         getBubbleView(viewHolder).addView(linearLayout);
         getBubbleView(viewHolder).setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                VoiceMessage.this.playAudio(frameAnimatio);
-
-
+                if (isPlaying) {
+                    stopAudio(frameAnimatio);
+                } else {
+                    VoiceMessage.this.playAudio(frameAnimatio);
+                }
             }
         });
         showStatus(viewHolder);
@@ -129,6 +128,12 @@ public class VoiceMessage extends Message {
 
     }
 
+    private void stopAudio(final AnimationDrawable frameAnimatio) {
+        frameAnimatio.stop();
+        frameAnimatio.selectDrawable(0);
+        MediaUtil.getInstance().stop();
+    }
+
     private void playAudio(final AnimationDrawable frameAnimatio) {
         TIMSoundElem elem = (TIMSoundElem) message.getElement(0);
         final File tempAudio = FileUtil.getTempFile(FileUtil.FileType.AUDIO);
@@ -144,11 +149,13 @@ public class VoiceMessage extends Message {
                     FileInputStream fis = new FileInputStream(tempAudio);
                     MediaUtil.getInstance().play(fis);
                     frameAnimatio.start();
+                    isPlaying = true;
                     MediaUtil.getInstance().setEventListener(new MediaUtil.EventListener() {
                         @Override
                         public void onStop() {
                             frameAnimatio.stop();
                             frameAnimatio.selectDrawable(0);
+                            isPlaying = false;
                         }
                     });
                 } catch (Exception e) {

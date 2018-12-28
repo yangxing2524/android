@@ -36,7 +36,7 @@ public class CourseMainFragment extends NewBaseFragment {
                 if(position == 0) {
                    fragment =  CourseOverFragment.newInstance();
                 }else if(position == 1){
-                    fragment = CourseStartingFragment.newInstance();
+                    fragment = CourseRuningFragment.newInstance();
                 }
                 return fragment;
             }
@@ -61,6 +61,7 @@ public class CourseMainFragment extends NewBaseFragment {
         mTablayout.setSelectedIndicatorColors(R.color.color_f0f0f0);
         mTablayout.setCustomTabView(R.layout.tab_custom_view, R.id.item_content);
         mTablayout.setViewPager(mViewPager);
+        mTablayout.setIsDrawStrip(false);
     }
 
     @Override

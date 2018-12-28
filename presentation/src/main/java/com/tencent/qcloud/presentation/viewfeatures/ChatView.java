@@ -134,4 +134,9 @@ public interface ChatView extends MvpView {
      * 视频
      */
     void openVideo();
+
+    /**
+     * 滚动到最底下
+     */
+    void scorllToBottom(int time);
 }

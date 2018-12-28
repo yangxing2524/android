@@ -91,7 +91,7 @@ public class MyFragment extends NewBaseFragment implements View.OnClickListener 
         AppManager.getInstance().setUserInfoModel(mUserInfoModel);
         name.setText(mUserInfoModel.getName());
         interest.setText(mUserInfoModel.getHobby());
-        location.setText(mUserInfoModel.getFamilyInfo());
+        location.setText(mUserInfoModel.getAddress());
         Glide.with(activity).load(mUserInfoModel.getHeadImgUrl()).asBitmap().into(headView);
         Drawable drawable;
         if (mUserInfoModel.getGender() == 1) {
@@ -101,7 +101,7 @@ public class MyFragment extends NewBaseFragment implements View.OnClickListener 
             drawable = getResources().getDrawable(R.mipmap.women);
         }
         drawable.setBounds(0, 0, drawable.getMinimumWidth(), drawable.getMinimumHeight());
-        name.setCompoundDrawables(drawable, null, null, null);
+        name.setCompoundDrawables(null, null, drawable, null);
     }
 
     @Override

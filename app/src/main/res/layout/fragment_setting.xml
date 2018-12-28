@@ -3,22 +3,16 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="@color/background"
-    android:orientation="vertical">
-
-    <View
-        android:layout_width="match_parent"
-        android:layout_height="1px"
-        android:layout_marginTop="20dp"
-        android:background="@color/line" />
+    android:background="@color/white"
+    android:orientation="vertical"
+    android:paddingLeft="20dp">
 
     <LinearLayout
         android:layout_width="match_parent"
-        android:layout_height="56dp"
+        android:layout_height="@dimen/y120"
         android:background="@color/white"
         android:gravity="center_vertical"
         android:orientation="horizontal"
-        android:paddingLeft="20dp"
         android:paddingRight="20dp">
 
         <TextView
@@ -71,58 +65,66 @@
     <com.tencent.qcloud.ui.LineControllerView
         android:id="@+id/ChineseName"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
+        android:layout_height="@dimen/y100"
+        android:textColor="@color/color_474747"
+        android:textSize="16sp"
         app:canNav="true"
         app:name="@string/children_chinese_name" />
 
     <com.tencent.qcloud.ui.LineControllerView
         android:id="@+id/EnglishName"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
+        android:layout_height="@dimen/y100"
+        android:textSize="16sp"
         app:canNav="true"
-        app:isBottom="true"
         app:name="@string/children_english_name" />
+
     <com.tencent.qcloud.ui.LineControllerView
         android:id="@+id/gender"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
+        android:layout_height="@dimen/y100"
+        android:textColor="@color/color_474747"
+        android:textSize="16sp"
         app:canNav="true"
-        app:isBottom="true"
         app:name="@string/gender" />
+
     <com.tencent.qcloud.ui.LineControllerView
         android:id="@+id/age"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
+        android:layout_height="@dimen/y100"
+        android:textSize="16sp"
         app:canNav="true"
-        app:isBottom="true"
         app:name="@string/age" />
+
     <com.tencent.qcloud.ui.LineControllerView
         android:id="@+id/favorite"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
+        android:layout_height="@dimen/y100"
+        android:textSize="16sp"
         app:canNav="true"
-        app:isBottom="true"
         app:name="@string/favorite" />
+
     <com.tencent.qcloud.ui.LineControllerView
         android:id="@+id/location"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
+        android:layout_height="@dimen/y100"
+        android:textSize="16sp"
         app:canNav="true"
-        app:isBottom="true"
         app:name="@string/location" />
 
+    <View
+        android:layout_width="match_parent"
+        android:layout_height="1px"
+        android:background="@color/line" />
 
     <TextView
         android:id="@+id/logout"
         android:layout_width="match_parent"
-        android:layout_height="40dp"
-        android:layout_marginLeft="10dp"
+        android:layout_height="@dimen/y100"
         android:layout_marginTop="20dp"
-        android:layout_marginRight="10dp"
-        android:background="@drawable/bg_negative_btn"
+        android:layout_marginRight="20dp"
         android:gravity="center"
         android:text="@string/setting_logout"
-        android:textColor="@color/text_btn"
+        android:textColor="@color/color_474747"
         android:textSize="18sp" />
-
 </LinearLayout>

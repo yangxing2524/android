@@ -181,10 +181,10 @@ public class ImageMessage extends Message {
         BitmapFactory.decodeFile(path, options);
         int reqWidth, reqHeight, width = options.outWidth, height = options.outHeight;
         if (width > height) {
-            reqWidth = 198;
+            reqWidth = 258;
             reqHeight = (reqWidth * height) / width;
         } else {
-            reqHeight = 198;
+            reqHeight = 258;
             reqWidth = (width * reqHeight) / height;
         }
         int inSampleSize = 1;

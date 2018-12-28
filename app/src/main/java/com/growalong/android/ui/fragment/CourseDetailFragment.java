@@ -53,7 +53,7 @@ public class CourseDetailFragment extends NewBaseListFragment {
 
     @Override
     public void onRefresh() {
-
+        initData();
     }
 
     @Override

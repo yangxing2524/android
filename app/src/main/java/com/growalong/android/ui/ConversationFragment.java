@@ -3,10 +3,7 @@ package com.growalong.android.ui;
 
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
-import android.view.ContextMenu;
 import android.view.LayoutInflater;
-import android.view.Menu;
-import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AdapterView;
@@ -277,35 +274,35 @@ public class ConversationFragment extends Fragment implements ConversationView, 
 
     }
 
-    @Override
-    public void onCreateContextMenu(ContextMenu menu, View v,
-                                    ContextMenu.ContextMenuInfo menuInfo) {
-        AdapterView.AdapterContextMenuInfo info = (AdapterView.AdapterContextMenuInfo) menuInfo;
-        Conversation conversation = conversationList.get(info.position);
-        if (conversation instanceof NomalConversation) {
-            menu.add(0, 1, Menu.NONE, getString(R.string.conversation_del));
-        }
-    }
-
-
-    @Override
-    public boolean onContextItemSelected(MenuItem item) {
-        AdapterView.AdapterContextMenuInfo info = (AdapterView.AdapterContextMenuInfo) item.getMenuInfo();
-        NomalConversation conversation = (NomalConversation) conversationList.get(info.position);
-        switch (item.getItemId()) {
-            case 1:
-                if (conversation != null) {
-                    if (presenter.delConversation(conversation.getType(), conversation.getIdentify())) {
-                        conversationList.remove(conversation);
-                        adapter.notifyDataSetChanged();
-                    }
-                }
-                break;
-            default:
-                break;
-        }
-        return super.onContextItemSelected(item);
-    }
+//    @Override
+//    public void onCreateContextMenu(ContextMenu menu, View v,
+//                                    ContextMenu.ContextMenuInfo menuInfo) {
+//        AdapterView.AdapterContextMenuInfo info = (AdapterView.AdapterContextMenuInfo) menuInfo;
+//        Conversation conversation = conversationList.get(info.position);
+//        if (conversation instanceof NomalConversation) {
+//            menu.add(0, 1, Menu.NONE, getString(R.string.conversation_del));
+//        }
+//    }
+//
+//
+//    @Override
+//    public boolean onContextItemSelected(MenuItem item) {
+//        AdapterView.AdapterContextMenuInfo info = (AdapterView.AdapterContextMenuInfo) item.getMenuInfo();
+//        NomalConversation conversation = (NomalConversation) conversationList.get(info.position);
+//        switch (item.getItemId()) {
+//            case 1:
+//                if (conversation != null) {
+//                    if (presenter.delConversation(conversation.getType(), conversation.getIdentify())) {
+//                        conversationList.remove(conversation);
+//                        adapter.notifyDataSetChanged();
+//                    }
+//                }
+//                break;
+//            default:
+//                break;
+//        }
+//        return super.onContextItemSelected(item);
+//    }
 
     private long getTotalUnreadNum() {
         long num = 0;

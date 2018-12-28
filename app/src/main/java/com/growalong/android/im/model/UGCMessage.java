@@ -5,6 +5,7 @@ import android.content.Intent;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.util.Log;
+import android.view.LayoutInflater;
 import android.view.View;
 import android.widget.ImageView;
 
@@ -25,18 +26,16 @@ import java.io.File;
  * 小视频消息
  */
 
-public class UGCMessage extends Message{
+public class UGCMessage extends Message {
     private static final String TAG = "UGCMessage";
 
 
-
-    public UGCMessage(TIMMessage message){
+    public UGCMessage(TIMMessage message) {
         this.message = message;
     }
 
 
-
-    public UGCMessage(String filePath, String coverPath, long duration){
+    public UGCMessage(String filePath, String coverPath, long duration) {
         message = new TIMMessage();
 
         TIMUGCElem elem = new TIMUGCElem();
@@ -66,38 +65,39 @@ public class UGCMessage extends Message{
 
     @Override
     public String getContent() {
-        TIMUGCElem elem = (TIMUGCElem)message.getElement(0);
+        TIMUGCElem elem = (TIMUGCElem) message.getElement(0);
         return elem.getVideo().getUrl();
     }
 
     @Override
     public String[] getInfo() {
-        TIMUGCElem elem = (TIMUGCElem)message.getElement(0);
+        TIMUGCElem elem = (TIMUGCElem) message.getElement(0);
         String[] strings = new String[1];
         strings[0] = elem.getCover().getUrl();
         return strings;
     }
+
     /**
      * 显示消息
      *
      * @param viewHolder 界面样式
-     * @param context 显示消息的上下文
+     * @param context    显示消息的上下文
      */
     @Override
     public void showMessage(final ChatAdapter.ViewHolder viewHolder, final Context context) {
         clearView(viewHolder);
         if (checkRevoke(viewHolder)) return;
         final TIMUGCElem e = (TIMUGCElem) message.getElement(0);
-        switch (message.status()){
+        switch (message.status()) {
             case Sending:
-                showSnapshot(viewHolder,BitmapFactory.decodeFile(e.getCoverPath(), new BitmapFactory.Options()));
+                showSnapshot(viewHolder, BitmapFactory.decodeFile(e.getCoverPath(), new BitmapFactory.Options()));
                 break;
             case SendSucc:
 
                 final TIMUGCCover snapshot = e.getCover();
-                if (FileUtil.isCacheFileExist(e.getFileId())){
-                    showSnapshot(viewHolder,BitmapFactory.decodeFile(FileUtil.getCacheFilePath(e.getFileId()), new BitmapFactory.Options()));
-                }else{
+                if (FileUtil.isCacheFileExist(e.getFileId())) {
+                    showSnapshot(viewHolder, BitmapFactory.decodeFile(FileUtil.getCacheFilePath(e.getFileId()), new BitmapFactory.Options()));
+                } else {
                     snapshot.getImage(FileUtil.getCacheFilePath(e.getFileId()), new TIMCallBack() {
                         @Override
                         public void onError(int i, String s) {
@@ -110,7 +110,7 @@ public class UGCMessage extends Message{
                         }
                     });
                 }
-                final String fileName = e.getFileId()+"_video";
+                final String fileName = e.getFileId() + "_video";
                 if (!FileUtil.isCacheFileExist(fileName)) {
                     e.getVideo().getVideo(FileUtil.getCacheFilePath(fileName), new TIMCallBack() {
                         @Override
@@ -120,11 +120,11 @@ public class UGCMessage extends Message{
 
                         @Override
                         public void onSuccess() {
-                            setVideoEvent(viewHolder,fileName,context);
+                            setVideoEvent(viewHolder, fileName, context);
                         }
                     });
-                }else{
-                    setVideoEvent(viewHolder,fileName,context);
+                } else {
+                    setVideoEvent(viewHolder, fileName, context);
                 }
                 break;
         }
@@ -152,14 +152,15 @@ public class UGCMessage extends Message{
     /**
      * 显示缩略图
      */
-    private void showSnapshot(final ChatAdapter.ViewHolder viewHolder,final Bitmap bitmap){
+    private void showSnapshot(final ChatAdapter.ViewHolder viewHolder, final Bitmap bitmap) {
         if (bitmap == null) return;
-        ImageView imageView = new ImageView(MyApplication.getContext());
+        View view = LayoutInflater.from(MyApplication.getContext()).inflate(R.layout.layout_im_video, null, false);
+        ImageView imageView = view.findViewById(R.id.image);
         imageView.setImageBitmap(bitmap);
-        getBubbleView(viewHolder).addView(imageView);
+        getBubbleView(viewHolder).addView(view);
     }
 
-    private void showVideo(String path, Context context){
+    private void showVideo(String path, Context context) {
         if (context == null) return;
         final TIMUGCElem e = (TIMUGCElem) message.getElement(0);
         File file = new File(path);
@@ -171,11 +172,11 @@ public class UGCMessage extends Message{
         context.startActivity(intent);
     }
 
-    private void setVideoEvent(final ChatAdapter.ViewHolder viewHolder, final String fileName,final Context context){
+    private void setVideoEvent(final ChatAdapter.ViewHolder viewHolder, final String fileName, final Context context) {
         getBubbleView(viewHolder).setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                showVideo(FileUtil.getCacheFilePath(fileName),context);
+                showVideo(FileUtil.getCacheFilePath(fileName), context);
             }
         });
     }

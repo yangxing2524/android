@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="wrap_content"
+    android:layout_height="wrap_content">
+
+    <com.growalong.android.ui.customview.RoundImageView
+        android:id="@+id/image"
+        android:layout_width="98dp"
+        android:layout_height="138dp"
+        android:maxWidth="@dimen/y260"
+        android:maxHeight="@dimen/y420" />
+
+    <com.growalong.android.ui.customview.RoundImageView
+        android:background="@color/black"
+        android:alpha="0.2"
+        android:layout_width="98dp"
+        android:layout_height="138dp"/>
+    <ImageView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_centerInParent="true"
+        android:src="@mipmap/icon_video_play" />
+</RelativeLayout>

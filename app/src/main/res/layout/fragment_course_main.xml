@@ -8,16 +8,15 @@
     <com.growalong.android.ui.widget.NonOffSlidingTabLayout
         android:id="@+id/tabLayout"
         android:layout_width="match_parent"
-        android:layout_height="60dp"
-        android:layout_alignParentBottom="true"
-        android:background="@color/color_fafafa"
+        android:layout_height="wrap_content"
+        android:background="@color/white"
         app:slidingTabGravity="center"
         app:slidingTabMode="fixed" />
 
     <View
         android:layout_width="match_parent"
         android:layout_height="1px"
-        android:background="@color/main_gray" />
+        android:background="#e6e6e6" />
 
     <com.growalong.android.ui.widget.NonOffscreenViewPager
         android:id="@+id/viewPager"

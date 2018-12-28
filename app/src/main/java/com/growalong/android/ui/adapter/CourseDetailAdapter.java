@@ -54,7 +54,8 @@ public class CourseDetailAdapter extends RecyclerView.Adapter<RecyclerView.ViewH
             return new ChannelVideoViewHolder(LayoutInflater.from(parent.getContext())
                     .inflate(R.layout.layout_holder_view_video_channel, parent, false));
         } else {
-            return new TitleViewHolder(new View(parent.getContext()));
+            return new TitleViewHolder(LayoutInflater.from(parent.getContext())
+                    .inflate(R.layout.layout_holder_view_title_home_channel, parent, false));
         }
     }
 
@@ -67,6 +68,10 @@ public class CourseDetailAdapter extends RecyclerView.Adapter<RecyclerView.ViewH
             String content = mData.getMaterialModelList().get(position - 1).getContent();
             TitleViewHolder viewHolder = (TitleViewHolder) holder;
             viewHolder.setData(content, R.mipmap.icon_channel_home_title_left);
+        } else if (holder instanceof IntroductionTextViewHolder) {
+            String content = mData.getMaterialModelList().get(position - 1).getContent();
+            IntroductionTextViewHolder viewHolder = (IntroductionTextViewHolder) holder;
+            viewHolder.setData(content);
         } else if (holder instanceof IntroductionImageViewHolder) {
             String content = mData.getMaterialModelList().get(position - 1).getContent();
             IntroductionImageViewHolder viewHolder = (IntroductionImageViewHolder) holder;
@@ -103,7 +108,7 @@ public class CourseDetailAdapter extends RecyclerView.Adapter<RecyclerView.ViewH
         if(mData.getCourseDetailInfoModel() == null){
             return 0;
         }
-        return mData.getMaterialModelList() != null ? 1 + mData.getMaterialModelList().size() : 1;
+        return mData.getMaterialModelList() != null && mData.getMaterialModelList().size() != 0 ? 1 + mData.getMaterialModelList().size() : 1;
     }
 
     class TopViewHolder extends RecyclerView.ViewHolder {
