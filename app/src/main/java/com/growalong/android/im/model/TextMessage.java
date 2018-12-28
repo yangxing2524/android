@@ -98,7 +98,6 @@ public class TextMessage extends Message {
             textElem.setText(s.subSequence(currentIndex, s.length()).toString());
             message.addElement(textElem);
         }
-
     }
 
     @Override

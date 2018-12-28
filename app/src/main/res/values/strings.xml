@@ -392,6 +392,7 @@
     <string name="logout_success">退出登录成功</string>
     <string name="call_request_tip1">邀请你视频..</string>
     <string name="video_chat_over">通话已结束</string>
+    <string name="video_chat">视频通话</string>
     <string name="start_video_chat_request">发起了视频通话</string>
     <string name="showChinese">显示中文</string>
     <string name="showNormal">不翻译</string>

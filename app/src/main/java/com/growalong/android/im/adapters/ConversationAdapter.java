@@ -90,9 +90,10 @@ public class ConversationAdapter extends ArrayAdapter<Conversation> {
             if (lastMessage.startsWith(ChatActivity.VIDEO_CHAT_REQUEST)) {
                 lastMessage = MyApplication.getContext().getResources().getString(R.string.start_video_chat_request);
             } else if (TextUtils.equals(lastMessage, ChatActivity.VIDEO_CHAT_FAILED) ||
-                    TextUtils.equals(lastMessage, ChatActivity.VIDEO_CHAT_OVER) ||
-                    TextUtils.equals(lastMessage, ChatActivity.VIDEO_CHAT_REFUSE)) {
+                    TextUtils.equals(lastMessage, ChatActivity.VIDEO_CHAT_OVER) ) {
                 lastMessage = MyApplication.getContext().getResources().getString(R.string.video_chat_over);
+            } else if(TextUtils.equals(lastMessage, ChatActivity.VIDEO_CHAT_REFUSE)){
+                lastMessage = MyApplication.getContext().getResources().getString(R.string.video_chat);
             }
         } else {
             lastMessage = Utils.getIMTextNormal(lastMessage);
