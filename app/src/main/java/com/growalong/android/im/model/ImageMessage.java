@@ -1,7 +1,6 @@
 package com.growalong.android.im.model;
 
 import android.content.Context;
-import android.content.Intent;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.graphics.Matrix;
@@ -86,7 +85,6 @@ public class ImageMessage extends Message {
         TIMImageElem e = (TIMImageElem) message.getElement(0);
         switch (message.status()) {
             case Sending:
-
                 ImageView imageView = new ImageView(MyApplication.getContext());
                 imageView.setImageBitmap(getThumb(e.getPath()));
                 clearView(viewHolder);
@@ -115,8 +113,6 @@ public class ImageMessage extends Message {
                         }
                     }
                     if (image.getType() == TIMImageType.Original) {
-                        final String uuid = image.getUuid();
-//                        setImageEvent(viewHolder, uuid,context);
                         getBubbleView(viewHolder).setOnClickListener(new View.OnClickListener() {
                             @Override
                             public void onClick(View v) {
@@ -226,15 +222,6 @@ public class ImageMessage extends Message {
         getBubbleView(viewHolder).addView(view);
     }
 
-    private void setImageEvent(final ChatAdapter.ViewHolder viewHolder, final String fileName, final Context context) {
-        getBubbleView(viewHolder).setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                ImageViewActivity.startThis(context, fileName);
-            }
-        });
-    }
-
     private void navToImageview(final TIMImage image, final Context context) {
         if (FileUtil.isCacheFileExist(image.getUuid())) {
             String path = FileUtil.getCacheFilePath(image.getUuid());
@@ -260,9 +247,7 @@ public class ImageMessage extends Message {
                     @Override
                     public void onSuccess() {
                         isDownloading = false;
-                        Intent intent = new Intent(context, ImageViewActivity.class);
-                        intent.putExtra("filename", image.getUuid());
-                        context.startActivity(intent);
+                        ImageViewActivity.startThisUuid(context, image.getUuid());
                     }
                 });
             } else {

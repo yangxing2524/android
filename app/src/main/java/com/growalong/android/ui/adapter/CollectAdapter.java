@@ -88,7 +88,7 @@ public class CollectAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder
             return new ImageCollectItemViewHolder(layoutInflater.inflate(R.layout.layout_collect_viewholder_image, parent, false));
         } else if (viewType == TEXT) {
             return new TextCollectItemViewHolder(layoutInflater.inflate(R.layout.layout_collect_viewholder_text, parent, false));
-        }else{
+        } else {
             return new UnknowCollectItemViewHolder(layoutInflater.inflate(R.layout.layout_collect_viewholder_text, parent, false));
         }
     }
@@ -139,6 +139,7 @@ public class CollectAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder
             time.setText(timeStr);
             itemView.setTag(R.id.tag_first, id);
         }
+
         @Override
         public void onCreateContextMenu(ContextMenu menu, View v,
                                         ContextMenu.ContextMenuInfo menuInfo) {
@@ -172,9 +173,9 @@ public class CollectAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder
         public void setData(CollectModel collectModel) {
 
             setTimeAndFrom(collectModel.getGroupName(), (new SimpleDateFormat("yyyy-MM-dd")).format(collectModel.getCreateTime()), (int) collectModel.getId());
-            String content = Utils.getIMTextString(collectModel.getContent());
+            String[] content = Utils.getIMTextOrigString(collectModel.getContent());
             if (content != null) {
-                contentTv.setText(content);
+                contentTv.setText(content[0]);
             } else {
                 LogUtil.e("collect text content is wrong");
             }
@@ -195,6 +196,7 @@ public class CollectAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder
             setTimeAndFrom(collectModel.getGroupName(), (new SimpleDateFormat("yyyy-MM-dd")).format(collectModel.getCreateTime()), (int) collectModel.getId());
         }
     }
+
     private class ImageCollectItemViewHolder extends BaseCollectItemViewHolder {
         ImageView imageView;
 

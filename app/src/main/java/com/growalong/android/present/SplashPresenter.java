@@ -11,6 +11,7 @@ import android.widget.Toast;
 import com.growalong.android.R;
 import com.growalong.android.account.AccountManager;
 import com.growalong.android.app.AppManager;
+import com.growalong.android.app.MyApplication;
 import com.growalong.android.im.model.ImUserInfo;
 import com.growalong.android.im.utils.PushUtil;
 import com.growalong.android.model.BaseGenericModel;
@@ -197,6 +198,13 @@ public class SplashPresenter implements TIMCallBack{
                 Log.d(TAG, "receive force offline message");
                 AppManager.getInstance().logout();
                 LoginMainActivity.startThis(activity);
+                MyApplication.runOnUIThread(new Runnable() {
+                    @Override
+                    public void run() {
+                        AppManager.getInstance().finishAllActivity(LoginMainActivity.class);
+                    }
+                }, 200);
+
             }
 
             @Override

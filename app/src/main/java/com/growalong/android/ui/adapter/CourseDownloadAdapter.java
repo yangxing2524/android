@@ -83,32 +83,53 @@ public class CourseDownloadAdapter extends RecyclerView.Adapter<RecyclerView.Vie
             super(itemView);
             titleTv = itemView.findViewById(R.id.title);
             downloadTv = itemView.findViewById(R.id.download);
-            downloadTv.setOnClickListener(new View.OnClickListener() {
+            View.OnClickListener onClickListener = new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
                     if (downloadTv.getTag(R.id.tag_second) != null &&
                             ((int) downloadTv.getTag(R.id.tag_second)) == DOWNLOADING) {
                         return;
                     }
-                    final CourseMaterialModel courseMaterialModel = (CourseMaterialModel) v.getTag(R.id.tag_first);
-                    final String url = courseMaterialModel.getContent();
-                    if (!FileUtil.isDownloadFileFromUrlExist(courseMaterialModel.getContent(), courseMaterialModel.getTitle())) {
-                        downloadTv.setText(mContext.getResources().getString(R.string.downloading));
+                    final CourseMaterialModel courseMaterialModel = (CourseMaterialModel) downloadTv.getTag(R.id.tag_first);
+
+                    if ("image".equals(courseMaterialModel.getType())) {
+                        //图片
+                        List<String> imgUrlList = new ArrayList<>();
+                        for (int i = 0; i < mList.size(); i++) {
+                            CourseMaterialModel courseMaterialModel1 = mList.get(i);
+                            if ("image".equals(courseMaterialModel1.getType())) {
+                                imgUrlList.add(courseMaterialModel1.getContent());
+                            }
+                        }
+                        String[] strings = new String[imgUrlList.size()];
+                        int k = 0;
+                        for (int j = 0; j < imgUrlList.size(); j++) {
+                            strings[j] = imgUrlList.get(j);
+                            if (courseMaterialModel.getContent().equals(strings[j])) {
+                                k = j;
+                            }
+                        }
+                        OpenFileUtil.openImages(mContext, strings, k, false);
+                        return;
                     }
-                    downloadTv.setTag(R.id.tag_second, DOWNLOADING);
+
+                    final String url = courseMaterialModel.getContent();
                     final File file = new File(FileUtil.getDownloadFileFromUrl(url, courseMaterialModel.getTitle()));
+                    boolean isFileExist = FileUtil.isDownloadFileFromUrlExist(courseMaterialModel.getContent(), courseMaterialModel.getTitle());
+                    if (!isFileExist) {
+                        downloadTv.setText(mContext.getResources().getString(R.string.downloading));
+                        downloadTv.setTag(R.id.tag_second, DOWNLOADING);
+                    } else {
+                        OpenFileUtil.openFile(mContext, file);
+                    }
+
+
                     if (!TextUtils.isEmpty(url)) {
                         Call<ResponseBody> call = updateApis.downloadFile(url);
                         call.enqueue(new Callback<ResponseBody>() {
                             @Override
                             public void onResponse(Call<ResponseBody> call, Response<ResponseBody> response) {
                                 try {
-                                    if (FileUtil.isDownloadFileFromUrlExist(courseMaterialModel.getContent(), courseMaterialModel.getTitle())) {
-                                        //已下载
-                                        String path = FileUtil.getDownloadFileFromUrl(courseMaterialModel.getContent(), courseMaterialModel.getTitle());
-                                        OpenFileUtil.openFile(mContext, new File(path));
-                                        return;
-                                    }
                                     InputStream is = response.body().byteStream();
                                     file.getParentFile().mkdirs();
                                     file.createNewFile();
@@ -161,12 +182,14 @@ public class CourseDownloadAdapter extends RecyclerView.Adapter<RecyclerView.Vie
                         });
                     }
                 }
-            });
+            };
+            downloadTv.setOnClickListener(onClickListener);
+            itemView.setOnClickListener(onClickListener);
         }
 
         public void setData(CourseMaterialModel courseMaterialModel) {
             titleTv.setText(courseMaterialModel.getTitle());
-            if (FileUtil.isDownloadFileFromUrlExist(courseMaterialModel.getContent(), courseMaterialModel.getTitle())) {
+            if ("image".equals(courseMaterialModel.getType()) || FileUtil.isDownloadFileFromUrlExist(courseMaterialModel.getContent(), courseMaterialModel.getTitle())) {
                 downloadTv.setText(mContext.getResources().getString(R.string.open));
             } else {
                 downloadTv.setText(mContext.getResources().getString(R.string.download));

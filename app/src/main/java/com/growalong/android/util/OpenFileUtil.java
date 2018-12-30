@@ -12,6 +12,7 @@ import android.widget.Toast;
 
 import com.growalong.android.R;
 import com.growalong.android.app.MyApplication;
+import com.growalong.android.image.ImagePagerActivity;
 import com.growalong.android.ui.ImageViewActivity;
 
 import java.io.File;
@@ -20,6 +21,10 @@ import java.io.File;
  * Created by yangxing on 2018/12/24.
  */
 public class OpenFileUtil {
+
+    public static void openImages(Context context, String[] array, int index, boolean showDelete) {
+        ImagePagerActivity.startThisActivity(context, array, index, showDelete);
+    }
     /**
      * 调用系统应用打开图片
      *
@@ -30,6 +35,13 @@ public class OpenFileUtil {
         if (file == null) {
             return;
         }
+        //获取文件file的MIME类型
+        String type = getMIMEType(file);
+        if (type.startsWith("image")) {
+            ImageViewActivity.startThis(context, file.getPath());
+            return;
+        }
+
         Intent intent = new Intent();
         intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
         //设置intent的Action属性
@@ -47,12 +59,6 @@ public class OpenFileUtil {
             uri = Uri.fromFile(file);
         }
 
-        //获取文件file的MIME类型
-        String type = getMIMEType(file);
-        if (type.startsWith("image")) {
-            ImageViewActivity.startThis(context, file.getPath());
-            return;
-        }
         //设置intent的data和Type属性。
         intent.setDataAndType(uri, type);
         //跳转

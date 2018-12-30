@@ -87,13 +87,11 @@ public class ConversationAdapter extends ArrayAdapter<Conversation> {
         }
         String lastMessage = data.getLastMessageSummary();
         if (!TextUtils.isEmpty(lastMessage) && lastMessage.startsWith("&video_chat_")) {
-            if (lastMessage.startsWith(ChatActivity.VIDEO_CHAT_REQUEST)) {
-                lastMessage = MyApplication.getContext().getResources().getString(R.string.start_video_chat_request);
+            if (lastMessage.startsWith(ChatActivity.VIDEO_CHAT_REQUEST) || TextUtils.equals(lastMessage, ChatActivity.VIDEO_CHAT_REFUSE)) {
+                lastMessage = MyApplication.getContext().getResources().getString(R.string.video_chat_conversation);
             } else if (TextUtils.equals(lastMessage, ChatActivity.VIDEO_CHAT_FAILED) ||
-                    TextUtils.equals(lastMessage, ChatActivity.VIDEO_CHAT_OVER) ) {
-                lastMessage = MyApplication.getContext().getResources().getString(R.string.video_chat_over);
-            } else if(TextUtils.equals(lastMessage, ChatActivity.VIDEO_CHAT_REFUSE)){
-                lastMessage = MyApplication.getContext().getResources().getString(R.string.video_chat);
+                    TextUtils.equals(lastMessage, ChatActivity.VIDEO_CHAT_OVER)) {
+                lastMessage = MyApplication.getContext().getResources().getString(R.string.video_chat_over_conversation);
             }
         } else {
             lastMessage = Utils.getIMTextNormal(lastMessage);

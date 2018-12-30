@@ -110,7 +110,35 @@ public class Utils {
         return age;
     }
 
-    public static String getIMTextString(String string) {
+    public static String[] getIMTextOrigString(String string) {
+        String[] strings = null;
+        try {
+            if (string.contains(ChatActivity.TRANSLATE_TAG)) {
+                final String[] split = string.split(ChatActivity.TRANSLATE_TAG);
+                String ch, en;
+                ch = split[0].substring(1);
+                en = split[1];
+                //显示原文
+                strings = new String[1];
+                String type = split[0].substring(0, 1);
+                if ("0".equals(type)) {
+                    strings[0] = ch;
+                } else {
+                    strings[0] = en;
+                }
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        if (strings == null) {
+            strings = new String[1];
+            strings[0] = string;
+        }
+        return strings;
+    }
+
+    public static String[] getIMTextString(String string) {
+        String[] strings = null;
         try {
             int nation = AppManager.getInstance().getUserInfoModel().getNation();
             if (string.contains(ChatActivity.TRANSLATE_TAG)) {
@@ -119,26 +147,32 @@ public class Utils {
                 ch = split[0].substring(1);
                 en = split[1];
                 if (ChatActivity.showTranslate == ChatActivity.ShowTranslate.ChineseAndEnglish) {
+                    strings = new String[2];
                     //中英文都显示
                     if (nation == 1) {
                         //中国人
-                        string = ch + "\n------------\n" + en;
+                        strings[0] = ch;
+                        strings[1] = en;
                     } else {
-                        string = en + "\n------------\n" + ch;
+                        strings[0] = en;
+                        strings[1] = ch;
                     }
                 } else if (ChatActivity.showTranslate == ChatActivity.ShowTranslate.Chinese) {
                     //显示中文
-                    string = ch;
+                    strings = new String[1];
+                    strings[0] = ch;
                 } else if (ChatActivity.showTranslate == ChatActivity.ShowTranslate.English) {
                     //显示英文
-                    string = en;
+                    strings = new String[1];
+                    strings[0] = en;
                 } else if (ChatActivity.showTranslate == ChatActivity.ShowTranslate.Normal) {
                     //显示原文
+                    strings = new String[1];
                     String type = split[0].substring(0, 1);
                     if ("0".equals(type)) {
-                        string = ch;
+                        strings[0] = ch;
                     } else {
-                        string = en;
+                        strings[0] = en;
                     }
                 }
 
@@ -147,7 +181,11 @@ public class Utils {
         } catch (Exception e) {
             e.printStackTrace();
         }
-        return string;
+        if (strings == null) {
+            strings = new String[1];
+            strings[0] = string;
+        }
+        return strings;
     }
 
     public static String getIMTextNormal(String string) {

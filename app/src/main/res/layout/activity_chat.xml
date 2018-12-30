@@ -23,14 +23,14 @@
     <RelativeLayout
         android:id="@+id/courseLayout"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
+        android:layout_height="@dimen/y196"
         android:layout_below="@+id/chat_title">
 
         <ImageView
+            android:id="@+id/course_bg"
             android:layout_width="match_parent"
-            android:layout_height="@dimen/y198"
+            android:layout_height="@dimen/y196"
             android:src="@mipmap/chat_course_bg" />
-
         <TextView
             android:id="@+id/courseTag"
             android:layout_width="wrap_content"
@@ -56,8 +56,11 @@
             android:textColor="@color/color_474747"
             android:textSize="15sp"
             tools:text="足球比赛好看" />
-
-
+        <View
+            android:layout_alignParentBottom="true"
+            android:background="@color/color_f0f0f0"
+            android:layout_width="match_parent"
+            android:layout_height="1px"/>
     </RelativeLayout>
 
     <ListView

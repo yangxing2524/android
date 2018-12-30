@@ -10,6 +10,8 @@ import android.text.Spannable;
 import android.text.SpannableStringBuilder;
 import android.text.style.ImageSpan;
 import android.util.TypedValue;
+import android.view.LayoutInflater;
+import android.view.View;
 import android.widget.TextView;
 
 import com.growalong.android.R;
@@ -133,10 +135,18 @@ public class TextMessage extends Message {
         clearView(viewHolder);
         if (checkRevoke(viewHolder)) return;
         boolean hasText = false;
-        TextView tv = new TextView(MyApplication.getContext());
-        tv.setTextSize(TypedValue.COMPLEX_UNIT_SP, 16);
-        tv.setTextColor(MyApplication.getContext().getResources().getColor(isSelf() ? R.color.white : R.color.text));
-        tv.setPadding(DensityUtil.dip2px(context, 10), DensityUtil.dip2px(context, 8), DensityUtil.dip2px(context, 10), DensityUtil.dip2px(context, 8));
+
+        View view = LayoutInflater.from(context).inflate(R.layout.layout_im_text, null, false);
+
+        TextView topText = view.findViewById(R.id.topText);
+        TextView bottomText = view.findViewById(R.id.bottomText);
+        topText.setTextSize(TypedValue.COMPLEX_UNIT_SP, 16);
+        topText.setTextColor(MyApplication.getContext().getResources().getColor(isSelf() ? R.color.white : R.color.text));
+        topText.setPadding(DensityUtil.dip2px(context, 10), DensityUtil.dip2px(context, 8), DensityUtil.dip2px(context, 10), DensityUtil.dip2px(context, 8));
+        bottomText.setTextSize(TypedValue.COMPLEX_UNIT_SP, 16);
+        bottomText.setTextColor(MyApplication.getContext().getResources().getColor(isSelf() ? R.color.white : R.color.text));
+        bottomText.setPadding(DensityUtil.dip2px(context, 10), DensityUtil.dip2px(context, 8), DensityUtil.dip2px(context, 10), DensityUtil.dip2px(context, 8));
+
         List<TIMElem> elems = new ArrayList<>();
         for (int i = 0; i < message.getElementCount(); ++i) {
             elems.add(message.getElement(i));
@@ -148,9 +158,15 @@ public class TextMessage extends Message {
         if (!hasText) {
             stringBuilder.insert(0, " ");
         }
-        String string = Utils.getIMTextString(stringBuilder.toString());
-        tv.setText(string);
-        getBubbleView(viewHolder).addView(tv);
+        String[] strings = Utils.getIMTextString(stringBuilder.toString());
+        topText.setText(strings[0]);
+        if (strings.length == 2) {
+            bottomText.setVisibility(View.VISIBLE);
+            bottomText.setText(strings[1]);
+        } else {
+            bottomText.setVisibility(View.GONE);
+        }
+        getBubbleView(viewHolder).addView(view);
         showStatus(viewHolder);
     }
 

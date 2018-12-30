@@ -393,6 +393,8 @@
     <string name="call_request_tip1">邀请你视频..</string>
     <string name="video_chat_over">通话已结束</string>
     <string name="video_chat">视频通话</string>
+    <string name="video_chat_over_conversation">[通话已结束]</string>
+    <string name="video_chat_conversation">[视频通话]</string>
     <string name="start_video_chat_request">发起了视频通话</string>
     <string name="showChinese">显示中文</string>
     <string name="showNormal">不翻译</string>
@@ -413,7 +415,7 @@
     <string name="login_main_tip">一对一匹配中外家庭\n让两个家庭在互动中学习</string>
     <string name="password">密码</string>
     <string name="user_name">用户名</string>
-
+    <string name="viewpager_indicator">%1$d/%2$d</string>
     <string name="private_app_id">05653e0098464ba99090c7863e286e99</string>
 
     <string-array name="encryption_mode_values">
@@ -451,5 +453,7 @@
     </string-array>
 
     <string name="legal_channel_name_characters">abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789!#$%&amp;()+,-:;&lt;=.>?@[]^_`{|}~</string>
+    <string name="save_picture">保存图片</string>
+    <string name="close">关闭</string>
 
 </resources>

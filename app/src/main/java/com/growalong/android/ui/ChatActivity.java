@@ -57,6 +57,7 @@ import com.growalong.android.present.CoursePresenter;
 import com.growalong.android.present.InitPresenter;
 import com.growalong.android.ui.fragment.CourseRuningFragment;
 import com.growalong.android.util.LogUtil;
+import com.growalong.android.util.SharedPreferenceUtil;
 import com.growalong.android.util.ToastUtil;
 import com.growalong.android.util.TranslateHelper;
 import com.growalong.android.util.Utils;
@@ -92,6 +93,7 @@ import okhttp3.Response;
 
 public class ChatActivity extends QLActivity implements ChatView {
 
+    public static final String LANGUAGE_TRANSLATE = "language_translate";
     @BindView(R.id.courseLayout)
     public View courseLayout;
 
@@ -106,6 +108,7 @@ public class ChatActivity extends QLActivity implements ChatView {
     public static final String VIDEO_CHAT_OVER = "&video_chat_over&";//通话已结束
 
     private List<Message> messageList = new ArrayList<>();
+    private List<String> imageUrlList = new ArrayList<>();//图片
     private List<Message> sourceList = new ArrayList<>();
     private ChatAdapter adapter;
     private ListView listView;
@@ -241,6 +244,8 @@ public class ChatActivity extends QLActivity implements ChatView {
 
     @Override
     protected void onCreateBaseView(@Nullable Bundle savedInstanceState) {
+        int languageIndex = SharedPreferenceUtil.getInstance(this).getInt(LANGUAGE_TRANSLATE, 0);
+        showTranslate = ShowTranslate.values()[languageIndex];
         checkSelfPermissions();
         initVideo();
         int nation = AppManager.getInstance().getUserInfoModel().getNation();
@@ -316,6 +321,7 @@ public class ChatActivity extends QLActivity implements ChatView {
                         } else {
                             showTranslate = ShowTranslate.Normal;
                         }
+                        SharedPreferenceUtil.getInstance(ChatActivity.this).setInt(LANGUAGE_TRANSLATE, showTranslate.ordinal());
                         adapter.notifyDataSetChanged();
                         adapter.notifyDataSetInvalidated();
                         return true;
@@ -432,6 +438,8 @@ public class ChatActivity extends QLActivity implements ChatView {
                         default:
                             break;
                     }
+                }else if(mMessage instanceof ImageMessage){
+                    imageUrlList.add(mMessage.getContent());
                 } else if (mMessage instanceof TextMessage) {
                     TextMessage textMessage = (TextMessage) mMessage;
                     final String content = textMessage.getContent();
@@ -575,7 +583,12 @@ public class ChatActivity extends QLActivity implements ChatView {
                             continue;
                         }
                     }
+                }else if(mMessage instanceof ImageMessage){
+                    ImageMessage imageMessage = (ImageMessage) mMessage;
+                    String url = imageMessage.getContent();
+                    imageUrlList.add(url);
                 }
+
             } catch (Exception e) {
                 e.printStackTrace();
             }

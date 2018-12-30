@@ -265,6 +265,9 @@
             android:name=".ui.FullImageActivity"
             android:configChanges="orientation|keyboardHidden|screenSize" />
         <activity
+            android:name=".image.ImagePagerActivity"
+            android:configChanges="orientation|keyboardHidden|screenSize" />
+        <activity
             android:name="com.growalong.android.agora.openvcall.ui.AgoraSettingsActivity"
             android:configChanges="orientation|keyboardHidden|screenSize" />
     </application>

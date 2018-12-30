@@ -1,0 +1,96 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+              xmlns:tools="http://schemas.android.com/tools"
+              android:id="@+id/out_side_area"
+              android:layout_width="wrap_content"
+              android:layout_height="wrap_content"
+              android:background="#80000000"
+              android:gravity="center">
+
+    <LinearLayout
+        android:id="@+id/content"
+        android:layout_width="@dimen/y680"
+        android:layout_height="wrap_content"
+        android:background="@drawable/background_white_white_rect8"
+        android:gravity="center_horizontal"
+        android:orientation="vertical">
+
+        <TextView
+            android:id="@+id/tv_title"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="@dimen/y50"
+            android:paddingLeft="@dimen/y50"
+            android:paddingRight="@dimen/y50"
+            android:textColor="@color/color_383838"
+            android:textSize="17sp"
+            android:visibility="gone"
+            tools:text="会员详情"/>
+
+        <TextView
+            android:id="@+id/tv_content"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="@dimen/y40"
+            android:paddingLeft="@dimen/y50"
+            android:paddingRight="@dimen/y50"
+            android:textColor="@color/color_383838"
+            android:textSize="14sp"
+            tools:text="你的会员将于明天到期"/>
+
+        <EditText
+            android:id="@+id/edit"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="@dimen/y40"
+            android:layout_marginRight="@dimen/y40"
+            android:layout_marginTop="@dimen/y40"
+            android:background="@color/color_f0f0f0"
+            android:inputType="textMultiLine"
+            android:paddingBottom="@dimen/y30"
+            android:paddingLeft="@dimen/y20"
+            android:paddingRight="@dimen/y20"
+            android:paddingTop="@dimen/y30"
+            android:textColor="@color/color_383838"
+            android:textColorHint="@color/color_cccccc"
+            android:textSize="15sp"
+            android:visibility="gone"/>
+
+        <View
+            android:layout_width="match_parent"
+            android:layout_height="1px"
+            android:layout_marginTop="@dimen/y50"
+            android:background="@color/color_e5e5e5"/>
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="@dimen/y102"
+            android:orientation="horizontal">
+
+            <TextView
+                android:id="@+id/cancel"
+                android:layout_width="0dp"
+                android:layout_height="match_parent"
+                android:layout_weight="1"
+                android:gravity="center"
+                android:text="取消"
+                android:textColor="@color/color_383838"
+                android:textSize="16sp"/>
+
+            <View
+                android:layout_width="1px"
+                android:layout_height="match_parent"
+                android:background="@color/color_e5e5e5"/>
+
+            <TextView
+                android:id="@+id/ok"
+                android:layout_width="0dp"
+                android:layout_height="match_parent"
+                android:layout_weight="1"
+                android:gravity="center"
+                android:text="确定"
+                android:textColor="@color/color_383838"
+                android:textSize="16sp"/>
+        </LinearLayout>
+    </LinearLayout>
+</LinearLayout>

@@ -19,6 +19,7 @@ import com.growalong.android.im.utils.FileUtil;
 
 import java.io.IOException;
 
+@Deprecated
 public class ImageViewActivity extends Activity {
 
     public static void startThis(Context context, String fileName) {
