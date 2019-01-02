@@ -18,5 +18,6 @@ public class ApiConstants {
     public static final String removeCollect = "/v1/user/cancelCollect.do"; //取消收藏
     public static final String getRoom = "/v1/user/getRoom.do"; //获取房间号
     public static final String logout = "/v1/common/logout.do"; //退出登录
+    public static final String getUserList = "/v1/user/getUserList.do"; //批量获取用户信息
 
 }

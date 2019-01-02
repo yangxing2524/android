@@ -24,4 +24,31 @@
     <item android:drawable="@mipmap/loading_22" android:duration="10"></item>
     <item android:drawable="@mipmap/loading_23" android:duration="10"></item>
     <item android:drawable="@mipmap/loading_24" android:duration="10"></item>
+
+    <item android:drawable="@mipmap/loading_25" android:duration="10"></item>
+    <item android:drawable="@mipmap/loading_26" android:duration="10"></item>
+    <item android:drawable="@mipmap/loading_27" android:duration="10"></item>
+    <item android:drawable="@mipmap/loading_28" android:duration="10"></item>
+    <item android:drawable="@mipmap/loading_29" android:duration="10"></item>
+    <item android:drawable="@mipmap/loading_30" android:duration="10"></item>
+    <item android:drawable="@mipmap/loading_31" android:duration="10"></item>
+    <item android:drawable="@mipmap/loading_32" android:duration="10"></item>
+    <item android:drawable="@mipmap/loading_33" android:duration="10"></item>
+    <item android:drawable="@mipmap/loading_34" android:duration="10"></item>
+    <item android:drawable="@mipmap/loading_35" android:duration="10"></item>
+    <item android:drawable="@mipmap/loading_36" android:duration="10"></item>
+    <item android:drawable="@mipmap/loading_37" android:duration="10"></item>
+    <item android:drawable="@mipmap/loading_38" android:duration="10"></item>
+    <item android:drawable="@mipmap/loading_39" android:duration="10"></item>
+    <item android:drawable="@mipmap/loading_40" android:duration="10"></item>
+    <item android:drawable="@mipmap/loading_41" android:duration="10"></item>
+    <item android:drawable="@mipmap/loading_42" android:duration="10"></item>
+    <item android:drawable="@mipmap/loading_43" android:duration="10"></item>
+    <item android:drawable="@mipmap/loading_44" android:duration="10"></item>
+    <item android:drawable="@mipmap/loading_45" android:duration="10"></item>
+    <item android:drawable="@mipmap/loading_46" android:duration="10"></item>
+    <item android:drawable="@mipmap/loading_47" android:duration="10"></item>
+    <item android:drawable="@mipmap/loading_48" android:duration="10"></item>
+    <item android:drawable="@mipmap/loading_40" android:duration="10"></item>
+    <item android:drawable="@mipmap/loading_50" android:duration="10"></item>
 </animation-list>

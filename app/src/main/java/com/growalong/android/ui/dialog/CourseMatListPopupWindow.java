@@ -21,7 +21,7 @@ public class CourseMatListPopupWindow extends BasePopupWindow {
 
     RecyclerView mRecyclerView;
     CourseDownloadAdapter mCouponsAdapter;
-    View ivClose;
+    View ivClose, downloadAll;
     private Context mContext;
 
     public CourseMatListPopupWindow(Context context) {
@@ -33,7 +33,14 @@ public class CourseMatListPopupWindow extends BasePopupWindow {
     private void initView(Context context) {
         mRecyclerView = (RecyclerView) findViewById(R.id.coupon_recycler_view);
         ivClose = findViewById(R.id.ivClose);
+        downloadAll = findViewById(R.id.downloadAll);
         mRecyclerView.setLayoutManager(new LinearLayoutManager(context));
+        downloadAll.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+//                mCouponsAdapter.
+            }
+        });
     }
 
     public void setList(List<CourseMaterialModel> list) {

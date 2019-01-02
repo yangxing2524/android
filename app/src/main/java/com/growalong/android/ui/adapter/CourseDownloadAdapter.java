@@ -6,6 +6,7 @@ import android.text.TextUtils;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.growalong.android.R;
@@ -78,11 +79,13 @@ public class CourseDownloadAdapter extends RecyclerView.Adapter<RecyclerView.Vie
         private static final int DOWNLOADED = 2;
         public TextView titleTv;
         public TextView downloadTv;
+        public ImageView image;
 
         public ViewHolder(View itemView) {
             super(itemView);
             titleTv = itemView.findViewById(R.id.title);
             downloadTv = itemView.findViewById(R.id.download);
+            image = itemView.findViewById(R.id.image);
             View.OnClickListener onClickListener = new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
@@ -122,7 +125,6 @@ public class CourseDownloadAdapter extends RecyclerView.Adapter<RecyclerView.Vie
                     } else {
                         OpenFileUtil.openFile(mContext, file);
                     }
-
 
                     if (!TextUtils.isEmpty(url)) {
                         Call<ResponseBody> call = updateApis.downloadFile(url);
@@ -193,6 +195,14 @@ public class CourseDownloadAdapter extends RecyclerView.Adapter<RecyclerView.Vie
                 downloadTv.setText(mContext.getResources().getString(R.string.open));
             } else {
                 downloadTv.setText(mContext.getResources().getString(R.string.download));
+            }
+
+            if("image".equals(courseMaterialModel.getType())){
+                image.setImageResource(R.mipmap.icon_image_small);
+            }else if("video".equals(courseMaterialModel.getType())){
+                image.setImageResource(R.mipmap.icon_video_small);
+            }else {
+                image.setImageResource(R.mipmap.icon_file_small);
             }
             downloadTv.setTag(R.id.tag_first, courseMaterialModel);
         }

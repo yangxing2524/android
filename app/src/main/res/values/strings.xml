@@ -455,5 +455,6 @@
     <string name="legal_channel_name_characters">abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789!#$%&amp;()+,-:;&lt;=.>?@[]^_`{|}~</string>
     <string name="save_picture">保存图片</string>
     <string name="close">关闭</string>
+    <string name="download_all">全部下载</string>
 
 </resources>

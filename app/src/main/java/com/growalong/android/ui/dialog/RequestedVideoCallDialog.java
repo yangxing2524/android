@@ -1,11 +1,14 @@
 package com.growalong.android.ui.dialog;
 
 import android.app.DialogFragment;
+import android.graphics.drawable.ColorDrawable;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.Window;
+import android.view.WindowManager;
 import android.widget.ImageView;
 import android.widget.TextView;
 
@@ -33,11 +36,19 @@ public class RequestedVideoCallDialog extends DialogFragment implements View.OnC
         this.callerName = callerName;
     }
 
+    @Override
+    public void onActivityCreated(Bundle savedInstanceState) {
+        getDialog().getWindow().requestFeature(Window.FEATURE_NO_TITLE);
+        super.onActivityCreated(savedInstanceState);
+        getDialog().getWindow().setBackgroundDrawable(new ColorDrawable(0x00000000));
+        getDialog().getWindow().setLayout(WindowManager.LayoutParams.MATCH_PARENT, WindowManager.LayoutParams.MATCH_PARENT);
+    }
 
     @Nullable
     @Override
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.dialog_requested_video_call, container, false);
+
         receive = view.findViewById(R.id.receive);
         receive.setOnClickListener(this);
         refuse = view.findViewById(R.id.refuse);

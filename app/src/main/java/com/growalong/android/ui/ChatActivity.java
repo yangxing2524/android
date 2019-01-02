@@ -140,7 +140,7 @@ public class ChatActivity extends QLActivity implements ChatView {
         Normal
     }
 
-    public static void navToChat(Context context, String identify, TIMConversationType type, String name) {
+    public static void startThis(Context context, String identify, TIMConversationType type, String name) {
         Intent intent = new Intent(context, ChatActivity.class);
         intent.putExtra("identify", identify);
         intent.putExtra("type", type);
@@ -254,6 +254,7 @@ public class ChatActivity extends QLActivity implements ChatView {
         } else if (nation == 2) {
             mFamillyType = 1;
         }
+
         identify = getIntent().getStringExtra("identify");
         mGroupName = getIntent().getStringExtra("name");
         type = (TIMConversationType) getIntent().getSerializableExtra("type");
@@ -392,6 +393,8 @@ public class ChatActivity extends QLActivity implements ChatView {
         }
         voiceSendingView = (VoiceSendingView) findViewById(R.id.voice_sending);
         presenter.start();
+
+        chatOtherPresenter.getUserInfos(identify);
     }
 
     @Override
@@ -438,7 +441,7 @@ public class ChatActivity extends QLActivity implements ChatView {
                         default:
                             break;
                     }
-                }else if(mMessage instanceof ImageMessage){
+                } else if (mMessage instanceof ImageMessage) {
                     imageUrlList.add(mMessage.getContent());
                 } else if (mMessage instanceof TextMessage) {
                     TextMessage textMessage = (TextMessage) mMessage;
@@ -458,7 +461,11 @@ public class ChatActivity extends QLActivity implements ChatView {
                                     sendTextMsg(VIDEO_CHAT_REFUSE);
                                 }
                             };
-                            chatOtherPresenter.requestVideoChat(message.getSenderProfile().getFaceUrl(), message.getSenderProfile().getNickName(), okCancelListener);
+                            String url = AppManager.userHeadMap.get(message.getSender()).getHeadImgUrl();
+                            if (TextUtils.isEmpty(url)) {
+                                url = message.getSenderProfile().getFaceUrl();
+                            }
+                            chatOtherPresenter.requestVideoChat(url, message.getSenderProfile().getNickName(), okCancelListener);
 
                         }
 
@@ -583,7 +590,7 @@ public class ChatActivity extends QLActivity implements ChatView {
                             continue;
                         }
                     }
-                }else if(mMessage instanceof ImageMessage){
+                } else if (mMessage instanceof ImageMessage) {
                     ImageMessage imageMessage = (ImageMessage) mMessage;
                     String url = imageMessage.getContent();
                     imageUrlList.add(url);

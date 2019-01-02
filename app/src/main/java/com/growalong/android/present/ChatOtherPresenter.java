@@ -2,17 +2,25 @@ package com.growalong.android.present;
 
 import com.google.gson.JsonElement;
 import com.growalong.android.R;
+import com.growalong.android.app.AppManager;
 import com.growalong.android.app.MyApplication;
 import com.growalong.android.listener.OkCancelListener;
 import com.growalong.android.model.ApiException;
 import com.growalong.android.model.CollectModel;
+import com.growalong.android.model.UserInfoModel;
 import com.growalong.android.ui.QLActivity;
 import com.growalong.android.ui.dialog.RequestedVideoCallDialog;
 import com.growalong.android.util.ToastUtil;
 import com.tencent.imsdk.TIMElem;
 import com.tencent.imsdk.TIMElemType;
+import com.tencent.imsdk.TIMGroupMemberInfo;
 import com.tencent.imsdk.TIMMessage;
 import com.tencent.imsdk.TIMSoundElem;
+import com.tencent.imsdk.TIMValueCallBack;
+import com.tencent.imsdk.ext.group.TIMGroupManagerExt;
+
+import java.util.ArrayList;
+import java.util.List;
 
 /**
  * Created by yangxing on 2018/12/1.
@@ -26,6 +34,42 @@ public class ChatOtherPresenter {
         mActivity = chatActivity;
         userPresenter = new UserPresenter();
     }
+
+    public void getUserInfos(String groupId) {
+        //创建回调
+        TIMValueCallBack<List<TIMGroupMemberInfo>> cb = new TIMValueCallBack<List<TIMGroupMemberInfo>>() {
+            @Override
+            public void onError(int code, String desc) {
+            }
+
+            @Override
+            public void onSuccess(List<TIMGroupMemberInfo> infoList) {//参数返回群组成员信息
+                List<String> list = new ArrayList<>();
+                for (TIMGroupMemberInfo info : infoList) {
+                    list.add(info.getUser());
+                }
+                userPresenter.getUsersInfos(list).subscribe(new CommSubscriber<List<UserInfoModel>>() {
+                    @Override
+                    public void onSuccess(List<UserInfoModel> userInfoModels) {
+                        for (UserInfoModel userInfoModel : userInfoModels) {
+                            AppManager.userHeadMap.put(userInfoModel.getId() + "", userInfoModel);
+                        }
+                    }
+
+                    @Override
+                    public void onFailure(Throwable e) {
+                        super.onFailure(e);
+                    }
+                });
+            }
+        };
+
+        //获取群组成员信息
+        TIMGroupManagerExt.getInstance().getGroupMembers(
+                groupId, //群组 ID
+                cb);     //回调
+    }
+
 
     public void requestVideoChat(String callerHeadUrl, String callerName, OkCancelListener listener) {
         RequestedVideoCallDialog dialog = new RequestedVideoCallDialog();

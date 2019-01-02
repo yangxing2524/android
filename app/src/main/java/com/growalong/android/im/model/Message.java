@@ -10,6 +10,7 @@ import com.growalong.android.R;
 import com.growalong.android.app.AppManager;
 import com.growalong.android.im.adapters.ChatAdapter;
 import com.growalong.android.im.utils.TimeUtil;
+import com.growalong.android.model.UserInfoModel;
 import com.tencent.imsdk.TIMConversationType;
 import com.tencent.imsdk.TIMMessage;
 import com.tencent.imsdk.TIMMessageStatus;
@@ -70,10 +71,13 @@ public abstract class Message {
             viewHolder.leftPanel.setVisibility(View.VISIBLE);
             viewHolder.rightPanel.setVisibility(View.GONE);
             TIMUserProfile senderProfile = message.getSenderProfile();
-            if(TextUtils.isEmpty(senderProfile.getFaceUrl())) {
-                viewHolder.leftAvatar.setImageResource(R.mipmap.head_default);
-            }else {
+            UserInfoModel userInfoModel = AppManager.userHeadMap.get(senderProfile.getIdentifier());
+            if(userInfoModel != null && !TextUtils.isEmpty(userInfoModel.getHeadImgUrl())) {
+                Glide.with(viewHolder.leftPanel.getContext()).load(userInfoModel.getHeadImgUrl()).into(viewHolder.leftAvatar);
+            }else if(message.getSenderProfile().getFaceUrl() != null){
                 Glide.with(viewHolder.leftPanel.getContext()).load(message.getSenderProfile().getFaceUrl()).into(viewHolder.leftAvatar);
+            }else{
+                viewHolder.leftAvatar.setImageResource(R.mipmap.head_default);
             }
             //群聊显示名称，群名片>个人昵称>identify
             if (message.getConversation().getType() == TIMConversationType.Group) {

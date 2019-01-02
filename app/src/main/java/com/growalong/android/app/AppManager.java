@@ -5,6 +5,7 @@ import android.app.Activity;
 import com.growalong.android.model.UserInfoModel;
 import com.tencent.tinker.loader.shareutil.ShareTinkerInternals;
 
+import java.util.HashMap;
 import java.util.Stack;
 
 public class AppManager {
@@ -16,6 +17,7 @@ public class AppManager {
      * AppManager单例
      */
     private static AppManager instance;
+    public static HashMap<String, UserInfoModel> userHeadMap = new HashMap<>();
 
     private UserInfoModel userInfoModel;
 

@@ -6,10 +6,12 @@ import com.growalong.android.model.BaseParams;
 import com.growalong.android.model.CollectModel;
 import com.growalong.android.model.IdBean;
 import com.growalong.android.model.NetCollectModel;
+import com.growalong.android.model.NetUserList;
 import com.growalong.android.model.UserInfoModel;
 import com.growalong.android.model.request.CourseIdPageParams;
 import com.growalong.android.model.request.PageParams;
 import com.growalong.android.model.request.UserIdTypeParams;
+import com.growalong.android.model.request.UserIdsParams;
 import com.growalong.android.net.retrofit.BaseRetrofitClient;
 import com.growalong.android.net.retrofit.service.IUserApis;
 import com.growalong.android.util.RxUtil;
@@ -28,6 +30,19 @@ public class UserPresenter {
 
     public UserPresenter() {
         iCourseApis = BaseRetrofitClient.getInstance().create(IUserApis.class);
+    }
+
+
+    public Observable<List<UserInfoModel>> getUsersInfos(List<String> userIds) {
+        BaseParams<UserIdsParams> baseParams = new BaseParams<>(new UserIdsParams(userIds));
+        return iCourseApis.getUserList(baseParams).compose(RxUtil.<NetUserList>handleResult())
+                .map(new Func1<NetUserList, List<UserInfoModel>>() {
+                    @Override
+                    public List<UserInfoModel> call(NetUserList netUserList) {
+                        return netUserList.getDataList();
+                    }
+                })
+                .compose(NewBasePresenter.<List<UserInfoModel>>asyAndMainResponseTransformer());//网络操作在异步线程，观察者在主线程;
     }
 
     public Observable<UserInfoModel> getUserInfo(String userId, String type) {

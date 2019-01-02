@@ -4,6 +4,7 @@ import com.google.gson.JsonElement;
 import com.growalong.android.model.BaseGenericModel;
 import com.growalong.android.model.BaseParams;
 import com.growalong.android.model.NetCollectModel;
+import com.growalong.android.model.NetUserList;
 import com.growalong.android.model.UserInfoModel;
 import com.growalong.android.net.retrofit.ApiConstants;
 
@@ -17,6 +18,9 @@ import rx.Observable;
 public interface IUserApis {
     @POST(ApiConstants.getUserInfo)
     Observable<BaseGenericModel<UserInfoModel>> getUserInfo(@Body BaseParams baseParams);
+
+    @POST(ApiConstants.getUserList)
+    Observable<BaseGenericModel<NetUserList>> getUserList(@Body BaseParams baseParams);
 
     @POST(ApiConstants.updateUserInfo)
     Observable<BaseGenericModel<JsonElement>> updateUserInfo(@Body BaseParams baseParams);
