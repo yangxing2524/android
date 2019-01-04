@@ -1,7 +1,6 @@
 package com.growalong.android.agora.openvcall.ui;
 
 import android.content.Intent;
-import android.os.Bundle;
 import android.text.Editable;
 import android.text.TextUtils;
 import android.text.TextWatcher;
@@ -15,16 +14,14 @@ import android.widget.EditText;
 import android.widget.Spinner;
 
 import com.growalong.android.R;
-
 import com.growalong.android.agora.openvcall.model.AgoraConstantApp;
 
 public class AgoraMainActivity extends AgoraBaseActivity {
     private String id;
 
     @Override
-    protected void onCreate(Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_main_agora);
+    protected int getLayoutId() {
+        return R.layout.activity_main_agora;
     }
 
     @Override

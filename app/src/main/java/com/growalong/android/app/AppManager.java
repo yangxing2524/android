@@ -117,6 +117,10 @@ public class AppManager {
         return null;
     }
 
+    public boolean isExistActivity(Class<?> cls) {
+        return getActivity(cls) != null;
+    }
+
     public boolean isExistActivity(Activity currentActivity) {
         if (activityStack.search(currentActivity) != -1) {
             return true;

@@ -7,10 +7,10 @@ import android.os.Bundle;
 import android.os.Handler;
 import android.os.Looper;
 import android.support.annotation.NonNull;
+import android.support.annotation.Nullable;
 import android.support.v4.app.ActivityCompat;
 import android.support.v4.content.ContextCompat;
 import android.support.v4.view.ViewConfigurationCompat;
-import android.support.v7.app.AppCompatActivity;
 import android.util.DisplayMetrics;
 import android.view.Display;
 import android.view.View;
@@ -29,6 +29,7 @@ import com.growalong.android.agora.openvcall.model.AgoraMyEngineEventHandler;
 import com.growalong.android.agora.openvcall.model.AgoraWorkerThread;
 import com.growalong.android.agora.propeller.Constant;
 import com.growalong.android.app.MyApplication;
+import com.growalong.android.ui.QLActivity;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -37,13 +38,10 @@ import java.util.Arrays;
 
 import io.agora.rtc.RtcEngine;
 
-public abstract class AgoraBaseActivity extends AppCompatActivity {
+public abstract class AgoraBaseActivity extends QLActivity {
     private final static Logger log = LoggerFactory.getLogger(AgoraBaseActivity.class);
 
-    @Override
-    protected void onCreate(Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
-
+    protected void onCreateBaseView(@Nullable Bundle savedInstanceState){
         final View layout = findViewById(Window.ID_ANDROID_CONTENT);
         ViewTreeObserver vto = layout.getViewTreeObserver();
         vto.addOnGlobalLayoutListener(new ViewTreeObserver.OnGlobalLayoutListener() {
@@ -57,7 +55,7 @@ public abstract class AgoraBaseActivity extends AppCompatActivity {
                 initUIandEvent();
             }
         });
-    }
+    };
 
     protected abstract void initUIandEvent();
 

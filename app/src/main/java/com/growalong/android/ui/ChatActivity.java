@@ -121,6 +121,7 @@ public class ChatActivity extends QLActivity implements ChatView {
     private static final int CAPTURE_IMAGE_ACTIVITY_REQUEST_CODE = CommonPhotoSelectorDialog.PHOTOREQUESTCODE1;
     public static final int VIDEO_CHAT_REQUEST_CODE_SENDER = 22;//视频发起者
     public static final int VIDEO_CHAT_REQUEST_CODE_RECEIVER = 21;//视频接收者
+    public static final int VIDEO_CHAT_TWO_BREAKE = 23;//视频只剩两个人，然后自己主动挂断
     private static final int IMAGE_STORE = 200;
     private static final int FILE_CODE = 300;
     public static final int IMAGE_PREVIEW = 400;
@@ -447,6 +448,9 @@ public class ChatActivity extends QLActivity implements ChatView {
                     TextMessage textMessage = (TextMessage) mMessage;
                     final String content = textMessage.getContent();
                     if (content.startsWith(VIDEO_CHAT_REQUEST)) {
+                        if(chatOtherPresenter.isDialogShow() || AppManager.getInstance().isExistActivity(AgoraChatActivity.class)){
+                            return;
+                        }
                         UserInfoModel userInfoModel = AppManager.getInstance().getUserInfoModel();
                         if (!TextUtils.equals(userInfoModel.getId() + "", textMessage.getSender())) {
                             //非自己发送的
@@ -466,7 +470,6 @@ public class ChatActivity extends QLActivity implements ChatView {
                                 url = message.getSenderProfile().getFaceUrl();
                             }
                             chatOtherPresenter.requestVideoChat(url, message.getSenderProfile().getNickName(), okCancelListener);
-
                         }
 
                         mMessage = setVideoSenderTip(message);
@@ -475,6 +478,8 @@ public class ChatActivity extends QLActivity implements ChatView {
                         }
                     } else if (TextUtils.equals(content, VIDEO_CHAT_FAILED) ||
                             TextUtils.equals(content, VIDEO_CHAT_OVER)) {
+                        chatOtherPresenter.dismissDialog();
+                        AppManager.getInstance().finishActivity(AgoraChatActivity.class);
                         mMessage = setVideoOverTip();
                         if (mMessage == null) {
                             return;
@@ -867,7 +872,7 @@ public class ChatActivity extends QLActivity implements ChatView {
     @Override
     //请求视频
     public void openVideo() {
-        String channel = VIDEO_CHAT_REQUEST + System.currentTimeMillis();
+        String channel = VIDEO_CHAT_REQUEST + identify;
 //        String channel = VIDEO_CHAT_REQUEST;
         sendTextMsg(channel);
 
@@ -991,9 +996,12 @@ public class ChatActivity extends QLActivity implements ChatView {
                 }
                 showImagePreview(stringExtra);
             }
-        } else if (requestCode == VIDEO_CHAT_REQUEST_CODE_SENDER) {
+        } else if (requestCode == VIDEO_CHAT_REQUEST_CODE_SENDER ||
+                requestCode == VIDEO_CHAT_REQUEST_CODE_RECEIVER) {
             //视频聊天结束
-            sendTextMsg(VIDEO_CHAT_OVER);
+            if(resultCode == VIDEO_CHAT_TWO_BREAKE) {
+                sendTextMsg(VIDEO_CHAT_OVER);
+            }
         } else if (requestCode == IMAGE_STORE) {
             if (resultCode == RESULT_OK && data != null) {
                 showImagePreview(FileUtil.getFilePath(this, data.getData()));

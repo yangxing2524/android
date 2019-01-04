@@ -29,6 +29,7 @@ public class ChatOtherPresenter {
 
     private final QLActivity mActivity;
     private final UserPresenter userPresenter;
+    private RequestedVideoCallDialog dialog;
 
     public ChatOtherPresenter(QLActivity chatActivity) {
         mActivity = chatActivity;
@@ -72,11 +73,23 @@ public class ChatOtherPresenter {
 
 
     public void requestVideoChat(String callerHeadUrl, String callerName, OkCancelListener listener) {
-        RequestedVideoCallDialog dialog = new RequestedVideoCallDialog();
+        dialog = new RequestedVideoCallDialog();
         dialog.setCallerHeadUrl(callerHeadUrl);
         dialog.setCallerName(callerName);
         dialog.setClickListener(listener);
         dialog.show(mActivity.getFragmentManager(), "");
+
+    }
+
+    public boolean isDialogShow() {
+        return !(dialog == null);
+    }
+
+    public void dismissDialog() {
+        if (dialog != null) {
+            dialog.dismiss();
+            dialog = null;
+        }
     }
 
     public void collect(TIMMessage msg, String titleStr, String content, String groupName, String otherInfo) {

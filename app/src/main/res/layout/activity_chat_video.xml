@@ -1,10 +1,10 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
-             xmlns:tools="http://schemas.android.com/tools"
-             android:layout_width="match_parent"
-             android:layout_height="match_parent"
-             tools:context=".agora.openvcall.ui.AgoraChatActivity"
-             android:keepScreenOn="true">
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:keepScreenOn="true"
+    tools:context=".agora.openvcall.ui.AgoraChatActivity">
 
     <com.growalong.android.agora.openvcall.ui.GridVideoViewContainer
         android:id="@+id/grid_video_view_container"
@@ -13,10 +13,10 @@
 
     <ViewStub
         android:id="@id/small_video_view_dock"
-        android:inflatedId="@id/small_video_view_dock"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginTop="60dp"
+        android:inflatedId="@id/small_video_view_dock"
         android:layout="@layout/small_video_view_dock" />
 
     <RelativeLayout
@@ -28,88 +28,114 @@
             android:id="@+id/channel_name"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_centerHorizontal="true"
             android:layout_alignParentTop="true"
+            android:layout_centerHorizontal="true"
             android:layout_marginTop="6dp"
-            android:textStyle="bold"
+            android:textColor="@android:color/white"
             android:textSize="16sp"
-            android:visibility="gone"
-            android:textColor="@android:color/white" />
+            android:textStyle="bold"
+            android:visibility="gone" />
 
         <com.growalong.android.agora.propeller.ui.AGLinearLayout
             android:id="@+id/bottom_container"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:orientation="vertical"
             android:layout_alignParentStart="true"
             android:layout_alignParentLeft="true"
-            android:layout_alignParentBottom="true">
+            android:layout_alignParentBottom="true"
+            android:orientation="vertical">
 
-            <ImageView
-                android:id="@+id/bottom_action_end_call"
-                android:layout_width="54dp"
-                android:layout_height="54dp"
-                android:layout_gravity="center_horizontal"
-                android:scaleType="center"
-                android:src="@drawable/btn_endcall"
-                android:onClick="onEndCallClicked" />
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:gravity="center"
+                android:orientation="horizontal">
+
+                <ImageView
+                    android:layout_width="100dp"
+                    android:layout_height="100dp"
+                    android:onClick="onVoiceMuteClicked"
+                    android:scaleType="center"
+                    android:src="@mipmap/icon_mute" />
+
+                <ImageView
+                    android:id="@+id/bottom_action_end_call"
+                    android:layout_width="100dp"
+                    android:layout_height="100dp"
+                    android:layout_marginLeft="@dimen/y40"
+                    android:layout_marginRight="@dimen/y40"
+                    android:layout_gravity="center_horizontal"
+                    android:onClick="onEndCallClicked"
+                    android:scaleType="center"
+                    android:src="@drawable/icon_video_over" />
+
+                <ImageView
+                    android:id="@id/customized_function_id"
+                    android:layout_width="100dp"
+                    android:layout_height="100dp"
+                    android:onClick="onCustomizedFunctionClicked"
+                    android:scaleType="center"
+                    android:src="@mipmap/icon_switch_camera" />
+            </LinearLayout>
+
 
             <RelativeLayout
                 android:id="@+id/bottom_action_container"
                 android:layout_width="match_parent"
                 android:layout_height="54dp"
                 android:gravity="center_vertical"
-                android:orientation="horizontal">
+                android:orientation="horizontal"
+                android:visibility="invisible">
 
                 <ImageView
                     android:layout_width="54dp"
                     android:layout_height="match_parent"
-                    android:scaleType="center"
                     android:layout_alignParentStart="true"
                     android:layout_alignParentLeft="true"
                     android:layout_centerVertical="true"
-                    android:src="@drawable/btn_message"
-                    android:onClick="onBtn0Clicked" />
+                    android:onClick="onBtn0Clicked"
+                    android:scaleType="center"
+                    android:src="@drawable/btn_message" />
 
                 <LinearLayout
                     android:layout_width="wrap_content"
                     android:layout_height="match_parent"
-                    android:orientation="horizontal"
-                    android:layout_centerInParent="true">
+                    android:layout_centerInParent="true"
+                    android:orientation="horizontal">
 
                     <ImageView
                         android:layout_width="54dp"
                         android:layout_height="match_parent"
+                        android:onClick="onVoiceChatClicked"
                         android:scaleType="center"
-                        android:src="@drawable/btn_voice"
-                        android:onClick="onVoiceChatClicked" />
+                        android:src="@drawable/btn_voice" />
 
                     <ImageView
                         android:id="@id/customized_function_id"
                         android:layout_width="54dp"
                         android:layout_height="match_parent"
+                        android:onClick="onCustomizedFunctionClicked"
                         android:scaleType="center"
-                        android:src="@drawable/btn_switch_camera"
-                        android:onClick="onCustomizedFunctionClicked" />
+                        android:src="@drawable/btn_switch_camera" />
 
                     <ImageView
                         android:layout_width="54dp"
                         android:layout_height="match_parent"
+                        android:onClick="onVoiceMuteClicked"
                         android:scaleType="center"
-                        android:src="@drawable/btn_mute"
-                        android:onClick="onVoiceMuteClicked" />
+                        android:src="@drawable/btn_mute" />
 
                 </LinearLayout>
 
                 <ImageView
                     android:layout_width="54dp"
                     android:layout_height="match_parent"
-                    android:scaleType="center"
                     android:layout_alignParentEnd="true"
                     android:layout_alignParentRight="true"
                     android:layout_centerVertical="true"
-                    android:src="@drawable/btn_filter"
-                    android:onClick="onBtnNClicked" />
+                    android:onClick="onBtnNClicked"
+                    android:scaleType="center"
+                    android:src="@drawable/btn_filter" />
 
             </RelativeLayout>
 

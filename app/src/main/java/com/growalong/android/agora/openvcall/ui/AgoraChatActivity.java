@@ -5,7 +5,6 @@ import android.content.SharedPreferences;
 import android.content.res.Configuration;
 import android.graphics.PorterDuff;
 import android.media.AudioManager;
-import android.os.Bundle;
 import android.preference.PreferenceManager;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
@@ -18,7 +17,6 @@ import android.view.ViewStub;
 import android.view.WindowManager;
 import android.widget.FrameLayout;
 import android.widget.ImageView;
-import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 
@@ -31,6 +29,7 @@ import com.growalong.android.agora.propeller.VideoInfoData;
 import com.growalong.android.agora.propeller.preprocessing.VideoPreProcessing;
 import com.growalong.android.agora.propeller.ui.RtlLinearLayoutManager;
 import com.growalong.android.app.MyApplication;
+import com.growalong.android.ui.ChatActivity;
 import com.growalong.android.ui.QLActivity;
 
 import org.slf4j.Logger;
@@ -71,9 +70,8 @@ public class AgoraChatActivity extends AgoraBaseActivity implements AGEventHandl
     }
 
     @Override
-    protected void onCreate(Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_chat_video);
+    protected int getLayoutId() {
+        return R.layout.activity_chat_video;
     }
 
     @Override
@@ -124,7 +122,7 @@ public class AgoraChatActivity extends AgoraBaseActivity implements AGEventHandl
 
         optional();
 
-        LinearLayout bottomContainer = (LinearLayout) findViewById(R.id.bottom_container);
+        View bottomContainer =  findViewById(R.id.bottom_container);
         FrameLayout.MarginLayoutParams fmp = (FrameLayout.MarginLayoutParams) bottomContainer.getLayoutParams();
         fmp.bottomMargin = virtualKeyHeight() + 16;
     }
@@ -201,6 +199,9 @@ public class AgoraChatActivity extends AgoraBaseActivity implements AGEventHandl
     public void onEndCallClicked(View view) {
         log.info("onEndCallClicked " + view);
 
+        if(mUidsList.size() <= 2) {
+            setResult(ChatActivity.VIDEO_CHAT_TWO_BREAKE);
+        }
         finish();
     }
 
@@ -309,6 +310,7 @@ public class AgoraChatActivity extends AgoraBaseActivity implements AGEventHandl
         if (mUidsList.size() == 0) {
             return;
         }
+
 
         RtcEngine rtcEngine = rtcEngine();
         rtcEngine.muteLocalAudioStream(mAudioMuted = !mAudioMuted);
