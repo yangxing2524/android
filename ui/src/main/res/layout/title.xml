@@ -15,8 +15,8 @@
 
         <ImageView
             android:id="@+id/img_back"
-            android:layout_width="12dp"
-            android:layout_height="40dp"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
             android:src="@drawable/ic_return" />
 
         <TextView
@@ -51,8 +51,9 @@
 
         <ImageView
             android:id="@+id/img_more"
-            android:layout_width="20dp"
-            android:layout_height="20dp" />
+            android:src="@drawable/icon_im_more"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content" />
 
         <TextView
             android:id="@+id/txt_more"

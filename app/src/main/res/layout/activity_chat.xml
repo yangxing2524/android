@@ -11,8 +11,7 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_alignParentTop="true"
-        app:canBack="true"
-        app:moreText=" ... " />
+        app:canBack="true" />
 
     <com.tencent.qcloud.ui.ChatInput
         android:id="@+id/input_panel"
