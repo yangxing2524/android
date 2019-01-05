@@ -8,6 +8,7 @@ import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v4.app.FragmentActivity;
 import android.support.v4.app.FragmentTabHost;
+import android.view.KeyEvent;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.widget.ImageView;
@@ -28,17 +29,21 @@ import com.growalong.android.present.CommSubscriber;
 import com.growalong.android.present.UserPresenter;
 import com.growalong.android.ui.fragment.CourseMainFragment;
 import com.growalong.android.ui.fragment.MyFragment;
+import com.growalong.android.util.ToastUtil;
 import com.tencent.imsdk.TIMManager;
 import com.tencent.qcloud.presentation.event.MessageEvent;
 import com.tencent.qcloud.tlslibrary.service.TlsBusiness;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Timer;
+import java.util.TimerTask;
 
 /**
  * Tab页主界面
  */
 public class MainActivity extends QLActivity {
+    public static final int KEY_DOWN_INTERVAL = 2000;
     private static final String TAG = MainActivity.class.getSimpleName();
     private LayoutInflater layoutInflater;
     private FragmentTabHost mTabHost;
@@ -47,6 +52,9 @@ public class MainActivity extends QLActivity {
     private int mImageViewArray[] = {R.drawable.tab_conversation, R.drawable.tab_contact, R.drawable.tab_setting};
     private String mTextviewArray[] = {"contact", "conversation", "setting"};
     private ImageView msgUnread;
+
+    //双击退出函数
+    private static Boolean mIsExit = false;
 
     public static void startThis(FragmentActivity activity) {
         activity.startActivity(new Intent(activity, MainActivity.class));
@@ -149,6 +157,28 @@ public class MainActivity extends QLActivity {
         msgUnread.setVisibility(noUnread ? View.GONE : View.VISIBLE);
     }
 
+    @Override
+    public boolean onKeyDown(int keyCode, KeyEvent event) {
+        if ((keyCode == KeyEvent.KEYCODE_BACK)) {
+            Timer tExit;
+            if (!mIsExit) {
+                mIsExit = true; // 准备退出
+                ToastUtil.shortShow("再按一次退出程序");
+                tExit = new Timer();
+                tExit.schedule(new TimerTask() {
+                    @Override
+                    public void run() {
+                        mIsExit = false; // 取消退出
+                    }
+                }, KEY_DOWN_INTERVAL); // 如果2秒钟内没有按下返回键，则启动定时器取消掉刚才执行的任务
+            } else {
+                AppManager.getInstance().appExit();
+            }
+            return false;
+        } else {
+            return super.onKeyDown(keyCode, event);
+        }
+    }
 
     private boolean requestPermission() {
         if (afterM()) {
