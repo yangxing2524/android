@@ -19,6 +19,7 @@ import com.growalong.android.R;
 import com.growalong.android.account.AccountManager;
 import com.growalong.android.app.AppManager;
 import com.growalong.android.app.MyApplication;
+import com.growalong.android.app.VideoChatHelper;
 import com.growalong.android.im.model.FriendshipInfo;
 import com.growalong.android.im.model.GroupInfo;
 import com.growalong.android.im.model.ImUserInfo;
@@ -98,6 +99,12 @@ public class MainActivity extends QLActivity {
         }
 
         MyApplication.getInstance().initWorkerThread();
+
+        VideoChatHelper.getInstance();
+
+        AppManager.getInstance().finishActivity(SplashActivity.class);
+        AppManager.getInstance().finishActivity(LoginMainActivity.class);
+        AppManager.getInstance().finishActivity(LoginPasswordActivity.class);
     }
 
     private View getTabItemView(int index) {

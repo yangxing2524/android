@@ -18,6 +18,7 @@ import com.growalong.android.ui.LoginMainActivity;
 import com.growalong.android.ui.MyCollectActivity;
 import com.growalong.android.ui.MyDownloadActivity;
 import com.growalong.android.ui.SettingActivity;
+import com.growalong.android.util.Utils;
 
 import butterknife.BindView;
 
@@ -89,22 +90,7 @@ public class MyFragment extends NewBaseFragment implements View.OnClickListener 
             return;
         }
         AppManager.getInstance().setUserInfoModel(mUserInfoModel);
-        String nameStr, cnName, enName;
-        if (mUserInfoModel.getEnName() == null) {
-            enName = "";
-        } else {
-            enName = mUserInfoModel.getEnName();
-        }
-        if (mUserInfoModel.getCnName() == null) {
-            cnName = "";
-        } else {
-            cnName = mUserInfoModel.getCnName();
-        }
-        if (mUserInfoModel.getNation() == 1) {
-            nameStr = cnName + enName;
-        } else {
-            nameStr = mUserInfoModel.getEnName() + mUserInfoModel.getCnName();
-        }
+        String nameStr = Utils.getName(mUserInfoModel);
         name.setText(nameStr);
         interest.setText(mUserInfoModel.getHobby());
         location.setText(mUserInfoModel.getAddress());
@@ -138,7 +124,7 @@ public class MyFragment extends NewBaseFragment implements View.OnClickListener 
         }
         switch (v.getId()) {
             case R.id.top:
-                SettingActivity.startThisForResult(activity, mUserInfoModel);
+                SettingActivity.startThisForResult(activity, mUserInfoModel, true, true);
                 break;
             case R.id.my_download:
                 MyDownloadActivity.startThis(activity);

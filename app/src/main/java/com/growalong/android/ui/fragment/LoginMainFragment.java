@@ -4,6 +4,7 @@ import android.os.Bundle;
 import android.view.View;
 
 import com.growalong.android.R;
+import com.growalong.android.app.MyApplication;
 import com.growalong.android.ui.LoginPasswordActivity;
 
 /**
@@ -17,6 +18,14 @@ public class LoginMainFragment extends NewBaseFragment implements View.OnClickLi
         mView.findViewById(R.id.loginBtn).setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                MyApplication.TYPE = MyApplication.TYPE_C;
+                LoginPasswordActivity.startThis(activity);
+            }
+        });
+        mView.findViewById(R.id.loginBtnB).setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                MyApplication.TYPE = MyApplication.TYPE_B;
                 LoginPasswordActivity.startThis(activity);
             }
         });

@@ -34,6 +34,19 @@
         android:text="@string/login_btn"
         android:textColor="#50cb1a"
         android:textSize="17sp" />
+    <TextView
+        android:id="@+id/loginBtnB"
+        android:layout_width="match_parent"
+        android:layout_above="@+id/loginBtn"
+        android:layout_height="@dimen/y80"
+        android:layout_marginLeft="@dimen/y50"
+        android:layout_marginRight="@dimen/y50"
+        android:layout_marginBottom="@dimen/y76"
+        android:background="@drawable/background_view_white_circle"
+        android:gravity="center"
+        android:text="@string/login_btn_b"
+        android:textColor="#50cb1a"
+        android:textSize="17sp" />
 
     <ImageView
         android:layout_width="wrap_content"

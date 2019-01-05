@@ -95,6 +95,7 @@ public class CourseDownloadAdapter extends RecyclerView.Adapter<RecyclerView.Vie
                     }
                     final CourseMaterialModel courseMaterialModel = (CourseMaterialModel) downloadTv.getTag(R.id.tag_first);
 
+                    boolean isImage = false;
                     if ("image".equals(courseMaterialModel.getType())) {
                         //图片
                         List<String> imgUrlList = new ArrayList<>();
@@ -113,19 +114,21 @@ public class CourseDownloadAdapter extends RecyclerView.Adapter<RecyclerView.Vie
                             }
                         }
                         OpenFileUtil.openImages(mContext, strings, k, false);
-                        return;
+                        isImage = true;
                     }
 
                     final String url = courseMaterialModel.getContent();
                     final File file = new File(FileUtil.getDownloadFileFromUrl(url, courseMaterialModel.getTitle()));
                     boolean isFileExist = FileUtil.isDownloadFileFromUrlExist(courseMaterialModel.getContent(), courseMaterialModel.getTitle());
-                    if (!isFileExist) {
-                        downloadTv.setText(mContext.getResources().getString(R.string.downloading));
-                        downloadTv.setTag(R.id.tag_second, DOWNLOADING);
-                    } else {
-                        OpenFileUtil.openFile(mContext, file);
-                    }
+                    if (!isImage) {
+                        if (!isFileExist) {
+                            downloadTv.setText(mContext.getResources().getString(R.string.downloading));
+                            downloadTv.setTag(R.id.tag_second, DOWNLOADING);
+                        } else {
+                            OpenFileUtil.openFile(mContext, file);
+                        }
 
+                    }
                     if (!TextUtils.isEmpty(url)) {
                         Call<ResponseBody> call = updateApis.downloadFile(url);
                         call.enqueue(new Callback<ResponseBody>() {
@@ -147,24 +150,28 @@ public class CourseDownloadAdapter extends RecyclerView.Adapter<RecyclerView.Vie
                                     bis.close();
                                     is.close();
 
-                                    downloadTv.setTag(R.id.tag_second, DOWNLOADED);
-                                    MyApplication.runOnUIThread(new Runnable() {
-                                        @Override
-                                        public void run() {
-                                            downloadTv.setText(mContext.getResources().getString(R.string.open));
-                                        }
-                                    });
+                                    if (downloadTv != null) {
+                                        downloadTv.setTag(R.id.tag_second, DOWNLOADED);
+                                        MyApplication.runOnUIThread(new Runnable() {
+                                            @Override
+                                            public void run() {
+                                                downloadTv.setText(mContext.getResources().getString(R.string.open));
+                                            }
+                                        });
+                                    }
                                 } catch (IOException e) {
                                     e.printStackTrace();
                                     call.cancel();
                                     file.deleteOnExit();
                                     ToastUtil.shortShow(mContext.getResources().getString(R.string.download_fail));
-                                    MyApplication.runOnUIThread(new Runnable() {
-                                        @Override
-                                        public void run() {
-                                            downloadTv.setText(mContext.getResources().getString(R.string.download));
-                                        }
-                                    });
+                                    if (downloadTv != null) {
+                                        MyApplication.runOnUIThread(new Runnable() {
+                                            @Override
+                                            public void run() {
+                                                downloadTv.setText(mContext.getResources().getString(R.string.download));
+                                            }
+                                        });
+                                    }
                                 }
                             }
 
@@ -173,13 +180,15 @@ public class CourseDownloadAdapter extends RecyclerView.Adapter<RecyclerView.Vie
                                 call.cancel();
                                 ToastUtil.shortShow(mContext.getResources().getString(R.string.download_fail));
                                 file.deleteOnExit();
-                                MyApplication.runOnUIThread(new Runnable() {
-                                    @Override
-                                    public void run() {
-                                        downloadTv.setText(mContext.getResources().getString(R.string.download));
-                                    }
-                                });
-                                downloadTv.setTag(R.id.tag_second, 0);
+                                if (downloadTv != null) {
+                                    MyApplication.runOnUIThread(new Runnable() {
+                                        @Override
+                                        public void run() {
+                                            downloadTv.setText(mContext.getResources().getString(R.string.download));
+                                        }
+                                    });
+                                    downloadTv.setTag(R.id.tag_second, 0);
+                                }
                             }
                         });
                     }
@@ -197,11 +206,11 @@ public class CourseDownloadAdapter extends RecyclerView.Adapter<RecyclerView.Vie
                 downloadTv.setText(mContext.getResources().getString(R.string.download));
             }
 
-            if("image".equals(courseMaterialModel.getType())){
+            if ("image".equals(courseMaterialModel.getType())) {
                 image.setImageResource(R.mipmap.icon_image_small);
-            }else if("video".equals(courseMaterialModel.getType())){
+            } else if ("video".equals(courseMaterialModel.getType())) {
                 image.setImageResource(R.mipmap.icon_video_small);
-            }else {
+            } else {
                 image.setImageResource(R.mipmap.icon_file_small);
             }
             downloadTv.setTag(R.id.tag_first, courseMaterialModel);

@@ -146,6 +146,12 @@ public class CommonAffirmDialog extends DialogFragment implements View.OnClickLi
         return this;
     }
 
+    public CommonAffirmDialog setEditText(String text){
+        if(mEdit != null){
+            mEdit.setText(text);
+        }
+        return this;
+    }
     public CommonAffirmDialog setTextHint(String hint) {
 //        mInputType = inputType;
         mHint = hint;
@@ -220,10 +226,10 @@ public class CommonAffirmDialog extends DialogFragment implements View.OnClickLi
     public void onClick(View v) {
         switch (v.getId()) {
             case R.id.ok:
-                if (mIAffirmDialogClick != null)
-                    mIAffirmDialogClick.onOkClick();
                 if (mIAffirmDialogInput != null)
                     mIAffirmDialogInput.input(mEdit.getText().toString());
+                if (mIAffirmDialogClick != null)
+                    mIAffirmDialogClick.onOkClick();
                 dismiss();
                 break;
             case R.id.cancel:

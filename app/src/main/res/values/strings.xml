@@ -456,5 +456,7 @@
     <string name="save_picture">保存图片</string>
     <string name="close">关闭</string>
     <string name="download_all">全部下载</string>
+    <string name="login_btn_b">导师登陆</string>
+    <string name="modify_group_name">修改群名</string>
 
 </resources>

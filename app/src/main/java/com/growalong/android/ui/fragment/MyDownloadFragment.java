@@ -50,6 +50,7 @@ public class MyDownloadFragment extends NewBaseListFragment {
                 File file = new File(FileUtil.COURSE_DIRECTORY);
                 File[] list = file.listFiles();
                 if (list == null || list.length == 0) {
+                    activity.hideLoadingDialog();
                     return;
                 }
                 for (File s : list) {

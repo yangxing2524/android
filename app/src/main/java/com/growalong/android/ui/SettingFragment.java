@@ -69,6 +69,7 @@ public class SettingFragment extends NewBaseFragment implements FriendInfoView {
     @BindView(R.id.favorite)
     public LineControllerView favorite;
 
+    boolean canModify = false;
     private static final String TAG = SettingFragment.class.getSimpleName();
     private TextView name;
     private final int REQ_CHANGE_CHINESE = 1000;
@@ -97,6 +98,7 @@ public class SettingFragment extends NewBaseFragment implements FriendInfoView {
     @Override
     protected void initEventAndData(Bundle savedInstanceState, View view) {
 
+        canModify = activity.getIntent().getBooleanExtra("canModify", false);
         mPvTime = new TimePickerView(activity, TimePickerView.Type.YEAR_MONTH_DAY);
         final SimpleDateFormat formatter = new SimpleDateFormat(getResources().getString(R.string.data));
         //时间选择后回调
@@ -115,17 +117,19 @@ public class SettingFragment extends NewBaseFragment implements FriendInfoView {
             }
         });
 
-        userInfoModel = AppManager.getInstance().getUserInfoModel();
+        userInfoModel = activity.getIntent().getParcelableExtra("user");
         photoSelectorDialog = new CommonPhotoSelectorDialog(getActivity());
         name = (TextView) view.findViewById(R.id.name);
         setOnClickListener(view);
         headView = view.findViewById(R.id.headview);
-        headView.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                showPhoneDialog();
-            }
-        });
+        if(canModify) {
+            headView.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    showPhoneDialog();
+                }
+            });
+        }
         Glide.with(getActivity()).load(userInfoModel.getHeadImgUrl()).into(headView);
 
         setChineseName(userInfoModel.getName());
@@ -148,10 +152,21 @@ public class SettingFragment extends NewBaseFragment implements FriendInfoView {
             ChineseName.setContent(userInfoModel.getCnName());
         }
 
+        if (!canModify) {
+            EnglishName.findViewById(R.id.rightArrow).setVisibility(View.GONE);
+            ChineseName.findViewById(R.id.rightArrow).setVisibility(View.GONE);
+            location.findViewById(R.id.rightArrow).setVisibility(View.GONE);
+            gender.findViewById(R.id.rightArrow).setVisibility(View.GONE);
+            age.findViewById(R.id.rightArrow).setVisibility(View.GONE);
+            favorite.findViewById(R.id.rightArrow).setVisibility(View.GONE);
+        }
     }
 
     private void setOnClickListener(View view) {
         TextView logout = (TextView) view.findViewById(R.id.logout);
+        if (!canModify) {
+            logout.setVisibility(View.GONE);
+        }
         logout.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -196,6 +211,9 @@ public class SettingFragment extends NewBaseFragment implements FriendInfoView {
         ChineseName.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                if (!canModify) {
+                    return;
+                }
                 EditActivity.navToEdit(SettingFragment.this, getResources().getString(R.string.setting_chinese_name_change), ChineseName.getContent(), REQ_CHANGE_CHINESE, new EditActivity.EditInterface() {
                     @Override
                     public void onEdit(String text, TIMCallBack callBack) {
@@ -210,6 +228,9 @@ public class SettingFragment extends NewBaseFragment implements FriendInfoView {
         EnglishName.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                if (!canModify) {
+                    return;
+                }
                 EditActivity.navToEdit(SettingFragment.this, getResources().getString(R.string.setting_english_name_change), EnglishName.getContent(), REQ_CHANGE_ENGLISH, new EditActivity.EditInterface() {
                     @Override
                     public void onEdit(String text, TIMCallBack callBack) {
@@ -222,6 +243,9 @@ public class SettingFragment extends NewBaseFragment implements FriendInfoView {
         favorite.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                if (!canModify) {
+                    return;
+                }
                 EditActivity.navToEdit(SettingFragment.this, getResources().getString(R.string.setting_favorite_change), favorite.getContent(), REQ_CHANGE_FAVOURITE, new EditActivity.EditInterface() {
                     @Override
                     public void onEdit(String text, TIMCallBack callBack) {
@@ -233,6 +257,9 @@ public class SettingFragment extends NewBaseFragment implements FriendInfoView {
         age.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                if (!canModify) {
+                    return;
+                }
                 String birStr = userInfoModel.getBirthday();
                 DateFormat format = new SimpleDateFormat("yyyy-MM-dd");
                 try {
@@ -247,6 +274,9 @@ public class SettingFragment extends NewBaseFragment implements FriendInfoView {
         gender.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                if (!canModify) {
+                    return;
+                }
                 EditActivity.navToEdit(SettingFragment.this, getResources().getString(R.string.setting_gender_change), gender.getContent(), REQ_CHANGE_GENDER, new EditActivity.EditInterface() {
                     @Override
                     public void onEdit(String text, TIMCallBack callBack) {
@@ -258,6 +288,9 @@ public class SettingFragment extends NewBaseFragment implements FriendInfoView {
         location.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                if (!canModify) {
+                    return;
+                }
                 EditActivity.navToEdit(SettingFragment.this, getResources().getString(R.string.setting_location_change), location.getContent(), REQ_CHANGE_LOCATION, new EditActivity.EditInterface() {
                     @Override
                     public void onEdit(String text, TIMCallBack callBack) {

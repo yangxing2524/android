@@ -17,6 +17,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import butterknife.BindView;
+import rx.functions.Action0;
 
 /**
  */
@@ -38,7 +39,7 @@ public class CourseRuningFragment extends NewBaseListFragment {
 
     @Override
     public void setupView(Bundle savedInstanceState, View view) {
-        loadData(false, false);
+        loadData(false, true);
     }
 
     public void loadData(final boolean isMore, boolean showLoading) {
@@ -47,7 +48,12 @@ public class CourseRuningFragment extends NewBaseListFragment {
         if (isMore) {
             page = mPage;
         }
-        presenter.getCourList(STARTING_COURSE, page, null, null).subscribe(new CommSubscriber<List<CourseListItemModel>>() {
+        Action0 a0 = null, a1 = null;
+        if (showLoading) {
+            a0 = activity.doOnSubscribe;
+            a1 = activity.doOnTerminate;
+        }
+        presenter.getCourList(STARTING_COURSE, page, a0, a1).subscribe(new CommSubscriber<List<CourseListItemModel>>() {
             @Override
             public void onSuccess(List<CourseListItemModel> courseListItemModels) {
                 if (courseListItemModels.size() >= PAGE_SIZE) {

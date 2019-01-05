@@ -30,6 +30,7 @@ import android.widget.PopupMenu;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.growalong.android.BuildConfig;
 import com.growalong.android.R;
 import com.growalong.android.agora.openvcall.model.AgoraConstantApp;
 import com.growalong.android.agora.openvcall.ui.AgoraChatActivity;
@@ -38,6 +39,9 @@ import com.growalong.android.app.MyApplication;
 import com.growalong.android.im.adapters.ChatAdapter;
 import com.growalong.android.im.model.CustomMessage;
 import com.growalong.android.im.model.FileMessage;
+import com.growalong.android.im.model.FriendProfile;
+import com.growalong.android.im.model.FriendshipInfo;
+import com.growalong.android.im.model.GroupInfo;
 import com.growalong.android.im.model.ImageMessage;
 import com.growalong.android.im.model.Message;
 import com.growalong.android.im.model.MessageFactory;
@@ -55,18 +59,21 @@ import com.growalong.android.present.ChatOtherPresenter;
 import com.growalong.android.present.CommSubscriber;
 import com.growalong.android.present.CoursePresenter;
 import com.growalong.android.present.InitPresenter;
+import com.growalong.android.ui.dialog.CommonAffirmDialog;
 import com.growalong.android.ui.fragment.CourseRuningFragment;
 import com.growalong.android.util.LogUtil;
 import com.growalong.android.util.SharedPreferenceUtil;
 import com.growalong.android.util.ToastUtil;
 import com.growalong.android.util.TranslateHelper;
 import com.growalong.android.util.Utils;
+import com.tencent.imsdk.TIMCallBack;
 import com.tencent.imsdk.TIMConversationType;
 import com.tencent.imsdk.TIMCustomElem;
 import com.tencent.imsdk.TIMMessage;
 import com.tencent.imsdk.TIMMessageStatus;
 import com.tencent.imsdk.TIMTextElem;
 import com.tencent.imsdk.TIMUserProfile;
+import com.tencent.imsdk.ext.group.TIMGroupManagerExt;
 import com.tencent.imsdk.ext.message.TIMMessageDraft;
 import com.tencent.imsdk.ext.message.TIMMessageExt;
 import com.tencent.imsdk.ext.message.TIMMessageLocator;
@@ -116,7 +123,7 @@ public class ChatActivity extends QLActivity implements ChatView {
 
     private ChatOtherPresenter chatOtherPresenter;
 
-    private String mGroupName;
+    private String mGroupName, temGroupName;
     private ChatInput input;
     private static final int CAPTURE_IMAGE_ACTIVITY_REQUEST_CODE = CommonPhotoSelectorDialog.PHOTOREQUESTCODE1;
     public static final int VIDEO_CHAT_REQUEST_CODE_SENDER = 22;//视频发起者
@@ -146,6 +153,20 @@ public class ChatActivity extends QLActivity implements ChatView {
         intent.putExtra("identify", identify);
         intent.putExtra("type", type);
         intent.putExtra("name", name);
+        context.startActivity(intent);
+    }
+
+    public static void startThis(Context context, String identify, TIMConversationType type, String name,
+                                 final String content, String senderId, String nickName, String faceUrl) {
+        Intent intent = new Intent(context, ChatActivity.class);
+        intent.putExtra("identify", identify);
+        intent.putExtra("type", type);
+        intent.putExtra("name", name);
+        intent.putExtra("content", content);
+        intent.putExtra("senderId", senderId);
+        intent.putExtra("nickName", nickName);
+        intent.putExtra("faceUrl", faceUrl);
+        intent.putExtra("isRequestedVideochat", true);
         context.startActivity(intent);
     }
 
@@ -258,7 +279,18 @@ public class ChatActivity extends QLActivity implements ChatView {
 
         identify = getIntent().getStringExtra("identify");
         mGroupName = getIntent().getStringExtra("name");
+
         type = (TIMConversationType) getIntent().getSerializableExtra("type");
+        if (TextUtils.isEmpty(mGroupName)) {
+            if (type == TIMConversationType.Group) {
+                mGroupName = GroupInfo.getInstance().getGroupName(identify);
+                if (mGroupName.equals("")) mGroupName = identify;
+            } else {
+                FriendProfile profile = FriendshipInfo.getInstance().getProfile(identify);
+                mGroupName = profile == null ? identify : profile.getName();
+            }
+        }
+
         presenter = new ChatPresenter(this, identify, type);
         chatOtherPresenter = new ChatOtherPresenter(this);
         input = (ChatInput) findViewById(R.id.input_panel);
@@ -300,15 +332,18 @@ public class ChatActivity extends QLActivity implements ChatView {
 
         //选择显示语言
         final TemplateTitle title = findViewById(R.id.chat_title);
+        title.showMoreImg();
         title.setTitleText(mGroupName);
         title.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 //Creating the instance of PopupMenu
                 PopupMenu popup = new PopupMenu(ChatActivity.this, title.getTvMore());
-                //Inflating the Popup using xml file
-                popup.getMenuInflater()
-                        .inflate(R.menu.menu_select_translate, popup.getMenu());
+                int id = R.menu.menu_select_translate;
+                if (MyApplication.TYPE == MyApplication.TYPE_B || BuildConfig.DEVELOPMENT_ENV) {
+                    id = R.menu.menu_select_translate_b;
+                }
+                popup.getMenuInflater().inflate(id, popup.getMenu());
 
                 //registering popup with OnMenuItemClickListener
                 popup.setOnMenuItemClickListener(new PopupMenu.OnMenuItemClickListener() {
@@ -320,6 +355,40 @@ public class ChatActivity extends QLActivity implements ChatView {
                             showTranslate = ShowTranslate.English;
                         } else if (resources.getString(R.string.showChinaAndEnglish).equals(item.getTitle())) {
                             showTranslate = ShowTranslate.ChineseAndEnglish;
+                        } else if (resources.getString(R.string.modify_group_name).equals(item.getTitle())) {
+                            //修改群名
+                            CommonAffirmDialog.Builder(3).setEditText(mGroupName).setIAffirmDialogInput(new CommonAffirmDialog.IAffirmDialogInput() {
+                                @Override
+                                public void input(String str) {
+                                    temGroupName = str;
+                                }
+                            }).setIAffirmDialogClick(new CommonAffirmDialog.IAffirmDialogClick() {
+                                @Override
+                                public void onOkClick() {
+                                    TIMGroupManagerExt.ModifyGroupInfoParam param = new TIMGroupManagerExt.ModifyGroupInfoParam(identify);
+                                    param.setGroupName(temGroupName);
+                                    TIMGroupManagerExt.getInstance().modifyGroupInfo(param, new TIMCallBack() {
+                                        @Override
+                                        public void onError(int code, String desc) {
+                                            LogUtil.e("modify group info failed, code:" + code + "|desc:" + desc);
+                                        }
+
+                                        @Override
+                                        public void onSuccess() {
+                                            mGroupName = temGroupName;
+                                            TemplateTitle title = (TemplateTitle) findViewById(R.id.chat_title);
+                                            title.setTitleText(mGroupName);
+                                            LogUtil.e("modify group info succ");
+                                        }
+                                    });
+
+                                }
+
+                                @Override
+                                public void onCancelClick() {
+
+                                }
+                            }).show(getSupportFragmentManager(), "");
                         } else {
                             showTranslate = ShowTranslate.Normal;
                         }
@@ -396,6 +465,20 @@ public class ChatActivity extends QLActivity implements ChatView {
         presenter.start();
 
         chatOtherPresenter.getUserInfos(identify);
+
+        if (getIntent().getBooleanExtra("isRequestedVideochat", false)) {
+            Bundle extras = getIntent().getExtras();
+            final String content = extras.getString("content");
+            final String senderId = extras.getString("senderId");
+            final String nickName = extras.getString("nickName");
+            final String faceUrl = extras.getString("faceUrl");
+            MyApplication.runOnUIThread(new Runnable() {
+                @Override
+                public void run() {
+                    requestVideoChat(content, senderId, nickName, faceUrl);
+                }
+            }, 1000);
+        }
     }
 
     @Override
@@ -448,28 +531,13 @@ public class ChatActivity extends QLActivity implements ChatView {
                     TextMessage textMessage = (TextMessage) mMessage;
                     final String content = textMessage.getContent();
                     if (content.startsWith(VIDEO_CHAT_REQUEST)) {
-                        if(chatOtherPresenter.isDialogShow() || AppManager.getInstance().isExistActivity(AgoraChatActivity.class)){
+                        if (chatOtherPresenter.isDialogShow() || AppManager.getInstance().isExistActivity(AgoraChatActivity.class)) {
                             return;
                         }
                         UserInfoModel userInfoModel = AppManager.getInstance().getUserInfoModel();
                         if (!TextUtils.equals(userInfoModel.getId() + "", textMessage.getSender())) {
                             //非自己发送的
-                            OkCancelListener okCancelListener = new OkCancelListener() {
-                                @Override
-                                public void clickOk(Object o) {
-                                    AgoraChatActivity.startThis(ChatActivity.this, content, VIDEO_CHAT_REQUEST_CODE_RECEIVER);
-                                }
-
-                                @Override
-                                public void clickCancel(Object o) {
-                                    sendTextMsg(VIDEO_CHAT_REFUSE);
-                                }
-                            };
-                            String url = AppManager.userHeadMap.get(message.getSender()).getHeadImgUrl();
-                            if (TextUtils.isEmpty(url)) {
-                                url = message.getSenderProfile().getFaceUrl();
-                            }
-                            chatOtherPresenter.requestVideoChat(url, message.getSenderProfile().getNickName(), okCancelListener);
+                            requestVideoChat(content, message.getSender(), message.getSenderProfile().getNickName(), message.getSenderProfile().getFaceUrl());
                         }
 
                         mMessage = setVideoSenderTip(message);
@@ -510,6 +578,25 @@ public class ChatActivity extends QLActivity implements ChatView {
             }
         }
 
+    }
+
+    private void requestVideoChat(final String content, String senderId, String nickName, String faceUrl) {
+        OkCancelListener okCancelListener = new OkCancelListener() {
+            @Override
+            public void clickOk(Object o) {
+                AgoraChatActivity.startThis(ChatActivity.this, content, VIDEO_CHAT_REQUEST_CODE_RECEIVER);
+            }
+
+            @Override
+            public void clickCancel(Object o) {
+                sendTextMsg(VIDEO_CHAT_REFUSE);
+            }
+        };
+        String url = AppManager.userHeadMap.get(senderId).getHeadImgUrl();
+        if (TextUtils.isEmpty(url)) {
+            url = faceUrl;
+        }
+        chatOtherPresenter.requestVideoChat(url, nickName, okCancelListener);
     }
 
     /**
@@ -999,7 +1086,7 @@ public class ChatActivity extends QLActivity implements ChatView {
         } else if (requestCode == VIDEO_CHAT_REQUEST_CODE_SENDER ||
                 requestCode == VIDEO_CHAT_REQUEST_CODE_RECEIVER) {
             //视频聊天结束
-            if(resultCode == VIDEO_CHAT_TWO_BREAKE) {
+            if (resultCode == VIDEO_CHAT_TWO_BREAKE) {
                 sendTextMsg(VIDEO_CHAT_OVER);
             }
         } else if (requestCode == IMAGE_STORE) {

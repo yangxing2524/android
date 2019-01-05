@@ -7,10 +7,10 @@
     android:orientation="vertical">
 
     <com.tencent.qcloud.ui.TemplateTitle
+        android:id="@+id/titleView"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        app:canBack="true"
-        app:titleText="@string/my_info" />
+        app:canBack="true" />
 
     <fragment
         android:id="@+id/fragment"

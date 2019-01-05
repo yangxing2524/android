@@ -11,7 +11,13 @@ import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 import com.growalong.android.R;
+import com.growalong.android.app.AppManager;
+import com.growalong.android.app.MyApplication;
 import com.growalong.android.im.model.Message;
+import com.growalong.android.model.UserInfoModel;
+import com.growalong.android.present.CommSubscriber;
+import com.growalong.android.present.UserPresenter;
+import com.growalong.android.ui.SettingActivity;
 
 import java.util.List;
 
@@ -51,10 +57,10 @@ public class ChatAdapter extends ArrayAdapter<Message> {
 
     @Override
     public View getView(int position, View convertView, ViewGroup parent) {
-        if (convertView != null){
+        if (convertView != null) {
             view = convertView;
             viewHolder = (ViewHolder) view.getTag();
-        }else{
+        } else {
             view = LayoutInflater.from(getContext()).inflate(resourceId, null);
             viewHolder = new ViewHolder();
             viewHolder.leftMessage = (RelativeLayout) view.findViewById(R.id.leftMessage);
@@ -68,17 +74,43 @@ public class ChatAdapter extends ArrayAdapter<Message> {
             viewHolder.sender = (TextView) view.findViewById(R.id.sender);
             viewHolder.rightDesc = (TextView) view.findViewById(R.id.rightDesc);
             viewHolder.systemMessage = (TextView) view.findViewById(R.id.systemMessage);
+
             view.setTag(viewHolder);
         }
-        if (position < getCount()){
+        if (position < getCount()) {
             final Message data = getItem(position);
             data.showMessage(viewHolder, getContext());
+            viewHolder.leftAvatar.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+
+                    UserPresenter userPresenter = new UserPresenter();
+                    userPresenter.getUserInfo(data.getSender(), MyApplication.TYPE_C).subscribe(new CommSubscriber<UserInfoModel>() {
+                        @Override
+                        public void onSuccess(UserInfoModel userInfoModel) {
+                            SettingActivity.startThisForResult(getContext(), userInfoModel, false, false);
+                        }
+
+                        @Override
+                        public void onFailure(Throwable e) {
+                            super.onFailure(e);
+                        }
+                    });
+                }
+            });
+
+            viewHolder.rightAvatar.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    SettingActivity.startThisForResult(getContext(), AppManager.getInstance().getUserInfoModel(), true, false);
+                }
+            });
         }
         return view;
     }
 
 
-    public class ViewHolder{
+    public class ViewHolder {
         public RelativeLayout leftMessage;
         public RelativeLayout rightMessage;
         public RelativeLayout leftPanel;

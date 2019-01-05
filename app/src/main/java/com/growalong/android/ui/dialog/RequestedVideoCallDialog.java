@@ -14,9 +14,7 @@ import android.widget.TextView;
 
 import com.bumptech.glide.Glide;
 import com.growalong.android.R;
-import com.growalong.android.app.AppManager;
 import com.growalong.android.listener.OkCancelListener;
-import com.growalong.android.model.UserInfoModel;
 
 /**
  * Created by yangxing on 2018/11/29.
@@ -60,11 +58,11 @@ public class RequestedVideoCallDialog extends DialogFragment implements View.OnC
             Glide.with(getActivity()).load(callerHeadUrl).into(headview);
         }
 
-        background = view.findViewById(R.id.background);
-        UserInfoModel userInfoModel = AppManager.getInstance().getUserInfoModel();
-        if (userInfoModel.getHeadImgUrl() != null) {
-            Glide.with(getActivity()).load(userInfoModel.getHeadImgUrl()).into(background);
-        }
+//        background = view.findViewById(R.id.background);
+//        UserInfoModel userInfoModel = AppManager.getInstance().getUserInfoModel();
+//        if (userInfoModel.getHeadImgUrl() != null) {
+//            Glide.with(getActivity()).load(userInfoModel.getHeadImgUrl()).into(background);
+//        }
 
         name = view.findViewById(R.id.name);
         name.setText(callerName);

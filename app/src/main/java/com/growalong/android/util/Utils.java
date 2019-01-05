@@ -1,6 +1,7 @@
 package com.growalong.android.util;
 
 import com.growalong.android.app.AppManager;
+import com.growalong.android.model.UserInfoModel;
 import com.growalong.android.ui.ChatActivity;
 
 import java.math.BigDecimal;
@@ -207,5 +208,25 @@ public class Utils {
             e.printStackTrace();
         }
         return string;
+    }
+
+    public static String getName(UserInfoModel mUserInfoModel) {
+        String nameStr, cnName, enName;
+        if (mUserInfoModel.getEnName() == null) {
+            enName = "";
+        } else {
+            enName = mUserInfoModel.getEnName();
+        }
+        if (mUserInfoModel.getCnName() == null) {
+            cnName = "";
+        } else {
+            cnName = mUserInfoModel.getCnName();
+        }
+        if (mUserInfoModel.getNation() == 1) {
+            nameStr = cnName + enName;
+        } else {
+            nameStr = mUserInfoModel.getEnName() + mUserInfoModel.getCnName();
+        }
+        return nameStr;
     }
 }
