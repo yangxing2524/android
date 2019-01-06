@@ -107,6 +107,7 @@ public class SplashActivity extends QLActivity  {
     }
 
     private void init() {
+        presenter = new SplashPresenter(this);
 
         SharedPreferences pref = getSharedPreferences("data", MODE_PRIVATE);
         int loglvl = pref.getInt("loglvl", TIMLogLevel.DEBUG.ordinal());
@@ -114,7 +115,7 @@ public class SplashActivity extends QLActivity  {
         InitBusiness.start(getApplicationContext(), loglvl);
         //初始化TLS
         TlsBusiness.init(getApplicationContext());
-        presenter = new SplashPresenter(this);
+
         presenter.start();
     }
 

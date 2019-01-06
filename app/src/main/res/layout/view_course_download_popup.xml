@@ -63,6 +63,7 @@
         android:layout_height="wrap_content"
         android:layout_alignParentBottom="true"
         android:background="@color/white"
+        android:paddingBottom="@dimen/y20"
         android:maxHeight="@dimen/y500"
         android:scrollbars="none" />
 </RelativeLayout>

@@ -269,6 +269,7 @@ public class SplashPresenter implements TIMCallBack{
             @Override
             public void run() {
                 if (isUserLogin()) {
+
                     initIMInfo();
                 } else {
                     navToLogin();

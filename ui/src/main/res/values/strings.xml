@@ -5,6 +5,7 @@
     <string name="cancel">取消</string>
     <string name="chat_press_talk">按住 说话</string>
     <string name="chat_release_send">松开 结束</string>
+    <string name="chat_release_cancel">松开 取消</string>
     <string name="chat_image">图片</string>
     <string name="chat_file">文件</string>
     <string name="chat_photo">拍摄</string>
@@ -20,4 +21,5 @@
     <string name="chat_image_preview_send">发送</string>
     <string name="chat_image_preview_load_err">图片加载失败</string>
     <string name="chat_image_preview_ori">原图发送</string>
+    <string name="chat_up_cancel">松开手指，取消发送</string>
 </resources>

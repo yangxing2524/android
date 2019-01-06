@@ -885,7 +885,6 @@ public class ChatActivity extends QLActivity implements ChatView {
         voiceSendingView.setVisibility(View.VISIBLE);
         voiceSendingView.showRecording();
         recorder.startRecording();
-
     }
 
     /**
@@ -919,11 +918,13 @@ public class ChatActivity extends QLActivity implements ChatView {
 
 
     /**
-     * 结束发送语音消息
+     * 取消发送语音消息
      */
     @Override
     public void cancelSendVoice() {
-
+        voiceSendingView.release();
+        voiceSendingView.setVisibility(View.GONE);
+        recorder.stopRecording();
     }
 
     /**
@@ -986,6 +987,16 @@ public class ChatActivity extends QLActivity implements ChatView {
             }
         }, delay);
 
+    }
+
+    @Override
+    public void showCancelVoiceView() {
+        voiceSendingView.showCancelVoiceView();
+    }
+
+    @Override
+    public void showRecordVoiceView() {
+        voiceSendingView.showRecordVoiceView();
     }
 
     private void sendTextMsg(String msg) {

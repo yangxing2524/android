@@ -6,6 +6,7 @@ import android.util.AttributeSet;
 import android.view.LayoutInflater;
 import android.widget.ImageView;
 import android.widget.RelativeLayout;
+import android.widget.TextView;
 
 
 /**
@@ -14,26 +15,53 @@ import android.widget.RelativeLayout;
 public class VoiceSendingView extends RelativeLayout {
 
 
+    private final ImageView img;
+    private final TextView chatUpFinger;
     private AnimationDrawable frameAnimation;
 
     public VoiceSendingView(Context context, AttributeSet attrs) {
         super(context, attrs);
         LayoutInflater.from(context).inflate(R.layout.voice_sending, this);
-        ImageView img = (ImageView)findViewById(R.id.microphone);
+        img = (ImageView) findViewById(R.id.microphone);
+        chatUpFinger = (TextView) findViewById(R.id.chatUpFinger);
         img.setBackgroundResource(R.drawable.animation_voice);
         frameAnimation = (AnimationDrawable) img.getBackground();
 
     }
 
-    public void showRecording(){
-        frameAnimation.start();
+
+    public void showRecording() {
+        if (frameAnimation != null) {
+            frameAnimation.start();
+        }
     }
 
-    public void showCancel(){
-        frameAnimation.stop();
+    public void showCancel() {
+        if (frameAnimation != null) {
+            frameAnimation.stop();
+        }
     }
 
-    public void release(){
-        frameAnimation.stop();
+    public void release() {
+        img.setBackgroundResource(R.drawable.animation_voice);
+        frameAnimation = (AnimationDrawable) img.getBackground();
+        chatUpFinger.setText(R.string.chat_up_finger);
+        if (frameAnimation != null) {
+            frameAnimation.stop();
+        }
     }
+
+    public void showCancelVoiceView() {
+        chatUpFinger.setText(R.string.chat_up_cancel);
+        img.setBackgroundResource(R.drawable.icon_audio_cancel);
+        frameAnimation = null;
+    }
+
+    public void showRecordVoiceView() {
+        img.setBackgroundResource(R.drawable.animation_voice);
+        frameAnimation = (AnimationDrawable) img.getBackground();
+        chatUpFinger.setText(R.string.chat_up_finger);
+        showRecording();
+    }
+
 }

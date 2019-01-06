@@ -99,7 +99,7 @@ public interface ChatView extends MvpView {
 
 
     /**
-     * 结束发送语音消息
+     * 取消发送语音消息
      *
      */
     void cancelSendVoice();
@@ -139,4 +139,8 @@ public interface ChatView extends MvpView {
      * 滚动到最底下
      */
     void scorllToBottom(int time);
+
+    void showCancelVoiceView();
+
+    void showRecordVoiceView();
 }

@@ -16,6 +16,7 @@ import android.text.SpannableString;
 import android.text.TextWatcher;
 import android.text.style.ImageSpan;
 import android.util.AttributeSet;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.MotionEvent;
 import android.view.View;
@@ -44,7 +45,7 @@ public class ChatInput extends RelativeLayout implements TextWatcher, View.OnCli
 
     private ImageButton btnAdd, btnSend, btnVoice, btnKeyboard, btnEmotion;
     private EditText editText;
-    private boolean isSendVisible, isHoldVoiceBtn, isEmoticonReady;
+    private boolean isSendVisible, isHoldVoiceBtn, isCancelVoice, isEmoticonReady;
     private InputMode inputMode = InputMode.NONE;
     private ChatView chatView;
     private LinearLayout morePanel, textPanel;
@@ -52,6 +53,7 @@ public class ChatInput extends RelativeLayout implements TextWatcher, View.OnCli
     private LinearLayout emoticonPanel;
     private final int REQUEST_CODE_ASK_PERMISSIONS = 100;
 
+    float scrollYTem = 0;
 
     public ChatInput(Context context, AttributeSet attrs) {
         super(context, attrs);
@@ -92,10 +94,29 @@ public class ChatInput extends RelativeLayout implements TextWatcher, View.OnCli
                     case MotionEvent.ACTION_DOWN:
                         isHoldVoiceBtn = true;
                         updateVoiceView();
+                        scrollYTem = event.getY();
                         break;
                     case MotionEvent.ACTION_UP:
                         isHoldVoiceBtn = false;
                         updateVoiceView();
+                        isCancelVoice = false;
+                        break;
+                    case MotionEvent.ACTION_MOVE:
+                        if (scrollYTem < event.getY()) {
+                            float scrollYNum = event.getY() - scrollYTem;
+                            if (scrollYNum > 4) {
+                                Log.e("scroll", "begin voice");
+                                isCancelVoice = false;
+                            }
+                        } else {
+                            float scrollYNum = scrollYTem - event.getY();
+                            if (scrollYNum > 4) {
+                                Log.e("scroll", "cancell voice");
+                                isCancelVoice = true;
+                            }
+                        }
+                        updateIsCancelVoice();
+                        scrollYTem = event.getY();
                         break;
                 }
                 return true;
@@ -116,9 +137,20 @@ public class ChatInput extends RelativeLayout implements TextWatcher, View.OnCli
 
     }
 
+    private void updateIsCancelVoice() {
+        if (isCancelVoice) {
+            voicePanel.setText(getResources().getString(R.string.chat_release_cancel));
+            chatView.showCancelVoiceView();
+        } else {
+            voicePanel.setText(getResources().getString(R.string.chat_release_send));
+            chatView.showRecordVoiceView();
+        }
+    }
+
     public boolean isMorePanelVisiable() {
         return morePanel != null ? morePanel.getVisibility() == View.VISIBLE : false;
     }
+
     public boolean isEmotionVisiable() {
         return emoticonPanel != null ? emoticonPanel.getVisibility() == View.VISIBLE : false;
     }
@@ -128,6 +160,7 @@ public class ChatInput extends RelativeLayout implements TextWatcher, View.OnCli
             morePanel.setVisibility(View.GONE);
         }
     }
+
     public void hidEmoticonPanel() {
         if (emoticonPanel != null) {
             emoticonPanel.setVisibility(View.GONE);
@@ -193,7 +226,11 @@ public class ChatInput extends RelativeLayout implements TextWatcher, View.OnCli
         } else {
             voicePanel.setText(getResources().getString(R.string.chat_press_talk));
             voicePanel.setBackground(getResources().getDrawable(R.drawable.btn_voice_normal));
-            chatView.endSendVoice();
+            if(isCancelVoice){
+                chatView.cancelSendVoice();
+            }else {
+                chatView.endSendVoice();
+            }
         }
     }
 
@@ -330,7 +367,7 @@ public class ChatInput extends RelativeLayout implements TextWatcher, View.OnCli
             chatView.sendText();
         }
         if (id == R.id.btn_add) {
-            if(inputMode != InputMode.MORE){
+            if (inputMode != InputMode.MORE) {
                 chatView.scorllToBottom(50);
             }
             updateView(inputMode == InputMode.MORE ? InputMode.TEXT : InputMode.MORE);
