@@ -6,7 +6,9 @@ import android.content.Context;
 import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.content.res.Resources;
+import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
+import android.media.MediaMetadataRetriever;
 import android.os.Build;
 import android.os.Bundle;
 import android.os.Environment;
@@ -61,6 +63,7 @@ import com.growalong.android.present.CoursePresenter;
 import com.growalong.android.present.InitPresenter;
 import com.growalong.android.ui.dialog.CommonAffirmDialog;
 import com.growalong.android.ui.fragment.CourseRuningFragment;
+import com.growalong.android.util.BitmapUtils;
 import com.growalong.android.util.LogUtil;
 import com.growalong.android.util.SharedPreferenceUtil;
 import com.growalong.android.util.ToastUtil;
@@ -527,6 +530,9 @@ public class ChatActivity extends QLActivity implements ChatView {
                     }
                 } else if (mMessage instanceof ImageMessage) {
                     imageUrlList.add(mMessage.getContent());
+                    messageList.add(mMessage);
+                    adapter.notifyDataSetChanged();
+                    scorllToBottom(0);
                 } else if (mMessage instanceof TextMessage) {
                     TextMessage textMessage = (TextMessage) mMessage;
                     final String content = textMessage.getContent();
@@ -592,6 +598,9 @@ public class ChatActivity extends QLActivity implements ChatView {
                 sendTextMsg(VIDEO_CHAT_REFUSE);
             }
         };
+        if (AppManager.userHeadMap.get(senderId) == null) {
+            return;
+        }
         String url = AppManager.userHeadMap.get(senderId).getHeadImgUrl();
         if (TextUtils.isEmpty(url)) {
             url = faceUrl;
@@ -1084,64 +1093,83 @@ public class ChatActivity extends QLActivity implements ChatView {
 
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
-
-        if (requestCode == CAPTURE_IMAGE_ACTIVITY_REQUEST_CODE) {
-            if (resultCode == RESULT_OK) {
-                String stringExtra = data.getStringExtra(CameraProtectActivity.IMAGE_PATH);
-                if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.N) {
-                    String fileDir = (Environment.getExternalStorageDirectory() + stringExtra).replace("/external_storage_root", "");
-                    stringExtra = fileDir;
-                }
-                showImagePreview(stringExtra);
-            }
-        } else if (requestCode == VIDEO_CHAT_REQUEST_CODE_SENDER ||
-                requestCode == VIDEO_CHAT_REQUEST_CODE_RECEIVER) {
-            //视频聊天结束
-            if (resultCode == VIDEO_CHAT_TWO_BREAKE) {
-                sendTextMsg(VIDEO_CHAT_OVER);
-            }
-        } else if (requestCode == IMAGE_STORE) {
-            if (resultCode == RESULT_OK && data != null) {
-                showImagePreview(FileUtil.getFilePath(this, data.getData()));
-            }
-
-        } else if (requestCode == FILE_CODE) {
-            if (resultCode == RESULT_OK) {
-                sendFile(FileUtil.getFilePath(this, data.getData()));
-            }
-        } else if (requestCode == IMAGE_PREVIEW) {
-            if (resultCode == RESULT_OK) {
-                boolean isOri = data.getBooleanExtra("isOri", false);
-                String path = data.getStringExtra("path");
-                File file = new File(path);
-                if (file.exists()) {
-                    final BitmapFactory.Options options = new BitmapFactory.Options();
-                    options.inJustDecodeBounds = true;
-                    BitmapFactory.decodeFile(path, options);
-                    if (file.length() == 0 && options.outWidth == 0) {
-                        Toast.makeText(this, getString(R.string.chat_file_not_exist), Toast.LENGTH_SHORT).show();
-                    } else {
-                        if (file.length() > 1024 * 1024 * 10) {
-                            Toast.makeText(this, getString(R.string.chat_file_too_large), Toast.LENGTH_SHORT).show();
-                        } else {
-                            Message message = new ImageMessage(path, isOri);
-                            presenter.sendMessage(message.getMessage());
-                        }
+        try {
+            if (requestCode == CAPTURE_IMAGE_ACTIVITY_REQUEST_CODE) {
+                if (resultCode == RESULT_OK) {
+                    String stringExtra = data.getStringExtra(CameraProtectActivity.IMAGE_PATH);
+                    if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.N) {
+                        String fileDir = (Environment.getExternalStorageDirectory() + stringExtra).replace("/external_storage_root", "");
+                        stringExtra = fileDir;
                     }
+                    showImagePreview(stringExtra);
+                }
+            } else if (requestCode == VIDEO_CHAT_REQUEST_CODE_SENDER ||
+                    requestCode == VIDEO_CHAT_REQUEST_CODE_RECEIVER) {
+                //视频聊天结束
+                if (resultCode == VIDEO_CHAT_TWO_BREAKE) {
+                    sendTextMsg(VIDEO_CHAT_OVER);
+                }
+            } else if (requestCode == IMAGE_STORE) {
+                String path = FileUtil.getFilePath(this, data.getData());
+
+                if (path != null && path.endsWith(".mp4")) {
+                    String videoPath = path;
+                    long duration = data.getLongExtra("duration", 10);
+
+                    //创建MediaMetadataRetriever对象
+                    MediaMetadataRetriever mmr = new MediaMetadataRetriever();
+//设置资源位置
+//绑定资源
+                    mmr.setDataSource(videoPath);
+//获取第一帧图像的bitmap对象
+                    Bitmap bitmap = mmr.getFrameAtTime();
+
+                    File coverFile = BitmapUtils.saveBitmapFile(bitmap);
+                    Message message = new UGCMessage(videoPath, coverFile.getPath(), duration);
+                    presenter.sendMessage(message.getMessage());
                 } else {
-                    Toast.makeText(this, getString(R.string.chat_file_not_exist), Toast.LENGTH_SHORT).show();
+                    showImagePreview(path);
+                }
+
+            } else if (requestCode == FILE_CODE) {
+                if (resultCode == RESULT_OK) {
+                    sendFile(FileUtil.getFilePath(this, data.getData()));
+                }
+            } else if (requestCode == IMAGE_PREVIEW) {
+                if (resultCode == RESULT_OK) {
+                    boolean isOri = data.getBooleanExtra("isOri", false);
+                    String path = data.getStringExtra("path");
+                    File file = new File(path);
+                    if (file.exists()) {
+                        final BitmapFactory.Options options = new BitmapFactory.Options();
+                        options.inJustDecodeBounds = true;
+                        BitmapFactory.decodeFile(path, options);
+                        if (file.length() == 0 && options.outWidth == 0) {
+                            Toast.makeText(this, getString(R.string.chat_file_not_exist), Toast.LENGTH_SHORT).show();
+                        } else {
+                            if (file.length() > 1024 * 1024 * 10) {
+                                Toast.makeText(this, getString(R.string.chat_file_too_large), Toast.LENGTH_SHORT).show();
+                            } else {
+                                Message message = new ImageMessage(path, isOri);
+                                presenter.sendMessage(message.getMessage());
+                            }
+                        }
+                    } else {
+                        Toast.makeText(this, getString(R.string.chat_file_not_exist), Toast.LENGTH_SHORT).show();
+                    }
+                }
+            } else if (requestCode == VIDEO_RECORD) {
+                if (resultCode == RESULT_OK) {
+                    String videoPath = data.getStringExtra("videoPath");
+                    String coverPath = data.getStringExtra("coverPath");
+                    long duration = data.getLongExtra("duration", 0);
+                    Message message = new UGCMessage(videoPath, coverPath, duration);
+                    presenter.sendMessage(message.getMessage());
                 }
             }
-        } else if (requestCode == VIDEO_RECORD) {
-            if (resultCode == RESULT_OK) {
-                String videoPath = data.getStringExtra("videoPath");
-                String coverPath = data.getStringExtra("coverPath");
-                long duration = data.getLongExtra("duration", 0);
-                Message message = new UGCMessage(videoPath, coverPath, duration);
-                presenter.sendMessage(message.getMessage());
-            }
+        } catch (Exception e) {
+            e.printStackTrace();
         }
-
     }
 
 

@@ -31,6 +31,7 @@ import com.growalong.android.ui.fragment.CourseMainFragment;
 import com.growalong.android.ui.fragment.MyFragment;
 import com.growalong.android.util.ToastUtil;
 import com.tencent.imsdk.TIMManager;
+import com.tencent.imsdk.TIMOfflinePushSettings;
 import com.tencent.qcloud.presentation.event.MessageEvent;
 import com.tencent.qcloud.tlslibrary.service.TlsBusiness;
 
@@ -71,6 +72,16 @@ public class MainActivity extends QLActivity {
             initView();
             Toast.makeText(this, getString(TIMManager.getInstance().getEnv() == 0 ? R.string.env_normal : R.string.env_test), Toast.LENGTH_SHORT).show();
         }
+
+        TIMOfflinePushSettings settings = new TIMOfflinePushSettings();
+//开启离线推送
+        settings.setEnabled(true);
+////设置收到 C2C 离线消息时的提示声音，这里把声音文件放到了 res/raw 文件夹下
+//        settings.setC2cMsgRemindSound(Uri.parse("android.resource://" + getPackageName() + "/" + R.raw.dudulu));
+////设置收到群离线消息时的提示声音，这里把声音文件放到了 res/raw 文件夹下
+//        settings.setGroupMsgRemindSound(Uri.parse("android.resource://" + getPackageName() + "/" + R.raw.dudulu));
+
+        TIMManager.getInstance().setOfflinePushSettings(settings);
     }
 
     @Override

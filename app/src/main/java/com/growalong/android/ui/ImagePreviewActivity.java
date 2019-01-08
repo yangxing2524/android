@@ -46,7 +46,12 @@ public class ImagePreviewActivity extends Activity {
                 finish();
             }
         });
-        showImage();
+        try {
+            showImage();
+        }catch (Exception e){
+            e.printStackTrace();
+        }
+
 
     }
 

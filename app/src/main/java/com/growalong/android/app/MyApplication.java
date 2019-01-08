@@ -10,8 +10,10 @@ import android.os.Build;
 import android.os.Handler;
 import android.support.multidex.MultiDex;
 import android.util.DisplayMetrics;
+import android.util.Log;
 
 import com.growalong.android.BuildConfig;
+import com.growalong.android.R;
 import com.growalong.android.agora.openvcall.model.AgoraCurrentUserSettings;
 import com.growalong.android.agora.openvcall.model.AgoraWorkerThread;
 import com.growalong.android.util.PackageUtil;
@@ -19,7 +21,11 @@ import com.orhanobut.logger.Logger;
 import com.tencent.bugly.Bugly;
 import com.tencent.bugly.beta.Beta;
 import com.tencent.bugly.crashreport.CrashReport;
+import com.tencent.imsdk.TIMManager;
+import com.tencent.imsdk.TIMOfflinePushListener;
+import com.tencent.imsdk.TIMOfflinePushNotification;
 import com.tencent.mm.opensdk.openapi.IWXAPI;
+import com.tencent.qalsdk.sdk.MsfSdkUtils;
 import com.tencent.tinker.loader.app.ApplicationLifeCycle;
 import com.tencent.tinker.loader.app.DefaultApplicationLike;
 import com.umeng.analytics.MobclickAgent;
@@ -178,6 +184,18 @@ public class MyApplication extends DefaultApplicationLike {
             }
         }, 200);
 
+        if(MsfSdkUtils.isMainProcess(context)) {
+            Log.d("MyApplication", "main process");
+            // 设置离线推送监听器
+            TIMManager.getInstance().setOfflinePushListener(new TIMOfflinePushListener() {
+                @Override
+                public void handleNotification(TIMOfflinePushNotification notification) {
+                    Log.d("MyApplication", "recv offline push");
+                    // 这里的 doNotify 是 ImSDK 内置的通知栏提醒，应用也可以选择自己利用回调参数 notification 来构造自己的通知栏提醒
+                    notification.doNotify(getApplicationContext(), R.drawable.ic_launcher);
+                }
+            });
+        }
     }
 
     private void delayInit(String processName, String channel, String packageName) {

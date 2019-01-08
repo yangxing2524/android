@@ -54,6 +54,7 @@
                 android:layout_marginTop="@dimen/y60"
                 android:drawableLeft="@mipmap/location"
                 android:drawablePadding="@dimen/y10"
+                android:visibility="gone"
                 android:textColor="@color/color_999999"
                 android:textSize="13sp"
                 tools:text="广东、广州" />
