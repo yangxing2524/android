@@ -23,6 +23,7 @@ import com.growalong.android.net.retrofit.service.ILoginApis;
 import com.growalong.android.ui.LoginMainActivity;
 import com.growalong.android.ui.MainActivity;
 import com.growalong.android.ui.QLActivity;
+import com.growalong.android.ui.SplashActivity;
 import com.growalong.android.util.RxUtil;
 import com.huawei.android.pushagent.PushManager;
 import com.meizu.cloud.pushsdk.util.MzSystemUtils;
@@ -49,11 +50,11 @@ import rx.functions.Action1;
 /**
  * 闪屏界面逻辑
  */
-public class SplashPresenter implements TIMCallBack{
+public class SplashPresenter implements TIMCallBack {
     private final QLActivity activity;
     private static final String TAG = SplashPresenter.class.getSimpleName();
 
-    public SplashPresenter( QLActivity activity) {
+    public SplashPresenter(QLActivity activity) {
         this.activity = activity;
     }
 
@@ -129,8 +130,10 @@ public class SplashPresenter implements TIMCallBack{
                                         ImUserInfo.getInstance().setUserSig(netLoginIMBean.getUserSig());
                                         ImUserInfo.getInstance().setId(userId);
 //                                        LoginMainActivity.startThis(SplashActivity.this);
-                                        MainActivity.startThis(activity);
-                                        activity.finish();
+                                        if (AppManager.getInstance().getActivity(SplashActivity.class) != null) {
+                                            MainActivity.startThis(activity);
+                                            activity.finish();
+                                        }
                                     }
                                 });
 
@@ -228,6 +231,11 @@ public class SplashPresenter implements TIMCallBack{
                     @Override
                     public void onDisconnected(int code, String desc) {
                         Log.i(TAG, "onDisconnected");
+
+                        final String userId = AccountManager.getUserId(activity);
+                        final String imUserSig = AccountManager.getInstance().getIMUserSig();
+                        TIMManager.getInstance().login(userId, imUserSig, SplashPresenter.this);
+
                     }
 
                     @Override

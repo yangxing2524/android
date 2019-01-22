@@ -68,6 +68,8 @@ public class SettingFragment extends NewBaseFragment implements FriendInfoView {
     public LineControllerView age;
     @BindView(R.id.favorite)
     public LineControllerView favorite;
+    @BindView(R.id.nameB)
+    public LineControllerView nameB;
 
     boolean canModify = false;
     private static final String TAG = SettingFragment.class.getSimpleName();
@@ -122,7 +124,7 @@ public class SettingFragment extends NewBaseFragment implements FriendInfoView {
         name = (TextView) view.findViewById(R.id.name);
         setOnClickListener(view);
         headView = view.findViewById(R.id.headview);
-        if(canModify) {
+        if (canModify) {
             headView.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
@@ -145,11 +147,20 @@ public class SettingFragment extends NewBaseFragment implements FriendInfoView {
         if (userInfoModel.getAddress() != null) {
             location.setContent(userInfoModel.getAddress());
         }
-        if (userInfoModel.getEnName() != null) {
-            EnglishName.setContent(userInfoModel.getEnName());
-        }
-        if (userInfoModel.getCnName() != null) {
-            ChineseName.setContent(userInfoModel.getCnName());
+        if (MyApplication.TYPE == MyApplication.TYPE_C) {
+            if (userInfoModel.getEnName() != null) {
+                EnglishName.setContent(userInfoModel.getEnName());
+            }
+            if (userInfoModel.getCnName() != null) {
+                ChineseName.setContent(userInfoModel.getCnName());
+            }
+            EnglishName.setVisibility(View.VISIBLE);
+            ChineseName.setVisibility(View.VISIBLE);
+        } else {
+            EnglishName.setVisibility(View.GONE);
+            ChineseName.setVisibility(View.GONE);
+            nameB.setVisibility(View.VISIBLE);
+            nameB.setContent(userInfoModel.getName());
         }
 
         if (!canModify) {

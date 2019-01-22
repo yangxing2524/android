@@ -54,6 +54,7 @@ import com.growalong.android.im.model.VoiceMessage;
 import com.growalong.android.im.utils.FileUtil;
 import com.growalong.android.im.utils.MediaUtil;
 import com.growalong.android.im.utils.RecorderUtil;
+import com.growalong.android.image.ImagePagerActivity;
 import com.growalong.android.listener.OkCancelListener;
 import com.growalong.android.model.CourseListItemModel;
 import com.growalong.android.model.UserInfoModel;
@@ -529,7 +530,8 @@ public class ChatActivity extends QLActivity implements ChatView {
                             break;
                     }
                 } else if (mMessage instanceof ImageMessage) {
-                    imageUrlList.add(mMessage.getContent());
+                    ImageMessage imageMessage = (ImageMessage) mMessage;
+                    addImageToList(imageMessage);
                     messageList.add(mMessage);
                     adapter.notifyDataSetChanged();
                     scorllToBottom(0);
@@ -693,8 +695,7 @@ public class ChatActivity extends QLActivity implements ChatView {
                     }
                 } else if (mMessage instanceof ImageMessage) {
                     ImageMessage imageMessage = (ImageMessage) mMessage;
-                    String url = imageMessage.getContent();
-                    imageUrlList.add(url);
+                    addImageToList(imageMessage);
                 }
 
             } catch (Exception e) {
@@ -717,6 +718,23 @@ public class ChatActivity extends QLActivity implements ChatView {
         }
         adapter.notifyDataSetChanged();
         listView.setSelection(newMsgNum);
+    }
+
+    private void addImageToList(ImageMessage imageMessage) {
+        final String url = imageMessage.getContent();
+        imageUrlList.add(url);
+        View.OnClickListener imageClickListener = new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                int index = imageUrlList.indexOf(url);
+                String[] list = new String[imageUrlList.size()];
+                for (int j = 0; j < imageUrlList.size(); j++) {
+                    list[j] = imageUrlList.get(j);
+                }
+                ImagePagerActivity.startThisActivity(ChatActivity.this, list, index, false);
+            }
+        };
+        imageMessage.setOnclickListener(imageClickListener);
     }
 
     @Override

@@ -17,6 +17,7 @@ public class AccountManager {
     private static final String ACCOUNT_KEY = "account_key";
     private static final String SESSION_ID = "session_Id";
     private static final String USER_HEAD = "user_head";
+    private static final String USER_TYPE = "user_type";
     private static final String USER_NAME = "user_name";
     private static final String USER_ID = "user_id";
     private static final String PHONE_NUMBER = "phone_number";
@@ -63,6 +64,7 @@ public class AccountManager {
         edit.putString(USER_NAME, data.getName());
         edit.putString(USER_HEAD, data.getHeadImgUrl());
         edit.putString(SESSION_ID, data.getSid());
+        edit.putString(USER_TYPE, MyApplication.TYPE);
         edit.putString(PHONE_NUMBER, data.getMobile());
         edit.apply();
         mAccountInfo = getAccountInfoFormLocate();
@@ -86,6 +88,7 @@ public class AccountManager {
         edit.putString(SESSION_ID, "");
         edit.putString(USER_ID, "");
         edit.putString(USER_NAME, "");
+        edit.putString(USER_TYPE, "");
         edit.putString(USER_HEAD, "");
         edit.apply();
         savePhoneNumber("");
@@ -137,6 +140,7 @@ public class AccountManager {
         mAccountInfo.setUserName(mSharedPreferences.getString(USER_NAME, ""));
         mAccountInfo.setUserHead(mSharedPreferences.getString(USER_HEAD, ""));
         mAccountInfo.setSessionId(mSharedPreferences.getString(SESSION_ID, ""));
+        MyApplication.TYPE = (mSharedPreferences.getString(USER_TYPE, ""));
         mAccountInfo.setPhoneNumber(mSharedPreferences.getString(PHONE_NUMBER, ""));
         ImUserInfo.getInstance().setId(mSharedPreferences.getString(USER_ID, ""));
         ImUserInfo.getInstance().setUserSig(mSharedPreferences.getString(IM_USER_SIG, ""));

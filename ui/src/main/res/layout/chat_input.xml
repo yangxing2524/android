@@ -37,14 +37,14 @@
             android:id="@+id/voice_panel"
             android:layout_width="0dp"
             android:layout_height="34dp"
-            android:visibility="gone"
             android:layout_weight="1"
             android:background="@drawable/btn_voice_normal"
             android:clickable="true"
             android:gravity="center"
             android:text="@string/chat_press_talk"
             android:textColor="@color/text_gray1"
-            android:textSize="16sp">
+            android:textSize="16sp"
+            android:visibility="gone">
 
         </TextView>
 
@@ -73,7 +73,8 @@
                 android:layout_height="25dp"
                 android:layout_marginLeft="10dp"
                 android:layout_marginRight="8dp"
-                android:background="@drawable/icon_expression" />
+                android:background="@drawable/icon_expression"
+                android:visibility="gone" />
         </LinearLayout>
 
         <ImageButton
@@ -82,13 +83,19 @@
             android:layout_height="48dp"
             android:background="@color/transparent"
             android:src="@drawable/icon_more" />
-        <ImageButton
+
+        <TextView
             android:id="@+id/btn_send"
             android:layout_width="44dp"
             android:layout_height="40dp"
             android:layout_marginLeft="6dp"
             android:layout_marginRight="5dp"
-            android:background="@drawable/btn_send" />
+            android:gravity="center"
+            android:textColor="@color/white"
+            android:textSize="12sp"
+            android:text="@string/chat_image_preview_send"
+            android:background="@drawable/background_4fca19_white_rect"
+            />
     </LinearLayout>
 
     <LinearLayout

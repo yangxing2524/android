@@ -43,7 +43,8 @@ public class ChatInput extends RelativeLayout implements TextWatcher, View.OnCli
 
     private static final String TAG = "ChatInput";
 
-    private ImageButton btnAdd, btnSend, btnVoice, btnKeyboard, btnEmotion;
+    private ImageButton btnAdd, btnVoice, btnKeyboard, btnEmotion;
+    private TextView btnSend;
     private EditText editText;
     private boolean isSendVisible, isHoldVoiceBtn, isCancelVoice, isEmoticonReady;
     private InputMode inputMode = InputMode.NONE;
@@ -66,7 +67,7 @@ public class ChatInput extends RelativeLayout implements TextWatcher, View.OnCli
         textPanel = (LinearLayout) findViewById(R.id.text_panel);
         btnAdd = (ImageButton) findViewById(R.id.btn_add);
         btnAdd.setOnClickListener(this);
-        btnSend = (ImageButton) findViewById(R.id.btn_send);
+        btnSend = (TextView) findViewById(R.id.btn_send);
         btnSend.setOnClickListener(this);
         btnVoice = (ImageButton) findViewById(R.id.btn_voice);
         btnVoice.setOnClickListener(this);

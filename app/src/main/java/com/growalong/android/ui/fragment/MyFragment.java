@@ -10,6 +10,7 @@ import com.bumptech.glide.Glide;
 import com.growalong.android.R;
 import com.growalong.android.account.AccountManager;
 import com.growalong.android.app.AppManager;
+import com.growalong.android.app.MyApplication;
 import com.growalong.android.model.ApiException;
 import com.growalong.android.model.UserInfoModel;
 import com.growalong.android.present.CommSubscriber;
@@ -91,6 +92,9 @@ public class MyFragment extends NewBaseFragment implements View.OnClickListener 
         }
         AppManager.getInstance().setUserInfoModel(mUserInfoModel);
         String nameStr = Utils.getName(mUserInfoModel);
+        if(MyApplication.TYPE.equals(MyApplication.TYPE_B)){
+            nameStr = mUserInfoModel.getName();
+        }
         name.setText(nameStr);
         interest.setText(mUserInfoModel.getHobby());
         location.setText(mUserInfoModel.getAddress());

@@ -33,6 +33,7 @@ public class ImageMessage extends Message {
 
     private static final String TAG = "ImageMessage";
     private boolean isDownloading;
+    private View.OnClickListener imageClickListener;
 
     public ImageMessage(TIMMessage message) {
         this.message = message;
@@ -116,7 +117,11 @@ public class ImageMessage extends Message {
                         getBubbleView(viewHolder).setOnClickListener(new View.OnClickListener() {
                             @Override
                             public void onClick(View v) {
-                                navToImageview(image, context);
+                                if (imageClickListener == null) {
+                                    navToImageview(image, context);
+                                } else {
+                                    imageClickListener.onClick(v);
+                                }
                             }
                         });
                     }
@@ -254,5 +259,9 @@ public class ImageMessage extends Message {
                 Toast.makeText(context, MyApplication.getContext().getString(R.string.downloading), Toast.LENGTH_SHORT).show();
             }
         }
+    }
+
+    public void setOnclickListener(View.OnClickListener imageClickListener) {
+        this.imageClickListener = imageClickListener;
     }
 }

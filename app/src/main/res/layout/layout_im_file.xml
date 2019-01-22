@@ -19,7 +19,7 @@
         android:layout_marginRight="@dimen/y20"
         android:layout_alignParentLeft="true"
         android:ellipsize="end"
-        android:maxLines="1"
+        android:maxLines="2"
         android:textColor="@color/black"
         android:textSize="18sp" />
 

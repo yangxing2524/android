@@ -459,5 +459,6 @@
     <string name="login_btn_b">导师登陆</string>
     <string name="modify_group_name">修改群名</string>
     <string name="net_error_tip_top">网络无法连接，请检查您的网络设置</string>
+    <string name="name">姓名</string>
 
 </resources>

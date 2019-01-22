@@ -63,6 +63,16 @@
         android:background="@color/line" />
 
     <com.tencent.qcloud.ui.LineControllerView
+        android:id="@+id/nameB"
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/y100"
+        android:visibility="gone"
+        android:textColor="@color/color_474747"
+        android:textSize="16sp"
+        app:canNav="true"
+        app:name="@string/name" />
+
+    <com.tencent.qcloud.ui.LineControllerView
         android:id="@+id/ChineseName"
         android:layout_width="match_parent"
         android:layout_height="@dimen/y100"
